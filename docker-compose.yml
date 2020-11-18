@@ -1,0 +1,41 @@
+version: "3"
+
+services:
+    mysqldb:
+        image: mysql:latest
+        environment: 
+           MYSQL_ROOT_PASSWORD: secret
+        command: --default-authentication-plugin=mysql_native_password
+        restart: always
+        environment:
+          MYSQL_USER: test
+          MYSQL_ROOT_PASSWORD: secret
+          MYSQL_DATABASE: fwemysqldb
+          MYSQL_PASSWORD: test
+        ports:
+          - 3306:3306
+        cap_add:
+            - SYS_NICE
+            
+    backend:
+        image: node:14
+        container_name: backend
+        working_dir: /var/app/backend
+        command: /bin/bash -c "npm install && npm run start"
+        volumes:
+            - "./packages/backend:/var/app/backend"
+        environment: 
+            - PORT=4000
+        ports:
+            - "4000:4000"
+
+    frontend:
+      image: node:14
+      container_name: frontend
+      working_dir: /var/app/frontend
+      ports:
+        - 3000:3000
+      command: /bin/bash -c "npm install && npm run start"
+      stdin_open: true
+      volumes:
+        - ./packages/frontend:/var/app/frontend

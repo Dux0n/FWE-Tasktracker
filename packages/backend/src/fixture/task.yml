@@ -1,0 +1,27 @@
+#entity: Task
+#items:
+#  task{1..5}:
+#    name: test
+#    description: testdesc
+
+entity: Task
+items:
+  task1:
+    name: Task1
+    description: Test description
+    labels:
+      - '@label1'
+      - '@label2'
+      - '@label3'
+  task2:
+    name: Task2
+    description: Test description
+    labels:
+      - '@label2'
+      - '@label3'
+  task3:
+    name: Task3
+    description: Test description
+    labels:
+      - '@label1'
+      - '@label2'

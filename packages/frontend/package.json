@@ -1,0 +1,38 @@
+{
+    "name": "f09-addtypescript",
+    "version": "1.0.0",
+    "description": "",
+    "scripts": {
+      "start": "react-scripts start",
+      "test": "react-scripts test",
+      "build": "react-scripts build"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+      "react": "^16.13.1",
+      "react-dom": "^16.13.1",
+      "react-scripts": "^3.4.1",
+      "styled-components": "^5.1.0"
+    },
+    "devDependencies": {
+      "@types/react": "^16.9.34",
+      "@types/react-dom": "^16.9.6",
+      "@types/styled-components": "^5.1.0",
+      "typescript": "^3.8.3"
+    },
+    "browserslist": {
+      "production": [
+        ">0.2%",
+        "not dead",
+        "not op_mini all"
+      ],
+      "development": [
+        "last 1 chrome version",
+        "last 1 firefox version",
+        "last 1 safari version"
+      ]
+    }
+  }
+  

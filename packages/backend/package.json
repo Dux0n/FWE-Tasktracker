@@ -1,0 +1,51 @@
+{
+  "name": "example",
+  "version": "1.0.0",
+  "description": "An example project",
+  "main": "index.ts",
+  "scripts": {
+    "test": "jest --verbose --coverage --forceExit --runInBand",
+    "test:watch": "jest --watchAll --verbose --runInBand",
+    "test:ci": "jest --verbose --coverage --ci --forceExit --detectOpenHandles --runInBand",
+    "start": "nodemon --legacy-watch",
+    "lint": "tslint --project .",
+    "typeorm": "ts-node ./node_modules/typeorm/cli.js",
+    "fixtures": "npx fixtures ./fixture --config ormconfig.js",
+    "discord": "ts-node discord-bot/discordbot.ts"
+  },
+  "keywords": [
+    "fwe"
+  ],
+  "author": "Vitali",
+  "license": "MIT",
+  "dependencies": {
+    "@types/body-parser": "^1.19.0",
+    "body-parser": "^1.19.0",
+    "discord.js": "^12.4.1",
+    "dotenv-safe": "^8.2.0",
+    "express": "^4.17.1",
+    "jest": "^26.6.3",
+    "mysql": "2.18.1",
+    "node-fetch": "^2.6.1",
+    "ts-jest": "^26.4.4",
+    "ts-node": "^9.0.0",
+    "tsc-watch": "^4.2.9",
+    "typeorm": "0.2.26",
+    "typeorm-fixtures-cli": "^1.8.0"
+  },
+  "devDependencies": {
+    "@types/express": "4.17.8",
+    "@types/jest": "^26.0.15",
+    "@types/supertest": "^2.0.10",
+    "nodemon": "2.0.4",
+    "prettier": "2.1.2",
+    "supertest": "^6.0.1",
+    "tslint": "^5.20.1",
+    "tslint-config-airbnb": "5.11.2",
+    "tslint-config-prettier": "^1.18.0",
+    "tslint-etc": "1.13.7",
+    "tslint-plugin-prettier": "2.3.0",
+    "tsutils": "^3.17.1",
+    "typescript": "^3.9.7"
+  }
+}

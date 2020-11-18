@@ -1,0 +1,11 @@
+entity: Tracking
+items:
+  tracking1:
+    description: Tracking1
+    task: '@task1'
+  tracking2:
+    description: Tracking2
+    task: '@task2'
+  tracking3:
+    description: tracking3
+    task: '@task1'
