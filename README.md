@@ -16,6 +16,10 @@ Sync database schema
 
 * docker-compose exec backend npm run typeorm schema:sync
 
+Load fixtures
+
+* docker-compose exec backend npm run fixtures
+
 ___
 
 ### Interaction with Database

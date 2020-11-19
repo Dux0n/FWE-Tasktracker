@@ -10,7 +10,7 @@
     "start": "nodemon --legacy-watch",
     "lint": "tslint --project .",
     "typeorm": "ts-node ./node_modules/typeorm/cli.js",
-    "fixtures": "npx fixtures ./fixture --config ormconfig.js",
+    "fixtures": "npx fixtures ./src/fixture --config ormconfig.js --sync --require=ts-node/register",
     "discord": "ts-node discord-bot/discordbot.ts"
   },
   "keywords": [
