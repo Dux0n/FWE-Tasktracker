@@ -1,29 +1,25 @@
 import React, { useEffect, useState } from "react";
+import { ThemeProvider } from "styled-components";
+import { GlobalStyle } from "./components/GlobalStyle";
+import { Layout } from "./components/Layout";
 import { StyledMessage, MessageType } from "./components/Message";
+import { DashboardPage } from "./pages/Dashboard/DashboardPage";
 import "./style.css";
+import { theme } from "./theme";
 
+
+
+let i = 0;
 export const App = () => {
-
-  let [count,setCount] = useState(0);
-  const [siteTitle, setSiteTitle] = useState("");
-  useEffect(() =>{
-  window.document.title = siteTitle;
-  });
-  const onButtonClickHandler = () => {
-    console.log("clicked");
-    setCount(count + 1);
-  };
-
-  const onInputChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(e.target.value);
-    setSiteTitle(e.currentTarget.value);
-  };
+  
   return (
-  <div className="container">
-    <p>You have clicked the button {count} times</p>
-    <button onClick={onButtonClickHandler}>Click Me</button>
-    <StyledMessage type={MessageType.INFO}>Hello World</StyledMessage>
-    <input type="text" onChange={onInputChangeHandler}></input>
-  </div>
+    <>
+      <ThemeProvider theme={theme}>
+        <GlobalStyle />
+        <Layout>
+          <DashboardPage />
+        </Layout>
+      </ThemeProvider>
+    </>
   );
 };
