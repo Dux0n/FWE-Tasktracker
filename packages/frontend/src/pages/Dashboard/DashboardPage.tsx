@@ -4,6 +4,7 @@ import { Task, TaskList, TaskItem } from "./components/TaskList";
 import { AddButton } from "./components/AddButton";
 import { AddTaskForm } from "./components/AddTaskForm";
 import { Modal } from "../../components/Modal.";
+import { TaskTable } from "./components/TaskTable";
 
 export const DashboardPage = () => {
   const [tasks, setTask] = useState<Task[]>([]);
@@ -70,11 +71,15 @@ export const DashboardPage = () => {
           />
         </Modal>
       )}
-      <TaskList>
+      <TaskTable/>
+    </div>
+  );
+};
+
+/*
+<TaskList>
         {tasks.map((task) => (
           <TaskItem key={task.taskid} task={task}></TaskItem>
         ))}
       </TaskList>
-    </div>
-  );
-};
+      */
