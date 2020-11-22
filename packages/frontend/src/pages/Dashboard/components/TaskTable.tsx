@@ -50,12 +50,10 @@ export const TaskTable = () => {
     {
         title: "Labels",
         field: "labels[]",
-        render: tasks => (tasks.forEach((task: Task) => {
-            task.labels.forEach((label: Label) => {
-                <div key={label.id}>{label.name}</div>;
-            });
-        })),          
-      },
+        render: (rowData: any ) => (<LabelList>{rowData.labels.map((label: Label) => (
+             <li key={label.id}>{label.name}</li>))}
+          </LabelList>),
+    },
     {
       title: "Total tracked Time",
       field: "timetracked",
@@ -75,3 +73,13 @@ export const TaskTable = () => {
     />
   );
 };
+
+//  {rowData.labels.map((label: Label) =>
+// (rowData: { labels: any[]; }) => rowData.labels ? rowData.labels.join() : "nooo"
+/*
+tasks => (tasks.forEach((task: Task) => {
+            task.labels.forEach((label: Label) => {
+                <div key={label.id}>{label.name}</div>;
+            });
+        })),          
+        */
