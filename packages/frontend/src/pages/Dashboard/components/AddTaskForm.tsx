@@ -2,7 +2,7 @@ import React, { ChangeEvent, useContext, useState } from "react";
 import { Button } from "../../../components/Button";
 import { Input } from "../../../components/Input";
 
-export const AddTaskForm = () => {
+export const AddTaskForm: React.FC<{afterSubmit:() => void}> = ({afterSubmit}) => {
   const [values, setValues] = useState({
     name: "",
     description: "",
@@ -19,6 +19,7 @@ export const AddTaskForm = () => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(values),
     });
+    afterSubmit();
   };
 
   return (

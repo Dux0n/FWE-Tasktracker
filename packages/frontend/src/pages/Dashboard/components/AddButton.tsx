@@ -1,10 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 
-export const AddButton = (
-  props: React.ButtonHTMLAttributes<HTMLButtonElement>
-) => {
-  const StyledButton = styled.button`
+
+const StyledButton = styled.button`
     width: 48px;
     border: 0px;
     height: 48px;
@@ -14,6 +12,11 @@ export const AddButton = (
     border-radius: 50%;
     background-color: ${(props) => props.theme.colors.primary};
   `;
+  
+export const AddButton = (
+  props: React.ButtonHTMLAttributes<HTMLButtonElement>
+) => {
+  
   return (
     <StyledButton {...props}>
       <svg

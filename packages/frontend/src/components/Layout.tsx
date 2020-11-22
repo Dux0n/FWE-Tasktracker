@@ -1,9 +1,8 @@
 import React from "react";
 import styled, { css } from "styled-components/macro";
 
-export const Layout: React.FC = ({ children }) => {
 
-    const headerheight = "85px";
+const headerheight = "85px";
     const footerheight = "50px";
 
     const MaxWidthCSS = css`
@@ -11,7 +10,8 @@ export const Layout: React.FC = ({ children }) => {
     margin: auto;
     `;
 
-    const Header = styled.header`
+
+const Header = styled.header`
     height: ${headerheight}
     width: 100%;
     display: flex;
@@ -36,6 +36,7 @@ export const Layout: React.FC = ({ children }) => {
     color: ${props => props.theme.colors.primary};
   `;
 
+export const Layout: React.FC = ({ children }) => {
 
   return (
     <>

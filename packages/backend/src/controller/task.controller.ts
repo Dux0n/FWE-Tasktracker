@@ -4,7 +4,9 @@ import { Task } from "../entity/Task";
 
 export const getAllTasks = async (req, res) => {
   const taskRepository = await getRepository(Task);
-  const tasks = await taskRepository.find();
+  const tasks = await taskRepository.find({
+    relations: ["labels"],
+  });
   res.send({ data: tasks });
 };
 

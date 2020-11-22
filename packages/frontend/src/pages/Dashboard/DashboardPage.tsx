@@ -7,17 +7,20 @@ import { AddTaskForm } from "./components/AddTaskForm";
 export const DashboardPage = () => {
   const [tasks, setTask] = useState<Task[]>([]);
   const [addTaskVisible, setAddTaskVisible] = useState(false);
+
+  const fetchTask = async function () {
+    const transactionRequest = await fetch("/api/task", {
+      headers: { "content-type": "application/json" },
+    });
+    console.log(transactionRequest);
+    if (transactionRequest.status === 200) {
+      const taskJSON = await transactionRequest.json();
+      setTask(taskJSON.data);
+    }
+  };
+
   useEffect(() => {
-    (async function () {
-      const transactionRequest = await fetch("/api/task", {
-        headers: { "content-type": "application/json"},
-      });
-      console.log(transactionRequest);
-      if (transactionRequest.status === 200) {
-        const taskJSON = await transactionRequest.json();
-        setTask(taskJSON.data);
-      }
-    })();
+    fetchTask();
   }, []);
 
   return (
@@ -47,15 +50,24 @@ export const DashboardPage = () => {
             align-items: top;
           `}
         >
-          <AddButton onClick= {() => {
-              setAddTaskVisible(true)
-          }} />
+          <AddButton
+            onClick={() => {
+              setAddTaskVisible(true);
+            }}
+          />
         </div>
       </div>
-      {addTaskVisible && <AddTaskForm />}
+      {addTaskVisible && (
+        <AddTaskForm
+          afterSubmit={() => {
+            setAddTaskVisible(false);
+            fetchTask();
+          }}
+        />
+      )}
       <TaskList>
         {tasks.map((task) => (
-          <TaskItem task={task}></TaskItem>
+          <TaskItem key={task.taskid} task={task}></TaskItem>
         ))}
       </TaskList>
     </div>
