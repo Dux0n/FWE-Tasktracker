@@ -24,7 +24,6 @@ export const AddTaskForm: React.FC<{afterSubmit:() => void}> = ({afterSubmit}) =
 
   return (
     <>
-      <h3>Add Task Form</h3>
       <form onSubmit={onSubmitForm}>
         <Input
           name="name"

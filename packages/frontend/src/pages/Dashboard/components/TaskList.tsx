@@ -29,7 +29,7 @@ const LabelList = styled.ul`
     margin-right: 0.5rem;
     padding: 0.125rem;
     border-radius: 0.25rem;
-    background-color: ${(props) => props.theme.colors.primary}
+    background-color: ${(props) => props.theme.colors.primary};
     display: block;
     color: #333;
   }

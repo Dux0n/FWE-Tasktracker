@@ -3,6 +3,7 @@ import styled from "styled-components/macro";
 import { Task, TaskList, TaskItem } from "./components/TaskList";
 import { AddButton } from "./components/AddButton";
 import { AddTaskForm } from "./components/AddTaskForm";
+import { Modal } from "../../components/Modal.";
 
 export const DashboardPage = () => {
   const [tasks, setTask] = useState<Task[]>([]);
@@ -58,12 +59,16 @@ export const DashboardPage = () => {
         </div>
       </div>
       {addTaskVisible && (
-        <AddTaskForm
-          afterSubmit={() => {
-            setAddTaskVisible(false);
-            fetchTask();
-          }}
-        />
+        <Modal title = "Add Task" onCancel = {() => {
+          setAddTaskVisible(false);
+        }}>
+          <AddTaskForm
+            afterSubmit={() => {
+              setAddTaskVisible(false);
+              fetchTask();
+            }}
+          />
+        </Modal>
       )}
       <TaskList>
         {tasks.map((task) => (
