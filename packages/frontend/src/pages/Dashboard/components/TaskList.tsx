@@ -118,7 +118,7 @@ export const TaskItem: React.FC<TaskItemProps> = ({
     <TaskItemStyle >
       <TaskHighlight />
       <TaskFlex onClick ={ () => {
-      //console.log(task);
+      console.log(task);
       onClick(task); 
     }}>
         <div>
@@ -134,7 +134,6 @@ export const TaskItem: React.FC<TaskItemProps> = ({
         </LabelList>
       </TaskFlex>
       <AddButton
-              
             />
     </TaskItemStyle>
   );
