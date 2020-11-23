@@ -4,8 +4,16 @@ import { Task, TaskList, TaskItem } from "./components/TaskList";
 import { AddButton } from "./components/AddButton";
 import { AddTaskForm } from "./components/AddTaskForm";
 import { Modal } from "../../components/Modal.";
+import { Layout } from "../../components/Layout";
+import { SelectInput } from "../../components/SelectInput";
+import { DeleteButton } from "./components/DeleteButton";
+import { TaskPage, testfunc } from "../Task/TaskPage"
+import {
+  useHistory,
+} from "react-router-dom";
 
 export const DashboardPage = () => {
+  let history = useHistory();
   const [tasks, setTask] = useState<Task[]>([]);
   const [addTaskVisible, setAddTaskVisible] = useState(false);
 
@@ -25,56 +33,60 @@ export const DashboardPage = () => {
   }, []);
 
   return (
-    <div>
-      <div
-        css={`
-          display: flex;
-          flex-direction: row;
-          width: 100%;
-        `}
-      >
-        <div>
-          <p
-            css={`
-              font-size: 36px;
-              margin: 0;
-            `}
-          >
-            Tasks
-          </p>
-        </div>
+    <Layout>
+      <SelectInput/>
         <div
           css={`
-            flex: 1;
-            justify-content: flex-end;
             display: flex;
-            align-items: top;
+            flex-direction: row;
+            width: 100%;
           `}
         >
-          <AddButton
-            onClick={() => {
-              setAddTaskVisible(true);
-            }}
-          />
+          <div>
+            <p
+              css={`
+                font-size: 36px;
+                margin: 0;
+              `}
+            >
+              Tasks
+            </p>
+          </div>
+          <div
+            css={`
+              flex: 1;
+              justify-content: flex-end;
+              display: flex;
+              align-items: top;
+            `}
+          >
+            <AddButton
+              onClick={() => {
+                setAddTaskVisible(true);
+              }}
+            />
+          </div>
         </div>
-      </div>
-      {addTaskVisible && (
-        <Modal title = "Add Task" onCancel = {() => {
-          setAddTaskVisible(false);
-        }}>
-          <AddTaskForm
-            afterSubmit={() => {
+        {addTaskVisible && (
+          <Modal
+            title="Add Task"
+            onCancel={() => {
               setAddTaskVisible(false);
-              fetchTask();
             }}
-          />
-        </Modal>
-      )}
-      <TaskList>
-        {tasks.map((task) => (
-          <TaskItem key={task.taskid} task={task}></TaskItem>
-        ))}
-      </TaskList>
-    </div>
+          >
+            <AddTaskForm
+              afterSubmit={() => {
+                setAddTaskVisible(false);
+                fetchTask();
+              }}
+            />
+          </Modal>
+        )}
+        <TaskList>
+          {tasks.map((task) => (
+            <TaskItem onClick = {() =>  {testfunc(task); history.push(`/taskpage/${task.taskid}`) }} key={task.taskid} task={task}></TaskItem>
+          ))}
+        </TaskList>
+    </Layout>
   );
 };

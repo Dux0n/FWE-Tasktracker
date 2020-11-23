@@ -6,19 +6,25 @@ import { StyledMessage, MessageType } from "./components/Message";
 import { DashboardPage } from "./pages/Dashboard/DashboardPage";
 import "./style.css";
 import { theme } from "./theme";
+import {
+  BrowserRouter,
+  Switch,
+  Route,
+  Redirect,
+  RouteProps,
+} from "react-router-dom";
+import { TaskPage } from "./pages/Task/TaskPage";
 
 
-
-let i = 0;
 export const App = () => {
-  
   return (
     <>
       <ThemeProvider theme={theme}>
         <GlobalStyle />
-        <Layout>
-          <DashboardPage />
-        </Layout>
+        <BrowserRouter>
+          <Route exact path="/" component={DashboardPage} />
+          <Route path="/taskpage" component={TaskPage} />
+        </BrowserRouter>
       </ThemeProvider>
     </>
   );

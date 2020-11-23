@@ -1,12 +1,22 @@
 import React from "react";
 import styled from "styled-components";
+import { TaskPage } from "../../Task/TaskPage";
+import { AddButton } from "./AddButton";
+import {
+  BrowserRouter,
+  Switch,
+  Route,
+  Redirect,
+  RouteProps,
+} from "react-router-dom";
+
 
 export type Label = {
   id: number;
   name: string;
   createdAt: Date;
   updatedAt: Date;
-  tasks: Task[]
+  tasks: Task[];
 };
 
 export type Task = {
@@ -96,15 +106,21 @@ export const TaskValue = styled.span`
 `;
 export type TaskItemProps = {
   task: Task;
+  onClick?: (task: Task) => void;
 };
 
 export const TaskItem: React.FC<TaskItemProps> = ({
-  task: { name, description, createdAt, labels },
+  task,
+  onClick = () => {return (<Redirect to="/taskpage" />);},
 }) => {
+  const { name, description, createdAt, updatedAt, labels } = task;
   return (
-    <TaskItemStyle>
+    <TaskItemStyle >
       <TaskHighlight />
-      <TaskFlex>
+      <TaskFlex onClick ={ () => {
+      //console.log(task);
+      onClick(task); 
+    }}>
         <div>
           <TaskTitle>{name}</TaskTitle>
           <TaskDescription>{description}</TaskDescription>
@@ -117,6 +133,9 @@ export const TaskItem: React.FC<TaskItemProps> = ({
             })}
         </LabelList>
       </TaskFlex>
+      <AddButton
+              
+            />
     </TaskItemStyle>
   );
 };
