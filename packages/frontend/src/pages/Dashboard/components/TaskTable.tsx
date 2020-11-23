@@ -1,8 +1,19 @@
-import MaterialTable from "material-table";
-import React, { useEffect, useState } from "react";
+import MaterialTable, {Icons} from "material-table";
+import React, { forwardRef, useEffect, useState } from "react";
 import styled from "styled-components/macro";
 import { Label, Task } from "./TaskList";
 
+import AddBox from '@material-ui/icons/AddBox';
+import Edit from '@material-ui/icons/Edit';
+import DeleteOutline from '@material-ui/icons/DeleteOutline';
+import SaveAlt from '@material-ui/icons/SaveAlt';
+
+const tableIcons: Icons = {
+    Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
+    Delete: forwardRef((props, ref) => <DeleteOutline {...props} ref={ref} />),
+    Edit: forwardRef((props, ref) => <Edit {...props} ref={ref} />),
+    Export: forwardRef((props, ref) => <SaveAlt {...props} ref={ref} />),
+  };
 
 const LabelList = styled.ul`
   list-style: none;
@@ -62,9 +73,11 @@ export const TaskTable = () => {
 
   return (
     <MaterialTable
+      icons={tableIcons}
       data={tasks}
       columns={columns}
       options={{
+        
         search: false,
         paging: false,
         filtering: false,
