@@ -15,7 +15,10 @@ export const getTaskById = async (req, res) => {
   const taskRepository = await getRepository(Task);
 
   try {
-    const task = await taskRepository.findOneOrFail(taskId);
+    const task = await taskRepository.findOneOrFail({
+      where: { taskid: taskId },
+      relations: ["labels","trackings"],
+    });
     res.send({
       data: task,
     });

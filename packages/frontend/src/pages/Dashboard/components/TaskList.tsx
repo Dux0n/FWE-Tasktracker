@@ -9,6 +9,7 @@ import {
   Redirect,
   RouteProps,
 } from "react-router-dom";
+import { Tracking } from "../../Task/components/TrackingList";
 
 
 export type Label = {
@@ -26,9 +27,10 @@ export type Task = {
   createdAt: Date;
   updatedAt: Date;
   labels: Label[];
+  trackings: Tracking[];
 };
 
-const LabelList = styled.ul`
+export const LabelList = styled.ul`
   list-style: none;
   flex-grow: 1;
   font-size: 0.8rem;
@@ -45,7 +47,7 @@ const LabelList = styled.ul`
   }
 `;
 
-const TaskFlex = styled.div`
+export const TaskFlex = styled.div`
   display: flex;
   align-items: center;
 `;
@@ -115,10 +117,10 @@ export const TaskItem: React.FC<TaskItemProps> = ({
 }) => {
   const { name, description, createdAt, updatedAt, labels } = task;
   return (
+    <TaskList>
     <TaskItemStyle >
       <TaskHighlight />
       <TaskFlex onClick ={ () => {
-      console.log(task);
       onClick(task); 
     }}>
         <div>
@@ -136,5 +138,6 @@ export const TaskItem: React.FC<TaskItemProps> = ({
       <AddButton
             />
     </TaskItemStyle>
+    </TaskList>
   );
 };

@@ -7,7 +7,7 @@ import { Modal } from "../../components/Modal.";
 import { Layout } from "../../components/Layout";
 import { SelectInput } from "../../components/SelectInput";
 import { DeleteButton } from "./components/DeleteButton";
-import { TaskPage, testfunc } from "../Task/TaskPage"
+import { TaskPage } from "../Task/TaskPage"
 import {
   useHistory,
 } from "react-router-dom";
@@ -34,7 +34,6 @@ export const DashboardPage = () => {
 
   return (
     <Layout>
-      <SelectInput/>
         <div
           css={`
             display: flex;
@@ -84,7 +83,7 @@ export const DashboardPage = () => {
         )}
         <TaskList>
           {tasks.map((task) => (
-            <TaskItem onClick = {() =>  {testfunc(task); history.push(`/taskpage/${task.taskid}`) }} key={task.taskid} task={task}></TaskItem>
+            <TaskItem onClick = {() =>  {history.push(`/taskpage/${task.taskid}`) }} key={task.taskid} task={task}></TaskItem>
           ))}
         </TaskList>
     </Layout>

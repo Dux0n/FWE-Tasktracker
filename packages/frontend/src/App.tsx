@@ -23,7 +23,7 @@ export const App = () => {
         <GlobalStyle />
         <BrowserRouter>
           <Route exact path="/" component={DashboardPage} />
-          <Route path="/taskpage" component={TaskPage} />
+          <Route exact path="/taskpage/:id" component={TaskPage} />
         </BrowserRouter>
       </ThemeProvider>
     </>
