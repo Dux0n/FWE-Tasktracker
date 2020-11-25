@@ -1,16 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components/macro";
 import { TaskPage } from "../../Task/TaskPage";
 import { AddButton } from "../../../components/AddButton";
-import {
-  BrowserRouter,
-  Switch,
-  Route,
-  Redirect,
-  RouteProps,
-} from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import { Tracking } from "../../Task/components/TrackingList";
 import { DeleteButton } from "../../../components/DeleteButton";
+import { NormalButton } from "../../../components/NormalButton";
 
 export type Label = {
   id: number;
@@ -47,6 +42,10 @@ export const LabelList = styled.ul`
   }
 `;
 
+export const StyledTimer = styled.div`
+
+`;
+
 export const TaskFlex = styled.div`
   display: flex;
   align-items: center;
@@ -66,7 +65,7 @@ export const TaskItemStyle = styled.div`
   margin: 0;
   min-height: 3rem;
   position: relative;
-  padding: 0.7rem 2rem;
+  padding: 0.7rem 0.7rem;
   &:hover {
     ${TaskHighlight} {
       display: block;
@@ -126,7 +125,16 @@ export const TaskItem: React.FC<TaskItemProps> = ({
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
     });
+    fetchTask();
   };
+
+  const [state, setState] = useState<string>("Start Timer");
+  let buttonText: string = "Start Timer";
+  const handleClick = () => {
+    console.log("Button clicked...")
+    buttonText = (buttonText == "Start Timer" ? "Stop Timer" : "Start Timer")
+    setState(buttonText);
+  }
   return (
     <TaskList>
       <TaskItemStyle>
@@ -150,18 +158,26 @@ export const TaskItem: React.FC<TaskItemProps> = ({
         </TaskFlex>
         <div
           css={`
-            flex: 1;
-            justify-content: flex-end;
             display: flex;
-            align-items: top;
+            flex-direction: row;
+            width: 100%;
           `}
         >
-          <DeleteButton
-            onClick={() => {
-              deleteTask(task);
-              fetchTask();
-            }}
-          />
+          <NormalButton onClick={() => {handleClick();}}>{state}</NormalButton>
+          <div
+            css={`
+              flex: 1;
+              justify-content: flex-end;
+              display: flex;
+              align-items: top;
+            `}
+          >
+            <DeleteButton
+              onClick={() => {
+                deleteTask(task);
+              }}
+            />
+          </div>
         </div>
       </TaskItemStyle>
     </TaskList>

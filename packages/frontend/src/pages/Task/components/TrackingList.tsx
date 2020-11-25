@@ -9,7 +9,7 @@ import {
 } from "react-router-dom";
 import { DeleteButton } from "../../../components/DeleteButton";
 import { EditButton } from "../../../components/EditButton";
-import { Modal } from "../../../components/Modal.";
+import { Modal } from "../../../components/Modal";
 import { EditTrackingForm } from "./EditTrackingForm";
 
 export type Tracking = {
@@ -93,6 +93,7 @@ export const TrackingItem: React.FC<TrackingItemProps> = ({ tracking, fetchTask 
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
     });
+    fetchTask();
   };
   return (
     <TrackingList>
@@ -117,7 +118,6 @@ export const TrackingItem: React.FC<TrackingItemProps> = ({ tracking, fetchTask 
               onClick={() => {
                 setEditTrackingVisible(true);
                 setEditTracking(tracking);
-                
               }}
             />
             {editTrackingVisible && (

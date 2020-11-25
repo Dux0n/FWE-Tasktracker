@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components/macro";
-import { Task, TaskList, TaskItem } from "./components/TaskList";
+import { Task, TaskList, TaskItem, StyledTimer } from "./components/TaskList";
 import { AddButton } from "../../components/AddButton";
 import { AddTaskForm } from "./components/AddTaskForm";
-import { Modal } from "../../components/Modal.";
+import { Modal } from "../../components/Modal";
 import { Layout } from "../../components/Layout";
 import { SelectInput } from "../../components/SelectInput";
 import { DeleteButton } from "../../components/DeleteButton";
@@ -91,6 +91,7 @@ export const DashboardPage = () => {
           ></TaskItem>
         ))}
       </TaskList>
+      <StyledTimer> Test </StyledTimer>
     </Layout>
   );
 };

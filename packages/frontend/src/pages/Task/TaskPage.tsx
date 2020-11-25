@@ -20,7 +20,7 @@ import {
   TrackingItem,
   Tracking,
 } from "./components/TrackingList";
-import { Modal } from "../../components/Modal.";
+import { Modal } from "../../components/Modal";
 import { EditTaskForm } from "./components/EditTaskFrom";
 import { AddButton } from "../../components/AddButton";
 import { AddTrackingForm } from "./components/AddTrackingForm";
