@@ -87,6 +87,7 @@ export const DashboardPage = () => {
             }}
             key={task.taskid}
             task={task}
+            fetchTask={fetchTask}
           ></TaskItem>
         ))}
       </TaskList>

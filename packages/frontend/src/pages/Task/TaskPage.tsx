@@ -71,6 +71,7 @@ export const TaskPage = () => {
             onClick={() => {
               setEditTaskVisible(true);
               setEditTask(task!);
+              fetchTask();
             }}
           />
         </div>
@@ -161,6 +162,7 @@ export const TaskPage = () => {
           <TrackingItem
             key={tracking.trackingid}
             tracking={tracking}
+            fetchTask={fetchTask}
           ></TrackingItem>
         ))}
       </TrackingList>

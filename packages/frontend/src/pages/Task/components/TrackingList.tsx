@@ -81,9 +81,10 @@ export const TrackingValue = styled.span`
 `;
 export type TrackingItemProps = {
   tracking: Tracking;
+  fetchTask: () => void;
 };
 
-export const TrackingItem: React.FC<TrackingItemProps> = ({ tracking }) => {
+export const TrackingItem: React.FC<TrackingItemProps> = ({ tracking, fetchTask }) => {
   const { trackingid, description, createdAt, updatedAt, task } = tracking;
   const [editTrackingVisible, setEditTrackingVisible] = useState(false);
   const [editTracking, setEditTracking] = useState<Tracking | null>(null);
@@ -116,6 +117,7 @@ export const TrackingItem: React.FC<TrackingItemProps> = ({ tracking }) => {
               onClick={() => {
                 setEditTrackingVisible(true);
                 setEditTracking(tracking);
+                
               }}
             />
             {editTrackingVisible && (
@@ -128,6 +130,7 @@ export const TrackingItem: React.FC<TrackingItemProps> = ({ tracking }) => {
           <EditTrackingForm
             afterSubmit={() => {
               setEditTrackingVisible(false);
+              fetchTask();
             }}
             tracking={editTracking!}
           />

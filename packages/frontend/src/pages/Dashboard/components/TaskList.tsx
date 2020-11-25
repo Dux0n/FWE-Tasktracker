@@ -109,6 +109,7 @@ export const TaskValue = styled.span`
 export type TaskItemProps = {
   task: Task;
   onClick?: (task: Task) => void;
+  fetchTask: () => void;
 };
 
 export const TaskItem: React.FC<TaskItemProps> = ({
@@ -116,6 +117,7 @@ export const TaskItem: React.FC<TaskItemProps> = ({
   onClick = () => {
     return <Redirect to="/taskpage" />;
   },
+  fetchTask,
 }) => {
   const { name, description, createdAt, updatedAt, labels } = task;
 
@@ -157,6 +159,7 @@ export const TaskItem: React.FC<TaskItemProps> = ({
           <DeleteButton
             onClick={() => {
               deleteTask(task);
+              fetchTask();
             }}
           />
         </div>
