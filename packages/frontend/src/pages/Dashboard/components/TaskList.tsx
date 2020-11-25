@@ -1,7 +1,7 @@
 import React from "react";
-import styled from "styled-components";
+import styled from "styled-components/macro";
 import { TaskPage } from "../../Task/TaskPage";
-import { AddButton } from "./AddButton";
+import { AddButton } from "../../../components/AddButton";
 import {
   BrowserRouter,
   Switch,
@@ -10,7 +10,7 @@ import {
   RouteProps,
 } from "react-router-dom";
 import { Tracking } from "../../Task/components/TrackingList";
-
+import { DeleteButton } from "../../../components/DeleteButton";
 
 export type Label = {
   id: number;
@@ -113,31 +113,54 @@ export type TaskItemProps = {
 
 export const TaskItem: React.FC<TaskItemProps> = ({
   task,
-  onClick = () => {return (<Redirect to="/taskpage" />);},
+  onClick = () => {
+    return <Redirect to="/taskpage" />;
+  },
 }) => {
   const { name, description, createdAt, updatedAt, labels } = task;
+
+  const deleteTask = async function (task: Task) {
+    await fetch(`/api/task/${task.taskid}`, {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+    });
+  };
   return (
     <TaskList>
-    <TaskItemStyle >
-      <TaskHighlight />
-      <TaskFlex onClick ={ () => {
-      onClick(task); 
-    }}>
-        <div>
-          <TaskTitle>{name}</TaskTitle>
-          <TaskDescription>{description}</TaskDescription>
-          <TaskDate>{createdAt && createdAt.toLocaleString()}</TaskDate>
+      <TaskItemStyle>
+        <TaskHighlight />
+        <TaskFlex
+          onClick={() => {
+            onClick(task);
+          }}
+        >
+          <div>
+            <TaskTitle>{name}</TaskTitle>
+            <TaskDescription>{description}</TaskDescription>
+            <TaskDate>{createdAt && createdAt.toLocaleString()}</TaskDate>
+          </div>
+          <LabelList>
+            {labels &&
+              labels.map((label: Label) => {
+                return <li key={label.id}>{label.name}</li>;
+              })}
+          </LabelList>
+        </TaskFlex>
+        <div
+          css={`
+            flex: 1;
+            justify-content: flex-end;
+            display: flex;
+            align-items: top;
+          `}
+        >
+          <DeleteButton
+            onClick={() => {
+              deleteTask(task);
+            }}
+          />
         </div>
-        <LabelList>
-          {labels &&
-            labels.map((label: Label) => {
-              return <li key={label.id}>{label.name}</li>;
-            })}
-        </LabelList>
-      </TaskFlex>
-      <AddButton
-            />
-    </TaskItemStyle>
+      </TaskItemStyle>
     </TaskList>
   );
 };
