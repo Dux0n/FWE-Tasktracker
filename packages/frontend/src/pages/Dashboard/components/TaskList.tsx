@@ -6,6 +6,7 @@ import { Redirect } from "react-router-dom";
 import { Tracking } from "../../Task/components/TrackingList";
 import { DeleteButton } from "../../../components/DeleteButton";
 import { NormalButton } from "../../../components/NormalButton";
+import { StyledTop, StyledTopButton } from "../DashboardPage";
 
 export type Label = {
   labelid: number;
@@ -40,10 +41,6 @@ export const LabelList = styled.ul`
     display: block;
     color: #333;
   }
-`;
-
-export const StyledTimer = styled.div`
-
 `;
 
 export const TaskFlex = styled.div`
@@ -131,10 +128,10 @@ export const TaskItem: React.FC<TaskItemProps> = ({
   const [state, setState] = useState<string>("Start Timer");
   let buttonText: string = "Start Timer";
   const handleClick = () => {
-    console.log("Button clicked...")
-    buttonText = (buttonText == "Start Timer" ? "Stop Timer" : "Start Timer")
+    console.log("Button clicked...");
+    buttonText = buttonText == "Start Timer" ? "Stop Timer" : "Start Timer";
     setState(buttonText);
-  }
+  };
   return (
     <TaskList>
       <TaskItemStyle>
@@ -156,29 +153,22 @@ export const TaskItem: React.FC<TaskItemProps> = ({
               })}
           </LabelList>
         </TaskFlex>
-        <div
-          css={`
-            display: flex;
-            flex-direction: row;
-            width: 100%;
-          `}
-        >
-          <NormalButton onClick={() => {handleClick();}}>{state}</NormalButton>
-          <div
-            css={`
-              flex: 1;
-              justify-content: flex-end;
-              display: flex;
-              align-items: top;
-            `}
+        <StyledTop>
+          <NormalButton
+            onClick={() => {
+              handleClick();
+            }}
           >
+            {state}
+          </NormalButton>
+          <StyledTopButton>
             <DeleteButton
               onClick={() => {
                 deleteTask(task);
               }}
             />
-          </div>
-        </div>
+          </StyledTopButton>
+        </StyledTop>
       </TaskItemStyle>
     </TaskList>
   );

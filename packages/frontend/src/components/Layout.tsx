@@ -53,13 +53,10 @@ export const Layout: React.FC = ({ children }) => {
               text-decoration: underline overline;
             `}
           >
-            AWD
+            TimeTracker
           </span>
-          20
+          2020
         </div>
-        <NavigationList>
-          <NavigationItem>Home</NavigationItem>
-        </NavigationList>
       </Header>
       <Main>{children}</Main>
       <Footer>© 2020 AWD Lecture</Footer>

@@ -3,11 +3,31 @@ import { Label } from "../entity/Label";
 import { Task } from "../entity/Task";
 
 export const getAllTasks = async (req, res) => {
+  
+   const { taskfilter, labelfilter, descriptionfilter } = req.query;
+  
+   const lfilter = String(labelfilter).toString().split(",")  as string[];
+  const tfilter = String(taskfilter).toString().split(",") as string[];
+  const dfilter = String(descriptionfilter).toString().split(",") as string[];
   const taskRepository = await getRepository(Task);
   const tasks = await taskRepository.find({
     relations: ["labels"],
   });
-  res.send({ data: tasks });
+  let results = [...tasks];
+
+  
+
+  if(taskfilter){
+    results = results.filter(r => tfilter.includes(r.name));
+  }
+  if(labelfilter){
+    results = results.filter(r => r.labels.some(l =>  lfilter.includes(l.name)));
+    console.log(results);
+  }
+  if(descriptionfilter){
+    results = results.filter(r => dfilter.includes(r.description));
+  }
+  res.send({ data: results });
 };
 
 export const getTaskById = async (req, res) => {

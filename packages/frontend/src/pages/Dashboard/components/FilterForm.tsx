@@ -2,24 +2,20 @@ import React, { ChangeEvent, useContext, useState } from "react";
 import { Button } from "../../../components/Button";
 import { Input } from "../../../components/Input";
 
-export const AddTaskForm: React.FC<{afterSubmit:() => void}> = ({afterSubmit}) => {
+export const FilterForm: React.FC<{afterSubmit:() => void, filter:any , setFilter:any }> = ({afterSubmit, filter, setFilter}) => {
   const [values, setValues] = useState({
-    name: "",
-    description: "",
-    labels: "",
+    name:"",
+    description:"",
+    labelname: "",
   });
   const [formError, setFormError] = useState<string | null>(null);
   const fieldDidChange = (e: ChangeEvent<HTMLInputElement>) => {
     setValues({ ...values, [e.target.name]: e.target.value });
   };
+
   const onSubmitForm = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(values.labels.split(","));
-    await fetch("/api/task", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({"name":values.name, "description":values.description, "labels":values.labels.split(",")}),
-    });
+    setFilter(values);
     afterSubmit();
   };
 
@@ -31,23 +27,23 @@ export const AddTaskForm: React.FC<{afterSubmit:() => void}> = ({afterSubmit}) =
           type="text"
           label="Name"
           onChange={fieldDidChange}
-          required
+          
         />
         <Input
           name="description"
           type="text"
           label="Description"
           onChange={fieldDidChange}
-          required
+          
         />
         <Input
-          name="labels"
+          name="labelname"
           type="text"
-          label="Input Label Id"
+          label="Label"
           onChange={fieldDidChange}
-          required
+          
         />
-        <Button type="submit">Add Task</Button>
+        <Button type="submit">Filter Task</Button>
       </form>
     </>
   );

@@ -26,32 +26,45 @@ import { AddButton } from "../../components/AddButton";
 import { AddTrackingForm } from "./components/AddTrackingForm";
 import { NormalButton } from "../../components/NormalButton";
 import { DeleteLabelForm } from "../Task/components/DeleteLabelsFromTaskForm";
+import { StyledP, StyledTop, StyledTopButton } from "../Dashboard/DashboardPage";
 
 export const TaskPage = () => {
   let { id }: any = useParams();
   const [task, setTask] = useState<Task>();
+  const [labels, setLabels] = useState<Label[]>([]);
   const [editTaskVisible, setEditTaskVisible] = useState(false);
   const [editTask, setEditTask] = useState<Task | null>(null);
   const [addTrackingVisible, setAddTrackingVisible] = useState(false);
-  const [deleteLabelFromTask, setDeleteLabelFromTask] = useState<Task | null>(
-    null
-  );
+  const [deleteLabelFromTask, setDeleteLabelFromTask] = useState<Task | null>(null);
+  const [showLabels, setShowLabels] = useState(false);
   const [deleteLabelFromTaskVisible, setDeleteLabelFromTaskVisible] = useState(
     false
   );
   const fetchTask = async function () {
-    const transactionRequest = await fetch(`/api/task/${id}`, {
+    const taskRequest = await fetch(`/api/task/${id}`, {
       headers: { "content-type": "application/json" },
     });
-    console.log(transactionRequest);
-    if (transactionRequest.status === 200) {
-      const taskJSON = await transactionRequest.json();
+    console.log(taskRequest);
+    if (taskRequest.status === 200) {
+      const taskJSON = await taskRequest.json();
       setTask(taskJSON.data);
     }
   };
 
+  const fetchLabels = async function () {
+    const labelRequest = await fetch(`/api/label`,{
+    headers: { "content-type": "application/json" },
+  });
+  console.log(labelRequest);
+  if (labelRequest.status === 200) {
+    const taskJSON = await labelRequest.json();
+    setLabels(taskJSON.data);
+  }
+  }
+
   useEffect(() => {
     fetchTask();
+    fetchLabels();
   }, []);
   let createdAt = task?.createdAt as Date;
   let updatedAt = task?.updatedAt as Date;
@@ -60,21 +73,8 @@ export const TaskPage = () => {
   //{task?.createdAt && task?.createdAt.toLocaleString()}
   return (
     <Layout>
-      <div
-        css={`
-          display: flex;
-          flex-direction: row;
-          width: 100%;
-        `}
-      >
-        <div
-          css={`
-            flex: 1;
-            justify-content: flex-end;
-            display: flex;
-            align-items: top;
-          `}
-        >
+      <StyledTop>
+        <StyledTopButton>
           <EditButton
             onClick={() => {
               setEditTaskVisible(true);
@@ -82,7 +82,28 @@ export const TaskPage = () => {
               fetchTask();
             }}
           />
-        </div>
+          <NormalButton
+            onClick={() => {
+              {
+                showLabels == false
+                  ? setShowLabels(true)
+                  : setShowLabels(false);
+              }
+            }}
+          >
+            Show Labels
+          </NormalButton>
+        </StyledTopButton>
+      </StyledTop>
+      <div>
+        {showLabels ? (
+          <LabelList>
+          {labels &&
+            labels.map((label: Label) => {
+              return <li key={label.labelid}>{label.name}</li>;
+            })}
+        </LabelList>
+        ) : null}
       </div>
       {editTaskVisible && (
         <Modal
@@ -141,39 +162,20 @@ export const TaskPage = () => {
           )}
         </TaskFlex>
       </TaskItemStyle>
-      <div
-        css={`
-          display: flex;
-          flex-direction: row;
-          width: 100%;
-          padding-top: 3rem;
-        `}
-      >
+      <StyledTopButton>
         <div>
-          <p
-            css={`
-              font-size: 24px;
-              margin: 0;
-            `}
-          >
+          <StyledP>
             Tracking
-          </p>
+          </StyledP>
         </div>
-        <div
-          css={`
-            flex: 1;
-            justify-content: flex-end;
-            display: flex;
-            align-items: top;
-          `}
-        >
+        <StyledTopButton>
           <AddButton
             onClick={() => {
               setAddTrackingVisible(true);
             }}
           />
-        </div>
-      </div>
+        </StyledTopButton>
+      </StyledTopButton>
       {addTrackingVisible && (
         <Modal
           title="Add Tracking"

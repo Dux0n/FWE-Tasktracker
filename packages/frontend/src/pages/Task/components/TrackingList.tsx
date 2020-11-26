@@ -11,6 +11,7 @@ import { DeleteButton } from "../../../components/DeleteButton";
 import { EditButton } from "../../../components/EditButton";
 import { Modal } from "../../../components/Modal";
 import { EditTrackingForm } from "./EditTrackingForm";
+import { StyledTopButton } from "../../Dashboard/DashboardPage";
 
 export type Tracking = {
   trackingid: number;
@@ -84,7 +85,10 @@ export type TrackingItemProps = {
   fetchTask: () => void;
 };
 
-export const TrackingItem: React.FC<TrackingItemProps> = ({ tracking, fetchTask }) => {
+export const TrackingItem: React.FC<TrackingItemProps> = ({
+  tracking,
+  fetchTask,
+}) => {
   const { trackingid, description, createdAt, updatedAt, task } = tracking;
   const [editTrackingVisible, setEditTrackingVisible] = useState(false);
   const [editTracking, setEditTracking] = useState<Tracking | null>(null);
@@ -106,14 +110,7 @@ export const TrackingItem: React.FC<TrackingItemProps> = ({ tracking, fetchTask 
               {createdAt && createdAt.toLocaleString()}
             </TrackingDate>
           </div>
-          <div
-            css={`
-              flex: 1;
-              justify-content: flex-end;
-              display: flex;
-              align-items: top;
-            `}
-          >
+          <StyledTopButton>
             <EditButton
               onClick={() => {
                 setEditTrackingVisible(true);
@@ -121,27 +118,27 @@ export const TrackingItem: React.FC<TrackingItemProps> = ({ tracking, fetchTask 
               }}
             />
             {editTrackingVisible && (
-        <Modal
-          title="Edit Task"
-          onCancel={() => {
-            setEditTrackingVisible(false);
-          }}
-        >
-          <EditTrackingForm
-            afterSubmit={() => {
-              setEditTrackingVisible(false);
-              fetchTask();
-            }}
-            tracking={editTracking!}
-          />
-        </Modal>
-      )}
+              <Modal
+                title="Edit Task"
+                onCancel={() => {
+                  setEditTrackingVisible(false);
+                }}
+              >
+                <EditTrackingForm
+                  afterSubmit={() => {
+                    setEditTrackingVisible(false);
+                    fetchTask();
+                  }}
+                  tracking={editTracking!}
+                />
+              </Modal>
+            )}
             <DeleteButton
               onClick={() => {
                 deleteTracking(trackingid);
               }}
             />
-          </div>
+          </StyledTopButton>
         </TrackingFlex>
       </TrackingItemStyle>
     </TrackingList>
