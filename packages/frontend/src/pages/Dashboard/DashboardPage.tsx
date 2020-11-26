@@ -9,6 +9,7 @@ import { SelectInput } from "../../components/SelectInput";
 import { DeleteButton } from "../../components/DeleteButton";
 import { TaskPage } from "../Task/TaskPage";
 import { useHistory } from "react-router-dom";
+import { NormalButton } from "../../components/NormalButton";
 
 export const DashboardPage = () => {
   let history = useHistory();
@@ -62,6 +63,7 @@ export const DashboardPage = () => {
               setAddTaskVisible(true);
             }}
           />
+          <NormalButton>Create Label</NormalButton>
         </div>
       </div>
       {addTaskVisible && (

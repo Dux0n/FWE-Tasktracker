@@ -25,7 +25,7 @@ export const getTaskById = async (req, res) => {
     return;
   } catch (error) {
     res.status(404).send({
-      status: "not_found",
+      status: "not_found" +error,
     });
   }
 };
@@ -55,14 +55,25 @@ export const deleteTaskById = async (req, res) => {
 
 export const updateTaskById = async (req, res) => {
   const taskId = req.params.taskId;
-  const { name, description } = req.body;
+  const { name, description, labels } = req.body;
   const taskRepository = await getRepository(Task);
+  const labelRepository = await getRepository(Label);
 
   try {
-    let task = await taskRepository.findOneOrFail(taskId);
+    let task = await taskRepository.findOneOrFail({
+      where: { taskid: taskId },
+      relations: ["labels"],
+    });
     task.name = name;
     task.description = description;
+    
+    if(labels !== null){
+    for (let index = 0; index < Object.keys(labels).length; index += 1) {
+      const element = labels[index];
 
+      await addLabelToTaksIfExists(labelRepository, element, task, res);
+    }
+  }
     task = await taskRepository.save(task);
 
     res.send({
@@ -70,13 +81,13 @@ export const updateTaskById = async (req, res) => {
     });
   } catch (error) {
     res.status(404).send({
-      status: "not_found",
+      status: "not_found" + error,
     });
   }
 };
 
 export const createTask = async (req, res) => {
-  const { name, description } = req.body;
+  const { name, description, labels } = req.body;
   if (!name) {
     res.status(400).send({
       status: "Invalid Syntax",
@@ -86,6 +97,16 @@ export const createTask = async (req, res) => {
   const task = new Task();
   task.name = name;
   task.description = description;
+  task.labels = [];
+  const labelRepository = await getRepository(Label);
+
+  if(labels !== null){
+    for (let index = 0; index < Object.keys(labels).length; index += 1) {
+      const element = labels[index];
+
+      await addLabelToTaksIfExists(labelRepository, element, task, res);
+    }
+  }
 
   const taskRepository = await getRepository(Task);
   const createdTask = await taskRepository.save(task);

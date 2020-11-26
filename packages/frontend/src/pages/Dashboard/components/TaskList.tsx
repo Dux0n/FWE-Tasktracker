@@ -8,7 +8,7 @@ import { DeleteButton } from "../../../components/DeleteButton";
 import { NormalButton } from "../../../components/NormalButton";
 
 export type Label = {
-  id: number;
+  labelid: number;
   name: string;
   createdAt: Date;
   updatedAt: Date;
@@ -152,7 +152,7 @@ export const TaskItem: React.FC<TaskItemProps> = ({
           <LabelList>
             {labels &&
               labels.map((label: Label) => {
-                return <li key={label.id}>{label.name}</li>;
+                return <li key={label.labelid}>{label.name}</li>;
               })}
           </LabelList>
         </TaskFlex>

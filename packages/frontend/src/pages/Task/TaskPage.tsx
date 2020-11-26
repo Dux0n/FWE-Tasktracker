@@ -21,9 +21,11 @@ import {
   Tracking,
 } from "./components/TrackingList";
 import { Modal } from "../../components/Modal";
-import { EditTaskForm } from "./components/EditTaskFrom";
+import { EditTaskForm } from "./components/EditTaskForm";
 import { AddButton } from "../../components/AddButton";
 import { AddTrackingForm } from "./components/AddTrackingForm";
+import { NormalButton } from "../../components/NormalButton";
+import { DeleteLabelForm } from "../Task/components/DeleteLabelsFromTaskForm";
 
 export const TaskPage = () => {
   let { id }: any = useParams();
@@ -31,6 +33,12 @@ export const TaskPage = () => {
   const [editTaskVisible, setEditTaskVisible] = useState(false);
   const [editTask, setEditTask] = useState<Task | null>(null);
   const [addTrackingVisible, setAddTrackingVisible] = useState(false);
+  const [deleteLabelFromTask, setDeleteLabelFromTask] = useState<Task | null>(
+    null
+  );
+  const [deleteLabelFromTaskVisible, setDeleteLabelFromTaskVisible] = useState(
+    false
+  );
   const fetchTask = async function () {
     const transactionRequest = await fetch(`/api/task/${id}`, {
       headers: { "content-type": "application/json" },
@@ -102,9 +110,35 @@ export const TaskPage = () => {
           <LabelList>
             {task?.labels &&
               task?.labels.map((label: Label) => {
-                return <li key={label.id}>{label.name}</li>;
+                return <li key={label.labelid}>{label.name}</li>;
               })}
           </LabelList>
+
+          <NormalButton
+            onClick={() => {
+              setDeleteLabelFromTaskVisible(true);
+              setDeleteLabelFromTask(task!);
+              fetchTask();
+            }}
+          >
+            Delete Labels
+          </NormalButton>
+          {deleteLabelFromTaskVisible && (
+            <Modal
+              title="Delete Label"
+              onCancel={() => {
+                setDeleteLabelFromTaskVisible(false);
+              }}
+            >
+              <DeleteLabelForm
+                afterSubmit={() => {
+                  setDeleteLabelFromTaskVisible(false);
+                  fetchTask();
+                }}
+                task={deleteLabelFromTask!}
+              />
+            </Modal>
+          )}
         </TaskFlex>
       </TaskItemStyle>
       <div
@@ -133,7 +167,6 @@ export const TaskPage = () => {
             align-items: top;
           `}
         >
-
           <AddButton
             onClick={() => {
               setAddTrackingVisible(true);

@@ -8,13 +8,9 @@ export const NormalButton = styled.button`
   line-height: 22.4px;
   padding: 6.2px 12.4px;
   text-align: center;
-  width: 10%;
-  font-weight: 500;
+  width: 7%;
+  font-weight: 70;
   transition-duration: 250ms;
   outline: 0;
-  &:hover,
-  &:focus {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-  }
+  
 `;
