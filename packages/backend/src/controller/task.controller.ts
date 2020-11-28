@@ -20,13 +20,15 @@ export const getAllTasks = async (req, res) => {
 
   if(taskfilter){
     results = results.filter(r => tfilter.includes(r.name));
+    console.log(taskfilter);
   }
   if(labelfilter){
     results = results.filter(r => r.labels.some(l =>  lfilter.includes(l.name)));
-    console.log(results);
+    console.log(labelfilter);
   }
   if(descriptionfilter){
     results = results.filter(r => dfilter.includes(r.description));
+    console.log(descriptionfilter);
   }
   res.send({ data: results });
 };

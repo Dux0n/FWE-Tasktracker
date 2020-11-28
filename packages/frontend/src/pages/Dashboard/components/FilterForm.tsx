@@ -4,8 +4,8 @@ import { Input } from "../../../components/Input";
 
 export const FilterForm: React.FC<{afterSubmit:() => void, filter:any , setFilter:any }> = ({afterSubmit, filter, setFilter}) => {
   const [values, setValues] = useState({
-    name:"",
-    description:"",
+    taskname:"",
+    taskdescription:"",
     labelname: "",
   });
   const [formError, setFormError] = useState<string | null>(null);
@@ -15,6 +15,7 @@ export const FilterForm: React.FC<{afterSubmit:() => void, filter:any , setFilte
 
   const onSubmitForm = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    console.log(values);
     setFilter(values);
     afterSubmit();
   };
@@ -23,14 +24,14 @@ export const FilterForm: React.FC<{afterSubmit:() => void, filter:any , setFilte
     <>
       <form onSubmit={onSubmitForm}>
         <Input
-          name="name"
+          name="taskname"
           type="text"
           label="Name"
           onChange={fieldDidChange}
           
         />
         <Input
-          name="description"
+          name="taskdescription"
           type="text"
           label="Description"
           onChange={fieldDidChange}

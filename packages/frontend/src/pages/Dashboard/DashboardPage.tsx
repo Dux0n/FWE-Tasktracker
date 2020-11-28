@@ -20,7 +20,6 @@ import { CreateLabelForm } from "./components/CreateLabelForm";
 import { DeleteLabelForm } from "./components/DeleteLabelForm";
 import { FilterForm } from "./components/FilterForm";
 import { StopButton } from "../../components/StopButton";
-import { InputTracking } from "../../components/InputTracking";
 import { TimeTrackingForm } from "./components/TimeTrackingForm";
 
 const StyledTimer = styled.div`
@@ -84,8 +83,7 @@ export const DashboardPage = () => {
   });
 
   const fetchTask = async function () {
-    const taskRequest = await fetch(
-      `/api/task?taskfilter=${filter.taskname}&descriptionfilter=${filter.taskdescription}&labelfilter=${filter.labelname}`,
+    const taskRequest = await fetch(`/api/task?taskfilter=${filter.taskname}&descriptionfilter=${filter.taskdescription}&labelfilter=${filter.labelname}`,
       {
         headers: { "content-type": "application/json" },
       }
@@ -128,8 +126,9 @@ export const DashboardPage = () => {
   const hours = `0${Math.floor(time / 3600)}`.slice(-2);
 
   useEffect(() => {
-    fetchTask();
     fetchLabels();
+    fetchTask();
+    
   }, [filter]);
 
   return (

@@ -154,16 +154,16 @@ export const TaskItem: React.FC<TaskItemProps> = ({
     setState(buttonText);
     setTrackerTask(task.name);
     
-    if (timeTrackerState == false && onPauseResumeState === "Pause") {
+    if (timeTrackerState === false && onPauseResumeState === "Pause") {
       setTimeTrackerState(true);
       setTime(0);
       console.log(timeTrackerState,1);
-    } else if(timeTrackerState == false && onPauseResumeState === "Resume"){
+    } else if(timeTrackerState === false && onPauseResumeState === "Resume"){
       setTimeTrackerState(false);
       setTime(0);
       setOnPauseResumeState("Pause");
       console.log(timeTrackerState, 2);
-    } else if(timeTrackerState == true && onPauseResumeState === "Pause"){
+    } else if(timeTrackerState === true && onPauseResumeState === "Pause"){
       setTimeTrackerState(false);
       setTime(0);
       setOnPauseResumeState("Pause");
