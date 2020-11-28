@@ -13,8 +13,6 @@ export const DeleteLabelForm: React.FC<{
   
   const [values, setValues] = useState(task);
   
-  //
-  //console.log(ids);
   
   const fieldDidChange = (e: ChangeEvent<HTMLInputElement>) => {
     setValues({ ...values, [e.target.name]: e.target.value });
@@ -38,7 +36,8 @@ export const DeleteLabelForm: React.FC<{
         <Input
           name="labels"
           type="text"
-          label="Labels" 
+          label="Labels"
+          value={values.labels.map((label:Label)=>{return label.labelid.toString()})}
           onChange={fieldDidChange}
           required
         />

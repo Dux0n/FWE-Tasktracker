@@ -9,10 +9,10 @@ export class Tracking{
     @Column({nullable:false})
     description: string;
 
-    @Column({type:"time",default:0})
+    @Column({type:"timestamp", default: () => 'CURRENT_TIMESTAMP'})
     timestart: string;
 
-    @Column({type:"time",default:0})
+    @Column({type:"timestamp", default: () => 'CURRENT_TIMESTAMP'})
     timeend: string;
     
     @CreateDateColumn()

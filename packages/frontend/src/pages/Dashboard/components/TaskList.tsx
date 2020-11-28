@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components/macro";
 import { TaskPage } from "../../Task/TaskPage";
 import { AddButton } from "../../../components/AddButton";
@@ -106,6 +106,17 @@ export type TaskItemProps = {
   task: Task;
   onClick?: (task: Task) => void;
   fetchTask: () => void;
+  showTracker: any;
+  setShowTracker: any;
+  setTrackerTask: any;
+  timeTrackerState: any;
+  setTimeTrackerState: any;
+  time: any;
+  setTime: any;
+  setTimeStart: any;
+  setTimeEnd: any;
+  onPauseResumeState:any;
+  setOnPauseResumeState: any;
 };
 
 export const TaskItem: React.FC<TaskItemProps> = ({
@@ -114,6 +125,17 @@ export const TaskItem: React.FC<TaskItemProps> = ({
     return <Redirect to="/taskpage" />;
   },
   fetchTask,
+  showTracker,
+  setShowTracker,
+  setTrackerTask,
+  timeTrackerState,
+  setTimeTrackerState,
+  time,
+  setTime,
+  setTimeStart,
+  setTimeEnd,
+  onPauseResumeState,
+  setOnPauseResumeState,
 }) => {
   const { name, description, createdAt, updatedAt, labels } = task;
 
@@ -127,11 +149,39 @@ export const TaskItem: React.FC<TaskItemProps> = ({
 
   const [state, setState] = useState<string>("Start Timer");
   let buttonText: string = "Start Timer";
-  const handleClick = () => {
-    console.log("Button clicked...");
-    buttonText = buttonText == "Start Timer" ? "Stop Timer" : "Start Timer";
+  const onStartHandle = () => {
+    buttonText = state === "Start Timer" ? "Stop Timer" : "Start Timer";
     setState(buttonText);
+    setTrackerTask(task.name);
+    
+    if (timeTrackerState == false && onPauseResumeState === "Pause") {
+      setTimeTrackerState(true);
+      setTime(0);
+      console.log(timeTrackerState,1);
+    } else if(timeTrackerState == false && onPauseResumeState === "Resume"){
+      setTimeTrackerState(false);
+      setTime(0);
+      setOnPauseResumeState("Pause");
+      console.log(timeTrackerState, 2);
+    } else if(timeTrackerState == true && onPauseResumeState === "Pause"){
+      setTimeTrackerState(false);
+      setTime(0);
+      setOnPauseResumeState("Pause");
+      console.log(timeTrackerState, 3);
+    }
+    showTracker == false ? setShowTracker(true) : setShowTracker(false);
   };
+
+  useEffect(() => {
+    if (timeTrackerState) {
+      const timer = setTimeout(() => {
+        console.log(time);
+        setTime(time + 1);
+        //console.log(time);
+      }, 1000);
+    }
+  });
+
   return (
     <TaskList>
       <TaskItemStyle>
@@ -156,7 +206,9 @@ export const TaskItem: React.FC<TaskItemProps> = ({
         <StyledTop>
           <NormalButton
             onClick={() => {
-              handleClick();
+              onStartHandle();
+              setTimeStart(new Date());
+              setTimeEnd(new Date());
             }}
           >
             {state}

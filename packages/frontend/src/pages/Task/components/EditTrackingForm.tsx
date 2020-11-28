@@ -37,19 +37,19 @@ export const EditTrackingForm: React.FC<{
         />
 
         <Input
-          name="createdAt"
+          name="timestart"
           type="text"
-          label="Created At"
-          value={values.createdAt.toString()}
+          label="Start Time"
+          value={values.timestart.toString()}
           onChange={fieldDidChange}
           required
         />
 
         <Input
-          name="updatedAt"
+          name="timeend"
           type="text"
-          label="Updated At"
-          value={values.updatedAt.toString()}
+          label="End Time"
+          value={values.timeend.toString()}
           onChange={fieldDidChange}
           required
         />

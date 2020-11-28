@@ -6,9 +6,10 @@ export const getAllTasks = async (req, res) => {
   
    const { taskfilter, labelfilter, descriptionfilter } = req.query;
   
-   const lfilter = String(labelfilter).toString().split(",")  as string[];
+  const lfilter = String(labelfilter).toString().split(",")  as string[];
   const tfilter = String(taskfilter).toString().split(",") as string[];
   const dfilter = String(descriptionfilter).toString().split(",") as string[];
+  
   const taskRepository = await getRepository(Task);
   const tasks = await taskRepository.find({
     relations: ["labels"],

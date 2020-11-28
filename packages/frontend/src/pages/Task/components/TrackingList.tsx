@@ -12,13 +12,16 @@ import { EditButton } from "../../../components/EditButton";
 import { Modal } from "../../../components/Modal";
 import { EditTrackingForm } from "./EditTrackingForm";
 import { StyledTopButton } from "../../Dashboard/DashboardPage";
+import { Task } from "../../Dashboard/components/TaskList";
 
 export type Tracking = {
   trackingid: number;
   description: string;
   createdAt: Date;
   updatedAt: Date;
-  task: Tracking;
+  timestart: Date;
+  timeend: Date;
+  task: Task;
 };
 
 export const TrackingFlex = styled.div`
@@ -89,7 +92,7 @@ export const TrackingItem: React.FC<TrackingItemProps> = ({
   tracking,
   fetchTask,
 }) => {
-  const { trackingid, description, createdAt, updatedAt, task } = tracking;
+  const { trackingid, description, createdAt, updatedAt, timestart, timeend, task } = tracking;
   const [editTrackingVisible, setEditTrackingVisible] = useState(false);
   const [editTracking, setEditTracking] = useState<Tracking | null>(null);
   const deleteTracking = async function (trackingid: number) {
@@ -97,8 +100,14 @@ export const TrackingItem: React.FC<TrackingItemProps> = ({
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
     });
-    fetchTask();
+    fetchTask(); 
   };
+  const total = Date.parse(timeend.toString()) - Date.parse(timestart.toString()); 
+    const seconds = Math.floor( (total/1000) % 60 );
+      const minutes = Math.floor( (total/1000/60) % 60 );
+      const hours = Math.floor( (total/(1000*60*60)) % 24 );
+      const days = Math.floor( total/(1000*60*60*24) );
+      
   return (
     <TrackingList>
       <TrackingItemStyle>
@@ -107,7 +116,7 @@ export const TrackingItem: React.FC<TrackingItemProps> = ({
           <div>
             <TrackingDescription>{description}</TrackingDescription>
             <TrackingDate>
-              {createdAt && createdAt.toLocaleString()}
+              {hours}:{minutes}:{seconds}
             </TrackingDate>
           </div>
           <StyledTopButton>

@@ -66,10 +66,7 @@ export const TaskPage = () => {
     fetchTask();
     fetchLabels();
   }, []);
-  let createdAt = task?.createdAt as Date;
-  let updatedAt = task?.updatedAt as Date;
-  var msDiff = new Date(updatedAt).getTime() - new Date(createdAt).getTime(); //Future date - current date
-  var trackedtime = Math.floor(msDiff / (1000 * 60 * 60));
+  
   //{task?.createdAt && task?.createdAt.toLocaleString()}
   return (
     <Layout>
@@ -126,7 +123,7 @@ export const TaskPage = () => {
           <div>
             <TaskTitle>{task?.name}</TaskTitle>
             <TaskDescription>{task?.description}</TaskDescription>
-            <TaskDate>{createdAt && createdAt.toLocaleString()}</TaskDate>
+            <TaskDate>{task?.createdAt && task?.createdAt.toLocaleString()}</TaskDate>
           </div>
           <LabelList>
             {task?.labels &&
