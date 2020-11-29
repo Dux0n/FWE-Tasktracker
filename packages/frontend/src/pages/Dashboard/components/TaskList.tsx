@@ -108,36 +108,46 @@ export type TaskItemProps = {
   fetchTask: () => void;
   showTracker: any;
   setShowTracker: any;
-  setTrackerTask: any;
+  setTrackerTaskID: any;
+  setTrackerTaskName: any;
   timeTrackerState: any;
   setTimeTrackerState: any;
   time: any;
   setTime: any;
+  timeEnd: any;
   setTimeStart: any;
   setTimeEnd: any;
-  onPauseResumeState:any;
+  onPauseResumeState: any;
   setOnPauseResumeState: any;
+  state: any;
+  setState: any;
+  actualTaskID: any;
+  setActualTaskID: any;
 };
 
 export const TaskItem: React.FC<TaskItemProps> = ({
   task,
-  onClick = () => {
-    return <Redirect to="/taskpage" />;
-  },
+  onClick = () => {},
   fetchTask,
   showTracker,
   setShowTracker,
-  setTrackerTask,
+  setTrackerTaskName,
+  setTrackerTaskID,
   timeTrackerState,
   setTimeTrackerState,
   time,
   setTime,
+  timeEnd,
   setTimeStart,
   setTimeEnd,
   onPauseResumeState,
   setOnPauseResumeState,
+  state,
+  setState,
+  actualTaskID,
+  setActualTaskID,
 }) => {
-  const { name, description, createdAt, updatedAt, labels } = task;
+  const { name, description, createdAt, updatedAt, labels, trackings } = task;
 
   const deleteTask = async function (task: Task) {
     await fetch(`/api/task/${task.taskid}`, {
@@ -147,37 +157,48 @@ export const TaskItem: React.FC<TaskItemProps> = ({
     fetchTask();
   };
 
-  const [state, setState] = useState<string>("Start Timer");
   let buttonText: string = "Start Timer";
   const onStartHandle = () => {
     buttonText = state === "Start Timer" ? "Stop Timer" : "Start Timer";
     setState(buttonText);
-    setTrackerTask(task.name);
-    
+    setTrackerTaskName(task.name);
+    setTrackerTaskID(task.taskid);
+
     if (timeTrackerState === false && onPauseResumeState === "Pause") {
+      setTime(0);
       setTimeTrackerState(true);
+    } else if (timeTrackerState === false && onPauseResumeState === "Resume") {
       setTime(0);
-      console.log(timeTrackerState,1);
-    } else if(timeTrackerState === false && onPauseResumeState === "Resume"){
       setTimeTrackerState(false);
-      setTime(0);
       setOnPauseResumeState("Pause");
-      console.log(timeTrackerState, 2);
-    } else if(timeTrackerState === true && onPauseResumeState === "Pause"){
+    } else if (timeTrackerState === true && onPauseResumeState === "Pause") {
+      setTime(0);
       setTimeTrackerState(false);
-      setTime(0);
       setOnPauseResumeState("Pause");
-      console.log(timeTrackerState, 3);
     }
     showTracker == false ? setShowTracker(true) : setShowTracker(false);
+  };
+
+  const totalTime = () => {
+    let total: number = 0;
+    trackings.forEach((element) => {
+      total +=
+        Date.parse(element.timeend.toString()) -
+        Date.parse(element.timestart.toString());
+    });
+
+    const seconds = `0${(total / 1000) % 60}`.slice(-2);
+    const minutes = `${Math.floor(total / 1000 / 60)}`;
+    let getMinutes = `0${parseInt(minutes) % 60}`.slice(-2);
+    const hours = `0${Math.floor(total / 1000 / 3600)}`.slice(-2);
+
+    return `Total Time: ${hours}:${getMinutes}:${seconds}`;
   };
 
   useEffect(() => {
     if (timeTrackerState) {
       const timer = setTimeout(() => {
-        console.log(time);
         setTime(time + 1);
-        //console.log(time);
       }, 1000);
     }
   });
@@ -194,7 +215,7 @@ export const TaskItem: React.FC<TaskItemProps> = ({
           <div>
             <TaskTitle>{name}</TaskTitle>
             <TaskDescription>{description}</TaskDescription>
-            <TaskDate>{createdAt && createdAt.toLocaleString()}</TaskDate>
+            <TaskDate>{totalTime()}</TaskDate>
           </div>
           <LabelList>
             {labels &&
@@ -206,12 +227,18 @@ export const TaskItem: React.FC<TaskItemProps> = ({
         <StyledTop>
           <NormalButton
             onClick={() => {
-              onStartHandle();
-              setTimeStart(new Date());
-              setTimeEnd(new Date());
+              if (actualTaskID === 0) {
+                onStartHandle();
+                setActualTaskID(task.taskid);
+                setTimeStart(new Date());
+                setTimeEnd(new Date());
+              } else if (actualTaskID === task.taskid) {
+                onStartHandle();
+                setActualTaskID(0);
+              }
             }}
           >
-            {state}
+            {actualTaskID === task.taskid ? state : "Start Timer"}
           </NormalButton>
           <StyledTopButton>
             <DeleteButton

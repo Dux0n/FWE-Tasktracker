@@ -64,7 +64,7 @@ export const UpdateTrackingById = async (req, res) => {
 };
 
 export const createTracking = async (req, res) => {
-  const { description, taskId } = req.body;
+  const { description, taskId, timestart, timeend } = req.body;
   if(!description || !taskId){
     res.status(400).send({
       status: "Invalid Syntax",
@@ -74,6 +74,8 @@ export const createTracking = async (req, res) => {
   const tracking = new Tracking();
   const taskRepository = await getRepository(Task);
   tracking.description = description;
+  tracking.timestart = timestart;
+  tracking.timeend = timeend;
 
   try {
     const foundtask = await taskRepository.findOneOrFail({

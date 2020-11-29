@@ -12,7 +12,7 @@ export const getAllTasks = async (req, res) => {
   
   const taskRepository = await getRepository(Task);
   const tasks = await taskRepository.find({
-    relations: ["labels"],
+    relations: ["labels", "trackings"],
   });
   let results = [...tasks];
 

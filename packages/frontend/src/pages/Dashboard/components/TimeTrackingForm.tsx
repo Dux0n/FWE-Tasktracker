@@ -4,7 +4,13 @@ import { Input } from "../../../components/Input";
 import { InputTracking } from "../../../components/InputTracking";
 import { NormalButton } from "../../../components/NormalButton";
 
-export const TimeTrackingForm: React.FC<{afterSubmit:() => void; timeStart:Date;timeEnd:Date;}> = ({afterSubmit,timeStart,timeEnd}) => {
+export const TimeTrackingForm: React.FC<{
+  afterSubmit: () => void;
+  timeStart: Date;
+  timeEnd: Date;
+  trackerTaskID: any;
+  time: any;
+}> = ({ afterSubmit, timeStart, timeEnd, trackerTaskID, time }) => {
   const [values, setValues] = useState({
     description: "",
   });
@@ -12,20 +18,25 @@ export const TimeTrackingForm: React.FC<{afterSubmit:() => void; timeStart:Date;
   const fieldDidChange = (e: ChangeEvent<HTMLInputElement>) => {
     setValues({ ...values, [e.target.name]: e.target.value });
   };
+  timeEnd = new Date(timeEnd.getTime() + 1000 * time);
   const onSubmitForm = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     await fetch("/api/tracking", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({"description":values.description}),
+      body: JSON.stringify({
+        description: values.description,
+        taskId: trackerTaskID,
+        timestart: timeStart,
+        timeend: timeEnd,
+      }),
     });
     afterSubmit();
   };
 
   return (
     <>
-      <form onSubmit={onSubmitForm}> 
-        
+      <form onSubmit={onSubmitForm}>
         <InputTracking
           name="description"
           type="text"
@@ -33,11 +44,8 @@ export const TimeTrackingForm: React.FC<{afterSubmit:() => void; timeStart:Date;
           onChange={fieldDidChange}
           required
         />
-       
-        <NormalButton type="submit" css={`
-              font-size: 16px;
-              float:right;
-            `}>Save Timer</NormalButton>
+
+        <Button type="submit">Save Tracking</Button>
       </form>
     </>
   );

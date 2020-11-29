@@ -62,6 +62,21 @@ export const TaskPage = () => {
   }
   }
 
+  const totalTime = () => {
+    let total: number = 0;
+    task?.trackings.forEach(element => {
+      total += Date.parse(element.timeend.toString()) - Date.parse(element.timestart.toString());
+
+    });
+    const seconds = `0${total/1000 % 60}`.slice(-2);
+    const minutes = `${Math.floor(total/1000 / 60)}`;
+    let getMinutes = `0${parseInt(minutes) % 60}`.slice(-2);
+    const hours = `0${Math.floor(total/1000 / 3600)}`.slice(-2);
+      
+      
+      return `${hours}:${getMinutes}:${seconds}`
+  }
+
   useEffect(() => {
     fetchTask();
     fetchLabels();
@@ -123,7 +138,7 @@ export const TaskPage = () => {
           <div>
             <TaskTitle>{task?.name}</TaskTitle>
             <TaskDescription>{task?.description}</TaskDescription>
-            <TaskDate>{task?.createdAt && task?.createdAt.toLocaleString()}</TaskDate>
+            <TaskDate>{totalTime()}</TaskDate>
           </div>
           <LabelList>
             {task?.labels &&

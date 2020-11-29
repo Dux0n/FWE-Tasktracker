@@ -92,7 +92,15 @@ export const TrackingItem: React.FC<TrackingItemProps> = ({
   tracking,
   fetchTask,
 }) => {
-  const { trackingid, description, createdAt, updatedAt, timestart, timeend, task } = tracking;
+  const {
+    trackingid,
+    description,
+    createdAt,
+    updatedAt,
+    timestart,
+    timeend,
+    task,
+  } = tracking;
   const [editTrackingVisible, setEditTrackingVisible] = useState(false);
   const [editTracking, setEditTracking] = useState<Tracking | null>(null);
   const deleteTracking = async function (trackingid: number) {
@@ -100,14 +108,17 @@ export const TrackingItem: React.FC<TrackingItemProps> = ({
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
     });
-    fetchTask(); 
+    fetchTask();
   };
-  const total = Date.parse(timeend.toString()) - Date.parse(timestart.toString()); 
-    const seconds = Math.floor( (total/1000) % 60 );
-      const minutes = Math.floor( (total/1000/60) % 60 );
-      const hours = Math.floor( (total/(1000*60*60)) % 24 );
-      const days = Math.floor( total/(1000*60*60*24) );
-      
+
+  const total =
+    Date.parse(timeend.toString()) - Date.parse(timestart.toString());
+
+  const seconds = `0${(total / 1000) % 60}`.slice(-2);
+  const minutes = `${Math.floor(total / 1000 / 60)}`;
+  let getMinutes = `0${parseInt(minutes) % 60}`.slice(-2);
+  const hours = `0${Math.floor(total / 1000 / 3600)}`.slice(-2);
+
   return (
     <TrackingList>
       <TrackingItemStyle>
@@ -116,7 +127,7 @@ export const TrackingItem: React.FC<TrackingItemProps> = ({
           <div>
             <TrackingDescription>{description}</TrackingDescription>
             <TrackingDate>
-              {hours}:{minutes}:{seconds}
+              Test: {hours}:{getMinutes}:{seconds}
             </TrackingDate>
           </div>
           <StyledTopButton>

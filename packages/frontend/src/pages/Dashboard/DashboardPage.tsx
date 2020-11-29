@@ -68,14 +68,17 @@ export const DashboardPage = () => {
   const [createLabelVisible, setCreateLabelVisible] = useState(false);
   const [deleteLabelVisible, setDeleteLabelVisible] = useState(false);
   const [showLabels, setShowLabels] = useState(false);
-  const [showTracker, setShowTracker] = useState(false);
-  const [trackerTask, setTrackerTask] = useState("");
-  const [timeTrackerState, setTimeTrackerState] = useState(false);
+  const [trackerTaskName, setTrackerTaskName] = useState();
+  const [trackerTaskID, setTrackerTaskID] = useState();
   const [time, setTime] = useState<number>(0);
   const [filterTaskVisible, setFilterTaskVisible] = useState(false);
   const [timeStart, setTimeStart] = useState<Date>(new Date());
   const [timeEnd, setTimeEnd] = useState<Date>(new Date());
   const [onPauseResumeState, setOnPauseResumeState] = useState<string>("Pause");
+  const [state, setState] = useState<string>("Start Timer");
+  const [timeTrackerState, setTimeTrackerState] = useState(false);
+  const [showTracker, setShowTracker] = useState(false);
+  const [actualTaskID, setActualTaskID] = useState<number>(0);
   const [filter, setFilter] = useState({
     taskname: "",
     taskdescription: "",
@@ -83,7 +86,8 @@ export const DashboardPage = () => {
   });
 
   const fetchTask = async function () {
-    const taskRequest = await fetch(`/api/task?taskfilter=${filter.taskname}&descriptionfilter=${filter.taskdescription}&labelfilter=${filter.labelname}`,
+    const taskRequest = await fetch(
+      `/api/task?taskfilter=${filter.taskname}&descriptionfilter=${filter.taskdescription}&labelfilter=${filter.labelname}`,
       {
         headers: { "content-type": "application/json" },
       }
@@ -111,11 +115,15 @@ export const DashboardPage = () => {
     if (onPauseResumeState === "Pause" && timeTrackerState == true) {
       buttonText = "Resume";
       setTimeTrackerState(false);
-      console.log(buttonText);
-    } else {
+    } else if (onPauseResumeState === "Pause" && timeTrackerState == false) {
+      buttonText = "Pause";
+      setTimeTrackerState(false);
+    } else if (onPauseResumeState === "Resume" && timeTrackerState == false) {
       buttonText = "Pause";
       setTimeTrackerState(true);
-      console.log(buttonText);
+    } else if (onPauseResumeState === "Resume" && timeTrackerState == true) {
+      buttonText = "Pause";
+      setTimeTrackerState(false);
     }
     setOnPauseResumeState(buttonText);
   };
@@ -128,7 +136,13 @@ export const DashboardPage = () => {
   useEffect(() => {
     fetchLabels();
     fetchTask();
-    
+  }, []);
+
+  useEffect(() => {
+    if (filter) {
+      fetchLabels();
+      fetchTask();
+    }
   }, [filter]);
 
   return (
@@ -265,15 +279,21 @@ export const DashboardPage = () => {
             fetchTask={fetchTask}
             showTracker={showTracker}
             setShowTracker={setShowTracker}
-            setTrackerTask={setTrackerTask}
+            setTrackerTaskName={setTrackerTaskName}
+            setTrackerTaskID={setTrackerTaskID}
             timeTrackerState={timeTrackerState}
             setTimeTrackerState={setTimeTrackerState}
             time={time}
             setTime={setTime}
             setTimeStart={setTimeStart}
+            timeEnd={timeEnd}
             setTimeEnd={setTimeEnd}
             onPauseResumeState={onPauseResumeState}
             setOnPauseResumeState={setOnPauseResumeState}
+            state={state}
+            setState={setState}
+            actualTaskID={actualTaskID}
+            setActualTaskID={setActualTaskID}
           ></TaskItem>
         ))}
       </TaskList>
@@ -288,7 +308,7 @@ export const DashboardPage = () => {
                   margin: 0;
                 `}
               >
-                {trackerTask}
+                {trackerTaskName}
               </p>
             </div>
             <div>
@@ -299,12 +319,19 @@ export const DashboardPage = () => {
             <TimeTrackingForm
               timeStart={timeStart}
               timeEnd={timeEnd}
-              afterSubmit={() => {}}
+              trackerTaskID={trackerTaskID}
+              time={time}
+              afterSubmit={() => {
+                setState("Start Timer");
+                setTimeTrackerState(false);
+                setOnPauseResumeState("Pause");
+                setShowTracker(false);
+                fetchTask();
+              }}
             ></TimeTrackingForm>
             <NormalButton
               onClick={() => {
                 onPauseResume();
-                setTimeEnd(new Date(timeEnd.getTime() + 1000 * time));
               }}
             >
               {onPauseResumeState}
