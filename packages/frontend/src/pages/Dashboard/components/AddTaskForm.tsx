@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useContext, useState } from "react";
+import React, { ChangeEvent, useState } from "react";
 import { Button } from "../../../components/Button";
 import { Input } from "../../../components/Input";
 
@@ -8,7 +8,6 @@ export const AddTaskForm: React.FC<{afterSubmit:() => void}> = ({afterSubmit}) =
     description: "",
     labels: "",
   });
-  const [formError, setFormError] = useState<string | null>(null);
   const fieldDidChange = (e: ChangeEvent<HTMLInputElement>) => {
     setValues({ ...values, [e.target.name]: e.target.value });
   };

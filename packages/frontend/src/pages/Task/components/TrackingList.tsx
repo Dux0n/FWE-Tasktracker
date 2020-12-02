@@ -1,12 +1,5 @@
 import React, { useState } from "react";
 import styled from "styled-components/macro";
-import {
-  BrowserRouter,
-  Switch,
-  Route,
-  Redirect,
-  RouteProps,
-} from "react-router-dom";
 import { DeleteButton } from "../../../components/DeleteButton";
 import { EditButton } from "../../../components/EditButton";
 import { Modal } from "../../../components/Modal";
@@ -99,7 +92,6 @@ export const TrackingItem: React.FC<TrackingItemProps> = ({
     updatedAt,
     timestart,
     timeend,
-    task,
   } = tracking;
   const [editTrackingVisible, setEditTrackingVisible] = useState(false);
   const [editTracking, setEditTracking] = useState<Tracking | null>(null);
@@ -125,9 +117,17 @@ export const TrackingItem: React.FC<TrackingItemProps> = ({
         <TrackingHighlight />
         <TrackingFlex>
           <div>
-            <TrackingDescription>{description}</TrackingDescription>
+            <TrackingDescription>
+              Tracking Description: {description}
+            </TrackingDescription>
             <TrackingDate>
-              Test: {hours}:{getMinutes}:{seconds}
+              Created at: {createdAt && createdAt.toLocaleString()}
+            </TrackingDate>
+            <TrackingDate>
+              Updated at: {updatedAt && updatedAt.toLocaleString()}
+            </TrackingDate>
+            <TrackingDate>
+              Duration: {hours}:{getMinutes}:{seconds}
             </TrackingDate>
           </div>
           <StyledTopButton>

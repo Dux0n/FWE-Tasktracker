@@ -1,8 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components/macro";
-import { TaskPage } from "../../Task/TaskPage";
-import { AddButton } from "../../../components/AddButton";
-import { Redirect } from "react-router-dom";
 import { Tracking } from "../../Task/components/TrackingList";
 import { DeleteButton } from "../../../components/DeleteButton";
 import { NormalButton } from "../../../components/NormalButton";
@@ -147,7 +144,7 @@ export const TaskItem: React.FC<TaskItemProps> = ({
   actualTaskID,
   setActualTaskID,
 }) => {
-  const { name, description, createdAt, updatedAt, labels, trackings } = task;
+  const { name, description, labels, createdAt, updatedAt, trackings } = task;
 
   const deleteTask = async function (task: Task) {
     await fetch(`/api/task/${task.taskid}`, {
@@ -176,7 +173,7 @@ export const TaskItem: React.FC<TaskItemProps> = ({
       setTimeTrackerState(false);
       setOnPauseResumeState("Pause");
     }
-    showTracker == false ? setShowTracker(true) : setShowTracker(false);
+    showTracker === false ? setShowTracker(true) : setShowTracker(false);
   };
 
   const totalTime = () => {
@@ -197,7 +194,7 @@ export const TaskItem: React.FC<TaskItemProps> = ({
 
   useEffect(() => {
     if (timeTrackerState) {
-      const timer = setTimeout(() => {
+      setTimeout(() => {
         setTime(time + 1);
       }, 1000);
     }
@@ -213,9 +210,15 @@ export const TaskItem: React.FC<TaskItemProps> = ({
           }}
         >
           <div>
-            <TaskTitle>{name}</TaskTitle>
-            <TaskDescription>{description}</TaskDescription>
-            <TaskDate>{totalTime()}</TaskDate>
+            <TaskTitle>Task name: {name}</TaskTitle>
+            <TaskDescription>Task description: {description}</TaskDescription>
+            <TaskDate>
+              Created at: {createdAt && createdAt.toLocaleString()}
+            </TaskDate>
+            <TaskDate>
+              Updated at: {updatedAt && updatedAt.toLocaleString()}
+            </TaskDate>
+            <TaskDate>Total time: {totalTime()}</TaskDate>
           </div>
           <LabelList>
             {labels &&

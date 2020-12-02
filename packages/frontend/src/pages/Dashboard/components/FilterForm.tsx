@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useContext, useState } from "react";
+import React, { ChangeEvent, useState } from "react";
 import { Button } from "../../../components/Button";
 import { Input } from "../../../components/Input";
 
@@ -8,7 +8,6 @@ export const FilterForm: React.FC<{afterSubmit:() => void, filter:any , setFilte
     taskdescription:"",
     labelname: "",
   });
-  const [formError, setFormError] = useState<string | null>(null);
   const fieldDidChange = (e: ChangeEvent<HTMLInputElement>) => {
     setValues({ ...values, [e.target.name]: e.target.value });
   };

@@ -1,8 +1,5 @@
 import React, { useEffect, useState } from "react";
-import styled, { ThemeProvider } from "styled-components/macro";
-import { GlobalStyle } from "../../components/GlobalStyle";
 import { Layout } from "../../components/Layout";
-import { theme } from "../../theme";
 import {
   Task,
   TaskDate,
@@ -15,18 +12,18 @@ import {
 } from "../Dashboard/components/TaskList";
 import { EditButton } from "../../components/EditButton";
 import { useParams } from "react-router-dom";
-import {
-  TrackingList,
-  TrackingItem,
-  Tracking,
-} from "./components/TrackingList";
+import { TrackingList, TrackingItem } from "./components/TrackingList";
 import { Modal } from "../../components/Modal";
 import { EditTaskForm } from "./components/EditTaskForm";
 import { AddButton } from "../../components/AddButton";
 import { AddTrackingForm } from "./components/AddTrackingForm";
 import { NormalButton } from "../../components/NormalButton";
 import { DeleteLabelForm } from "../Task/components/DeleteLabelsFromTaskForm";
-import { StyledP, StyledTop, StyledTopButton } from "../Dashboard/DashboardPage";
+import {
+  StyledP,
+  StyledTop,
+  StyledTopButton,
+} from "../Dashboard/DashboardPage";
 
 export const TaskPage = () => {
   let { id }: any = useParams();
@@ -35,7 +32,9 @@ export const TaskPage = () => {
   const [editTaskVisible, setEditTaskVisible] = useState(false);
   const [editTask, setEditTask] = useState<Task | null>(null);
   const [addTrackingVisible, setAddTrackingVisible] = useState(false);
-  const [deleteLabelFromTask, setDeleteLabelFromTask] = useState<Task | null>(null);
+  const [deleteLabelFromTask, setDeleteLabelFromTask] = useState<Task | null>(
+    null
+  );
   const [showLabels, setShowLabels] = useState(false);
   const [deleteLabelFromTaskVisible, setDeleteLabelFromTaskVisible] = useState(
     false
@@ -52,37 +51,36 @@ export const TaskPage = () => {
   };
 
   const fetchLabels = async function () {
-    const labelRequest = await fetch(`/api/label`,{
-    headers: { "content-type": "application/json" },
-  });
-  console.log(labelRequest);
-  if (labelRequest.status === 200) {
-    const taskJSON = await labelRequest.json();
-    setLabels(taskJSON.data);
-  }
-  }
+    const labelRequest = await fetch(`/api/label`, {
+      headers: { "content-type": "application/json" },
+    });
+    console.log(labelRequest);
+    if (labelRequest.status === 200) {
+      const taskJSON = await labelRequest.json();
+      setLabels(taskJSON.data);
+    }
+  };
 
   const totalTime = () => {
     let total: number = 0;
-    task?.trackings.forEach(element => {
-      total += Date.parse(element.timeend.toString()) - Date.parse(element.timestart.toString());
-
+    task?.trackings.forEach((element) => {
+      total +=
+        Date.parse(element.timeend.toString()) -
+        Date.parse(element.timestart.toString());
     });
-    const seconds = `0${total/1000 % 60}`.slice(-2);
-    const minutes = `${Math.floor(total/1000 / 60)}`;
+    const seconds = `0${(total / 1000) % 60}`.slice(-2);
+    const minutes = `${Math.floor(total / 1000 / 60)}`;
     let getMinutes = `0${parseInt(minutes) % 60}`.slice(-2);
-    const hours = `0${Math.floor(total/1000 / 3600)}`.slice(-2);
-      
-      
-      return `${hours}:${getMinutes}:${seconds}`
-  }
+    const hours = `0${Math.floor(total / 1000 / 3600)}`.slice(-2);
+
+    return `${hours}:${getMinutes}:${seconds}`;
+  };
 
   useEffect(() => {
     fetchTask();
     fetchLabels();
-  }, []);
-  
-  //{task?.createdAt && task?.createdAt.toLocaleString()}
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
   return (
     <Layout>
       <StyledTop>
@@ -96,11 +94,7 @@ export const TaskPage = () => {
           />
           <NormalButton
             onClick={() => {
-              {
-                showLabels == false
-                  ? setShowLabels(true)
-                  : setShowLabels(false);
-              }
+              showLabels === false ? setShowLabels(true) : setShowLabels(false);
             }}
           >
             Show Labels
@@ -110,11 +104,11 @@ export const TaskPage = () => {
       <div>
         {showLabels ? (
           <LabelList>
-          {labels &&
-            labels.map((label: Label) => {
-              return <li key={label.labelid}>{label.name}</li>;
-            })}
-        </LabelList>
+            {labels &&
+              labels.map((label: Label) => {
+                return <li key={label.labelid}>{label.name}</li>;
+              })}
+          </LabelList>
         ) : null}
       </div>
       {editTaskVisible && (
@@ -136,9 +130,9 @@ export const TaskPage = () => {
       <TaskItemStyle>
         <TaskFlex>
           <div>
-            <TaskTitle>{task?.name}</TaskTitle>
-            <TaskDescription>{task?.description}</TaskDescription>
-            <TaskDate>{totalTime()}</TaskDate>
+            <TaskTitle>Task name: {task?.name}</TaskTitle>
+            <TaskDescription>Task description: {task?.description}</TaskDescription>
+            <TaskDate>Total time: {totalTime()}</TaskDate>
           </div>
           <LabelList>
             {task?.labels &&
@@ -176,9 +170,7 @@ export const TaskPage = () => {
       </TaskItemStyle>
       <StyledTopButton>
         <div>
-          <StyledP>
-            Tracking
-          </StyledP>
+          <StyledP>Tracking</StyledP>
         </div>
         <StyledTopButton>
           <AddButton

@@ -1,4 +1,4 @@
-import React, { useState, HTMLProps, useRef } from "react";
+import React, { useRef } from "react";
 import styled from "styled-components";
 
 const InputLabel = styled.label`

@@ -29,13 +29,6 @@ const Header = styled.header`
     ${MaxWidthCSS}
     `;
 
-    const NavigationList = styled.ul`
-    list-style: none;
-  `;
-  const NavigationItem = styled.li`
-    color: ${props => props.theme.colors.primary};
-  `;
-
 export const Layout: React.FC = ({ children }) => {
 
   return (

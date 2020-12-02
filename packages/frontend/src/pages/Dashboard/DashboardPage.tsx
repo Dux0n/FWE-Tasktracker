@@ -11,15 +11,11 @@ import { AddButton } from "../../components/AddButton";
 import { AddTaskForm } from "./components/AddTaskForm";
 import { Modal } from "../../components/Modal";
 import { Layout } from "../../components/Layout";
-import { SelectInput } from "../../components/SelectInput";
-import { DeleteButton } from "../../components/DeleteButton";
-import { TaskPage } from "../Task/TaskPage";
 import { useHistory } from "react-router-dom";
 import { NormalButton } from "../../components/NormalButton";
 import { CreateLabelForm } from "./components/CreateLabelForm";
 import { DeleteLabelForm } from "./components/DeleteLabelForm";
 import { FilterForm } from "./components/FilterForm";
-import { StopButton } from "../../components/StopButton";
 import { TimeTrackingForm } from "./components/TimeTrackingForm";
 
 const StyledTimer = styled.div`
@@ -56,7 +52,7 @@ export const StyledP = styled.p`
 
 const TrackingTime = styled.p`
   margin: 0;
-  font-size: 0.8rem;
+  font-size: 1.5rem;
   color: ${(props) => props.theme.colors.secondaryFontColor};
 `;
 
@@ -112,16 +108,16 @@ export const DashboardPage = () => {
 
   let buttonText: string = "Pause";
   const onPauseResume = () => {
-    if (onPauseResumeState === "Pause" && timeTrackerState == true) {
+    if (onPauseResumeState === "Pause" && timeTrackerState === true) {
       buttonText = "Resume";
       setTimeTrackerState(false);
-    } else if (onPauseResumeState === "Pause" && timeTrackerState == false) {
+    } else if (onPauseResumeState === "Pause" && timeTrackerState === false) {
       buttonText = "Pause";
       setTimeTrackerState(false);
-    } else if (onPauseResumeState === "Resume" && timeTrackerState == false) {
+    } else if (onPauseResumeState === "Resume" && timeTrackerState === false) {
       buttonText = "Pause";
       setTimeTrackerState(true);
-    } else if (onPauseResumeState === "Resume" && timeTrackerState == true) {
+    } else if (onPauseResumeState === "Resume" && timeTrackerState === true) {
       buttonText = "Pause";
       setTimeTrackerState(false);
     }
@@ -136,14 +132,14 @@ export const DashboardPage = () => {
   useEffect(() => {
     fetchLabels();
     fetchTask();
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     if (filter) {
       fetchLabels();
       fetchTask();
     }
-  }, [filter]);
+  }, [filter]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <Layout>
@@ -173,20 +169,14 @@ export const DashboardPage = () => {
           </NormalButton>
           <NormalButton
             onClick={() => {
-              {
-                showLabels == false
-                  ? setShowLabels(true)
-                  : setShowLabels(false);
-              }
+              showLabels === false ? setShowLabels(true) : setShowLabels(false);
             }}
           >
             Show Labels
           </NormalButton>
           <NormalButton
             onClick={() => {
-              {
-                setDeleteLabelVisible(true);
-              }
+              setDeleteLabelVisible(true);
             }}
           >
             Delete Labels
@@ -304,16 +294,16 @@ export const DashboardPage = () => {
             <div>
               <p
                 css={`
-                  font-size: 36px;
+                  font-size: 24px;
                   margin: 0;
                 `}
               >
-                {trackerTaskName}
+                Task name: {trackerTaskName}
               </p>
             </div>
             <div>
               <TrackingTime>
-                {hours}:{getMinutes}:{seconds}
+                Duration: {hours}:{getMinutes}:{seconds}
               </TrackingTime>
             </div>
             <TimeTrackingForm

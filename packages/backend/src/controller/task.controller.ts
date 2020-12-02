@@ -15,21 +15,23 @@ export const getAllTasks = async (req, res) => {
     relations: ["labels", "trackings"],
   });
   let results = [...tasks];
-
+  let endresults : Task[] = [];
   
 
   if(taskfilter){
-    results = results.filter(r => tfilter.includes(r.name));
-    console.log(taskfilter);
+    endresults = results.filter(r => tfilter.includes(r.name));
+    console.log(1, results);
   }
   if(labelfilter){
-    results = results.filter(r => r.labels.some(l =>  lfilter.includes(l.name)));
-    console.log(labelfilter);
+    endresults = endresults.concat(results.filter(r => r.labels.some(l =>  lfilter.includes(l.name))));
+    console.log(2, results);
   }
   if(descriptionfilter){
-    results = results.filter(r => dfilter.includes(r.description));
-    console.log(descriptionfilter);
+    endresults = endresults.concat(results.filter(r => dfilter.includes(r.description)));
+    console.log(3, results);
   }
+  if(endresults.length !== 0){results = endresults;}
+  
   res.send({ data: results });
 };
 
