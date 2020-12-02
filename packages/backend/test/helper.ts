@@ -3,7 +3,7 @@ import express, { Express } from 'express';
 import * as path from 'path';
 import { Connection, createConnection, getConnectionOptions, ObjectType } from 'typeorm';
 import { Builder, fixturesIterator, Loader, Parser, Resolver } from 'typeorm-fixtures-cli';
-import { globalRouter } from '../router/global.router';
+import { globalRouter } from '../src/router/global.router';
 
 
 export class Helper {
@@ -33,7 +33,7 @@ export class Helper {
 
   public async loadFixtures() {
     const loader = new Loader();
-    loader.load(path.resolve('./fixture/'));
+    loader.load(path.resolve('./src/fixture/'));
 
     const resolver = new Resolver();
     const fixtures = resolver.resolve(loader.fixtureConfigs);

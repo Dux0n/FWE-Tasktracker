@@ -3,7 +3,7 @@ import {
   createLabel,
   deleteLabelById,
   getAllLabels,
-  getAllTaskOfLabel,
+  getAllTasksOfLabel,
   getLabelById,
   updateLabelById,
 } from "../controller/label.controller";
@@ -14,7 +14,7 @@ labelRouter.get("/", getAllLabels);
 
 labelRouter.post("/", createLabel);
 
-labelRouter.get("/:labelId/tasks", getAllTaskOfLabel);
+labelRouter.get("/:labelId/tasks", getAllTasksOfLabel);
 
 labelRouter.get("/:labelId", getLabelById);
 

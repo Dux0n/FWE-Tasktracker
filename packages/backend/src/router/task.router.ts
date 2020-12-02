@@ -23,9 +23,9 @@ taskRouter.delete("/:taskId", deleteTaskById);
 
 taskRouter.patch("/:taskId", updateTaskById);
 
-taskRouter.patch("/:taskId/addlabel", addLabel);
+taskRouter.post("/:taskId/label", addLabel);
 
-taskRouter.patch("/:taskId/deletelabel", deleteLabel);
+taskRouter.delete("/:taskId/label", deleteLabel);
 
 taskRouter.get("/:taskId/labels", getAllLabelsOfTask);
 

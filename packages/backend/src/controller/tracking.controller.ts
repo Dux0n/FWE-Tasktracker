@@ -44,7 +44,14 @@ export const UpdateTrackingById = async (req, res) => {
   const trackingId = req.params.trackingId;
   const { description, timestart, timeend } = req.body;
   const trackingRepository = await getRepository(Tracking);
-  console.log(trackingId);
+  
+  if(!description){
+    res.status(400).send({
+      status: "Invalid Syntax",
+    });
+    return;
+  }
+
   try {
     let tracking = await trackingRepository.findOneOrFail(trackingId);
     tracking.description = description;
@@ -58,7 +65,7 @@ export const UpdateTrackingById = async (req, res) => {
     });
   } catch (error) {
     res.status(404).send({
-      status: "not_found" + error,
+      status: "not_found",
     });
   }
 };
@@ -84,8 +91,9 @@ export const createTracking = async (req, res) => {
     tracking.task = foundtask;
   } catch (error) {
     res.status(404).send({
-      status: "not_found" + error,
+      status: "not_found",
     });
+    return;
   }
 
   const trackingRepository = await getRepository(Tracking);

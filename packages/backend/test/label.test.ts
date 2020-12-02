@@ -1,6 +1,6 @@
-import "jest";
+/*import "jest";
 import request from "supertest";
-import { Label } from "../entity/Label";
+import { Label } from "../src/entity/Label";
 import { Helper } from "./helper";
 
 describe("label", () => {
@@ -27,6 +27,23 @@ describe("label", () => {
       .end((err, res) => {
         if (err) throw err;
         expect(res.body.data.name).toBe("test");
+        done();
+      });
+  });
+
+  it("should not be able to create a new label", async (done) => {
+    await helper.resetDatabase();
+    request(helper.app)
+      .post("/api/label")
+      .send({
+        name: "",
+      })
+      .set("Content-Type", "application/json")
+      .set("Accept", "application/json")
+      .expect(400)
+      .end((err, res) => {
+        if (err) throw err;
+        expect(res.body.status).toBe("Invalid Syntax");
         done();
       });
   });
@@ -66,7 +83,22 @@ describe("label", () => {
       });
   });
 
-  it("it should be able to update a label", async (done) => {
+  it("should not be able to get label by id", async (done) => {
+    await helper.resetDatabase();
+    await helper.loadFixtures();
+    request(helper.app)
+      .get(`/api/label/100`)
+      .set("Content-Type", "application/json")
+      .set("Accept", "application/json")
+      .expect(404)
+      .end((err, res) => {
+        if (err) throw err;
+        expect(res.body.status).toBe("not_found");
+        done();
+      });
+  });
+
+  it("should be able to update a label", async (done) => {
     await helper.resetDatabase();
     await helper.loadFixtures();
     let label = new Label();
@@ -85,7 +117,25 @@ describe("label", () => {
       });
   });
 
-  it("it should be able to delete a label", async (done) => {
+  it("should not be able to update a label", async (done) => {
+    await helper.resetDatabase();
+    await helper.loadFixtures();
+    request(helper.app)
+      .patch(`/api/label/100`)
+      .send({
+        name: "Edited Name",
+      })
+      .set("Content-Type", "application/json")
+      .set("Accept", "application/json")
+      .expect(404)
+      .end((err, res) => {
+        if (err) throw err;
+        expect(res.body.status).toBe("not_found");
+        done();
+      });
+  });
+
+  it("should be able to delete a label", async (done) => {
     await helper.resetDatabase();
     await helper.loadFixtures();
     let label = new Label();
@@ -102,6 +152,21 @@ describe("label", () => {
       });
   });
 
+  it("should not be able to delete a label", async (done) => {
+    await helper.resetDatabase();
+    await helper.loadFixtures();
+    request(helper.app)
+      .delete(`/api/label/100`)
+      .set("Content-Type", "application/json")
+      .set("Accept", "application/json")
+      .expect(404)
+      .end((err, res) => {
+        if (err) throw err;
+        expect(res.body.status).toBe("not_found");
+        done();
+      });
+  });
+
   it("should show all tasks of a label", async (done) => {
     await helper.resetDatabase();
     await helper.loadFixtures();
@@ -114,6 +179,21 @@ describe("label", () => {
         if (err) throw err;
         expect(res.body.data.length).toBe(3);
         expect(res.body.data[0].name).toBe("Task2");
+        done();
+      });
+  });
+
+  it("should not be able to show all tasks of a label", async (done) => {
+    await helper.resetDatabase();
+    await helper.loadFixtures();
+    request(helper.app)
+      .get("/api/label/100/tasks")
+      .set("Content-Type", "application/json")
+      .set("Accept", "application/json")
+      .expect(404)
+      .end((err, res) => {
+        if (err) throw err;
+        expect(res.body.status).toBe("not_found");
         done();
       });
   });

@@ -1,6 +1,6 @@
-import "jest";
+/*import "jest";
 import request from "supertest";
-import { Tracking } from "../entity/Tracking";
+import { Tracking } from "../src/entity/Tracking";
 import { Helper } from "./helper";
 
 describe("tracking", () => {
@@ -52,6 +52,25 @@ describe("tracking", () => {
       });
   });
 
+  it("should not be able to create a new tracking task not found", async (done) => {
+    await helper.resetDatabase();
+    await helper.loadFixtures();
+    request(helper.app)
+      .post("/api/tracking")
+      .send({
+        description: "test desc",
+        taskId: "400",
+      })
+      .set("Content-Type", "application/json")
+      .set("Accept", "application/json")
+      .expect(404)
+      .end((err, res) => {
+        if (err) throw err;
+        expect(res.body.status).toBe("not_found");
+        done();
+      });
+  });
+
   it("should show all trackings", async (done) => {
     await helper.resetDatabase();
     await helper.loadFixtures();
@@ -87,6 +106,21 @@ describe("tracking", () => {
       });
   });
 
+  it("should not be able to get a tracking by id", async (done) => {
+    await helper.resetDatabase();
+    await helper.loadFixtures();
+    request(helper.app)
+      .get("/api/tracking/100")
+      .set("Content-Type", "application/json")
+      .set("Accept", "application/json")
+      .expect(404)
+      .end((err, res) => {
+        if (err) throw err;
+        expect(res.body.status).toBe("not_found");
+        done();
+      });
+  });
+
   it("it should be able to update a tracking", async (done) => {
     await helper.resetDatabase();
     await helper.loadFixtures();
@@ -106,7 +140,27 @@ describe("tracking", () => {
       });
   });
 
-  it("it should be able to delete a tracking", async (done) => {
+  it("it should not be able to update a tracking", async (done) => {
+    await helper.resetDatabase();
+    await helper.loadFixtures();
+    let tracking = new Tracking();
+    tracking = await helper.getRepo(Tracking).findOneOrFail({ trackingid: 2 });
+    request(helper.app)
+      .patch(`/api/tracking/100`)
+      .send({
+        description: "Edited Name",
+      })
+      .set("Content-Type", "application/json")
+      .set("Accept", "application/json")
+      .expect(404)
+      .end((err, res) => {
+        if (err) throw err;
+        expect(res.body.status).toBe("not_found");
+        done();
+      });
+  });
+
+  it("should be able to delete a tracking", async (done) => {
     await helper.resetDatabase();
     await helper.loadFixtures();
     let tracking = new Tracking();
@@ -122,4 +176,20 @@ describe("tracking", () => {
         done();
       });
   });
+
+  it("should not be able to delete a tracking by id", async (done) => {
+    await helper.resetDatabase();
+    await helper.loadFixtures();
+    request(helper.app)
+      .delete("/api/tracking/100")
+      .set("Content-Type", "application/json")
+      .set("Accept", "application/json")
+      .expect(404)
+      .end((err, res) => {
+        if (err) throw err;
+        expect(res.body.status).toBe("not_found");
+        done();
+      });
+  });
+
 });

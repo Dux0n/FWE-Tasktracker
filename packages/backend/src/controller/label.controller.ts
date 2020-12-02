@@ -33,7 +33,7 @@ export const deleteLabelById = async (req, res) => {
     res.send({});
   } catch (error) {
     res.status(404).send({
-      status: "not_found" + error,
+      status: "not_found",
     });
   }
 };
@@ -78,7 +78,7 @@ export const createLabel = async (req, res) => {
   });
 };
 
-export const getAllTaskOfLabel = async (req, res) => {
+export const getAllTasksOfLabel = async (req, res) => {
   const { labelId } = req.params;
   const labelRepository = await getRepository(Label);
   try {
@@ -92,7 +92,7 @@ export const getAllTaskOfLabel = async (req, res) => {
     });
   } catch (error) {
     res.status(404).send({
-      status: "not_found" + error,
+      status: "not_found",
     });
   }
 };

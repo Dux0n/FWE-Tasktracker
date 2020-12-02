@@ -1,6 +1,6 @@
 import "jest";
 import request from "supertest";
-import { Task } from "../entity/Task";
+import { Task } from "../src/entity/Task";
 import { Helper } from "./helper";
 
 describe("task", () => {
@@ -21,6 +21,7 @@ describe("task", () => {
       .send({
         name: "test",
         description: "tdesc",
+        labels: [],
       })
       .set("Content-Type", "application/json")
       .set("Accept", "application/json")
@@ -29,6 +30,25 @@ describe("task", () => {
         if (err) throw err;
         expect(res.body.data.description).toBe("tdesc");
         expect(res.body.data.name).toBe("test");
+        done();
+      });
+  });
+
+  it("should not be able to create a new task", async (done) => {
+    await helper.resetDatabase();
+    request(helper.app)
+      .post("/api/task")
+      .send({
+        name: "",
+        description: "tdesc",
+        labels: [],
+      })
+      .set("Content-Type", "application/json")
+      .set("Accept", "application/json")
+      .expect(400)
+      .end((err, res) => {
+        if (err) throw err;
+        expect(res.body.status).toBe("Invalid Syntax");
         done();
       });
   });
@@ -50,7 +70,7 @@ describe("task", () => {
       });
   });
 
-  it("get task by id", async (done) => {
+  it("should be able to get task by id", async (done) => {
     await helper.resetDatabase();
     await helper.loadFixtures();
     const task = new Task();
@@ -72,7 +92,22 @@ describe("task", () => {
       });
   });
 
-  it("it should be able to update a task", async (done) => {
+  it("should not be able to get task by id", async (done) => {
+    await helper.resetDatabase();
+    await helper.loadFixtures();
+    request(helper.app)
+      .get(`/api/task/100`)
+      .set("Content-Type", "application/json")
+      .set("Accept", "application/json")
+      .expect(404)
+      .end((err, res) => {
+        if (err) throw err;
+        expect(res.body.status).toBe("not_found");
+        done();
+      });
+  });
+
+  it("should be able to update a task", async (done) => {
     await helper.resetDatabase();
     const task = new Task();
     task.name = "Testwert";
@@ -81,8 +116,9 @@ describe("task", () => {
     request(helper.app)
       .patch(`/api/task/${savedtask.taskid}`)
       .send({
-        description: "Edited Description",
         name: "Edited Name",
+        description: "Edited Description",
+        labels: []
       })
       .set("Content-Type", "application/json")
       .set("Accept", "application/json")
@@ -94,7 +130,27 @@ describe("task", () => {
       });
   });
 
-  it("it should be able to delete a task", async (done) => {
+  it("should not be able to update a task", async (done) => {
+    await helper.resetDatabase();
+    const task = new Task();
+    request(helper.app)
+      .patch(`/api/task/100`)
+      .send({
+        name: "Edited Name",
+        description: "Edited Description",
+        labels: []
+      })
+      .set("Content-Type", "application/json")
+      .set("Accept", "application/json")
+      .expect(404)
+      .end((err, res) => {
+        if (err) throw err;
+        expect(res.body.status).toBe("not_found");
+        done();
+      });
+  });
+
+  it("should be able to delete a task", async (done) => {
     await helper.resetDatabase();
     await helper.loadFixtures();
     let task = new Task();
@@ -111,7 +167,22 @@ describe("task", () => {
       });
   });
 
-  it("it should be able to add a label by taskid", async (done) => {
+  it("should not be able to delete a task", async (done) => {
+    await helper.resetDatabase();
+    await helper.loadFixtures();
+    request(helper.app)
+      .delete(`/api/task/$100`)
+      .set("Content-Type", "application/json")
+      .set("Accept", "application/json")
+      .expect(404)
+      .end((err, res) => {
+        if (err) throw err;
+        expect(res.body.status).toBe("not_found");
+        done();
+      });
+  });
+
+  it("should be able to add a label by taskid", async (done) => {
     await helper.resetDatabase();
     await helper.loadFixtures();
     let task = new Task();
@@ -120,7 +191,7 @@ describe("task", () => {
       relations: ["labels"],
     });
     request(helper.app)
-      .patch(`/api/task/${task.taskid}/addlabel`)
+      .post(`/api/task/${task.taskid}/label`)
       .send({ labels: [4] })
       .set("Content-Type", "application/json")
       .set("Accept", "application/json")
@@ -131,7 +202,7 @@ describe("task", () => {
       });
   });
 
-  it("it should be able to delete a label by taskid", async (done) => {
+  it("should be able to delete a label by taskid", async (done) => {
     await helper.resetDatabase();
     await helper.loadFixtures();
     let task = new Task();
@@ -140,7 +211,7 @@ describe("task", () => {
       relations: ["labels"],
     });
     request(helper.app)
-      .patch(`/api/task/${task.taskid}/deletelabel`)
+      .delete(`/api/task/${task.taskid}/label`)
       .send({ labels: [1, 2] })
       .set("Content-Type", "application/json")
       .set("Accept", "application/json")

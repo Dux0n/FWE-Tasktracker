@@ -50,7 +50,7 @@ export const getTaskById = async (req, res) => {
     return;
   } catch (error) {
     res.status(404).send({
-      status: "not_found" +error,
+      status: "not_found",
     });
   }
 };
@@ -58,12 +58,7 @@ export const getTaskById = async (req, res) => {
 export const deleteTaskById = async (req, res) => {
   const taskId = req.params.taskId;
   const taskRepository = await getRepository(Task);
-  if (!taskId) {
-    res.status(400).send({
-      status: "Invalid Syntax",
-    });
-    return;
-  }
+
   try {
     const task = await taskRepository.findOneOrFail({
       where: { taskid: taskId },
@@ -73,7 +68,7 @@ export const deleteTaskById = async (req, res) => {
     res.send({});
   } catch (error) {
     res.status(404).send({
-      status: "not_found" + error,
+      status: "not_found",
     });
   }
 };
@@ -106,7 +101,7 @@ export const updateTaskById = async (req, res) => {
     });
   } catch (error) {
     res.status(404).send({
-      status: "not_found" + error,
+      status: "not_found",
     });
   }
 };
@@ -167,7 +162,7 @@ export const addLabel = async (req, res) => {
     });
   } catch (error) {
     res.status(404).send({
-      status: "not_found2" + error,
+      status: "not_found",
     });
   }
 };
@@ -202,7 +197,7 @@ export const deleteLabel = async (req, res) => {
     });
   } catch (error) {
     res.status(404).send({
-      status: "not_found2" + error,
+      status: "not_found",
     });
   }
 };
@@ -221,7 +216,7 @@ export const getAllLabelsOfTask = async (req, res) => {
     });
   } catch (error) {
     res.status(404).send({
-      status: "not_found" + error,
+      status: "not_found",
     });
   }
 };
@@ -240,7 +235,7 @@ export const getAllTrackingsOfTask = async (req, res) => {
     });
   } catch (error) {
     res.status(404).send({
-      status: "not_found" + error,
+      status: "not_found",
     });
   }
 };
@@ -263,7 +258,7 @@ async function addLabelToTaksIfExists(
     task.labels.push(label);
   } catch (error) {
     res.status(404).send({
-      status: "not_found" + error,
+      status: "not_found",
     });
   }
 }
@@ -282,7 +277,7 @@ async function SearchForLabelToDelete(
     deleteLabelIfFound(task, label);
   } catch (error) {
     res.status(404).send({
-      status: "not_found" + error,
+      status: "not_found",
     });
   }
 }
