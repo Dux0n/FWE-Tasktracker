@@ -121,7 +121,7 @@ describe("tracking", () => {
       });
   });
 
-  it("it should be able to update a tracking", async (done) => {
+  it("should be able to update a tracking", async (done) => {
     await helper.resetDatabase();
     await helper.loadFixtures();
     let tracking = new Tracking();
@@ -140,7 +140,7 @@ describe("tracking", () => {
       });
   });
 
-  it("it should not be able to update a tracking", async (done) => {
+  it("should not be able to update a tracking", async (done) => {
     await helper.resetDatabase();
     await helper.loadFixtures();
     let tracking = new Tracking();

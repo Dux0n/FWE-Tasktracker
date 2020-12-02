@@ -171,10 +171,11 @@ export const deleteLabel = async (req, res) => {
   const taskId = req.params.taskId;
   const { labels } = req.body;
   
-  if (parameterCheck(taskId, labels)) {
+  if (!labels) {
     res.status(400).send({
       status: "Invalid Syntax",
     });
+    return;
   }
   try {
     const taskRepository = await getRepository(Task);
@@ -214,6 +215,7 @@ export const getAllLabelsOfTask = async (req, res) => {
     res.send({
       data: labels,
     });
+    return;
   } catch (error) {
     res.status(404).send({
       status: "not_found",
@@ -233,17 +235,13 @@ export const getAllTrackingsOfTask = async (req, res) => {
     res.send({
       data: trackings,
     });
+    return;
   } catch (error) {
     res.status(404).send({
       status: "not_found",
     });
   }
 };
-
-//Refactor of deleteLabel
-function parameterCheck(taskId: any, labels: any) {
-  return !taskId || !labels;
-}
 
 //Try to find the label with wanted id
 // If found then add it else throw an error
@@ -256,6 +254,7 @@ async function addLabelToTaksIfExists(
   try {
     const label = await labelRepository.findOneOrFail(element);
     task.labels.push(label);
+    
   } catch (error) {
     res.status(404).send({
       status: "not_found",

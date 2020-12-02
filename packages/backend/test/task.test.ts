@@ -132,7 +132,7 @@ describe("task", () => {
 
   it("should not be able to update a task", async (done) => {
     await helper.resetDatabase();
-    const task = new Task();
+    await helper.loadFixtures();
     request(helper.app)
       .patch(`/api/task/100`)
       .send({
@@ -202,6 +202,40 @@ describe("task", () => {
       });
   });
 
+  it("should not be able to add a label by taskid", async (done) => {
+    await helper.resetDatabase();
+    await helper.loadFixtures();
+    request(helper.app)
+      .post(`/api/task/300/label`)
+      .send({ labels: [4] })
+      .set("Content-Type", "application/json")
+      .set("Accept", "application/json")
+      .expect(404)
+      .end((err, res) => {
+        if (err) throw err;
+        expect(res.body.status).toBe("not_found");
+        done();
+      });
+  });
+
+  /*it("should not be able to add a label by taskid", async (done) => {
+    await helper.resetDatabase();
+    await helper.loadFixtures();
+    request(helper.app)
+      .post(`/api/task/3/label`)
+      .send({ labels: [40] })
+      .set("Content-Type", "application/json")
+      .set("Accept", "application/json")
+      .expect(404)
+      .end((err, res) => {
+        if (err) throw err;
+        expect(res.body.status).toBe("not_found");
+        done();
+      });
+  }); */
+
+  
+
   it("should be able to delete a label by taskid", async (done) => {
     await helper.resetDatabase();
     await helper.loadFixtures();
@@ -222,6 +256,38 @@ describe("task", () => {
       });
   });
 
+  it("should not be able to delete a label by taskid", async (done) => {
+    await helper.resetDatabase();
+    await helper.loadFixtures();
+    request(helper.app)
+      .delete(`/api/task/40/label`)
+      .send({ labels: [1, 2] })
+      .set("Content-Type", "application/json")
+      .set("Accept", "application/json")
+      .expect(404)
+      .end((err, res) => {
+        if (err) throw err;
+        expect(res.body.status).toBe("not_found");
+        done();
+      });
+  });
+
+  it("should not be able to delete a label by taskid", async (done) => {
+    await helper.resetDatabase();
+    await helper.loadFixtures();
+    request(helper.app)
+      .delete(`/api/task/1/label`)
+      .send({ labels: "" })
+      .set("Content-Type", "application/json")
+      .set("Accept", "application/json")
+      .expect(400)
+      .end((err, res) => {
+        if (err) throw err;
+        expect(res.body.status).toBe("Invalid Syntax");
+        done();
+      });
+  });
+
   it("should show all labels of a task", async (done) => {
     await helper.resetDatabase();
     await helper.loadFixtures();
@@ -238,6 +304,21 @@ describe("task", () => {
       });
   });
 
+  it("should not show all labels of a task", async (done) => {
+    await helper.resetDatabase();
+    await helper.loadFixtures();
+    request(helper.app)
+      .get("/api/task/100/labels")
+      .set("Content-Type", "application/json")
+      .set("Accept", "application/json")
+      .expect(404)
+      .end((err, res) => {
+        if (err) throw err;
+        expect(res.body.status).toBe("not_found");
+        done();
+      });
+  });
+
   it("should show all trackings of a task", async (done) => {
     await helper.resetDatabase();
     await helper.loadFixtures();
@@ -250,6 +331,21 @@ describe("task", () => {
         if (err) throw err;
         expect(res.body.data.length).toBe(2);
         expect(res.body.data[0].description).toBe("Tracking1");
+        done();
+      });
+  });
+
+  it("should not show all trackings of a task", async (done) => {
+    await helper.resetDatabase();
+    await helper.loadFixtures();
+    request(helper.app)
+      .get("/api/task/300/trackings")
+      .set("Content-Type", "application/json")
+      .set("Accept", "application/json")
+      .expect(404)
+      .end((err, res) => {
+        if (err) throw err;
+        expect(res.body.status).toBe("not_found");
         done();
       });
   });

@@ -75,7 +75,6 @@ export const DashboardPage = () => {
   const [timeTrackerState, setTimeTrackerState] = useState(false);
   const [showTracker, setShowTracker] = useState(false);
   const [actualTaskID, setActualTaskID] = useState<number>(0);
-  const [currentTrackerSession, setCurrentTrackerSession] = useState();
   const [filter, setFilter] = useState({
     taskname: "",
     taskdescription: "",
@@ -88,7 +87,6 @@ export const DashboardPage = () => {
       {
         headers: { "content-type": "application/json" },
       }
-      setFilter({taskname:"test"});
     );
     console.log(taskRequest);
     if (taskRequest.status === 200) {
