@@ -71,7 +71,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:4000/api/tracking",
+					"raw": "http://localhost:4000/api/label/3/tasks",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -79,7 +79,9 @@
 					"port": "4000",
 					"path": [
 						"api",
-						"tracking"
+						"label",
+						"3",
+						"tasks"
 					]
 				}
 			},
@@ -113,7 +115,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:4000/api/task/1/trackings",
+					"raw": "http://localhost:4000/api/task/3/trackings",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -122,7 +124,7 @@
 					"path": [
 						"api",
 						"task",
-						"1",
+						"3",
 						"trackings"
 					]
 				}
@@ -136,7 +138,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"name\": \"Test\",\r\n    \"description\": \"Test..\"\r\n}",
+					"raw": "{\r\n    \"name\": \"ewq\",\r\n    \"description\": \"Te\",\r\n    \"labels\": [1,2]\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -194,7 +196,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"description\": \"Test1\",\r\n    \"taskId\": \"3\"\r\n}",
+					"raw": "{\r\n    \"description\": \"Test1\",\r\n    \"taskId\": \"5\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -219,7 +221,7 @@
 		{
 			"name": "fwe add label to task",
 			"request": {
-				"method": "PATCH",
+				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
@@ -231,7 +233,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:4000/api/task/addlabel/3",
+					"raw": "http://localhost:4000/api/task/3/label",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -240,8 +242,8 @@
 					"path": [
 						"api",
 						"task",
-						"addlabel",
-						"3"
+						"3",
+						"label"
 					]
 				}
 			},
@@ -250,11 +252,11 @@
 		{
 			"name": "fwe delete label from task",
 			"request": {
-				"method": "PATCH",
+				"method": "DELETE",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"labels\": [2,4]\r\n}",
+					"raw": "{\r\n    \"labels\": [3,8,11]\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -262,7 +264,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:4000/api/task/deletelabel/2",
+					"raw": "http://localhost:4000/api/task/1/label",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -271,8 +273,8 @@
 					"path": [
 						"api",
 						"task",
-						"deletelabel",
-						"2"
+						"1",
+						"label"
 					]
 				}
 			},
@@ -346,8 +348,12 @@
 			"request": {
 				"method": "DELETE",
 				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
 				"url": {
-					"raw": "http://localhost:4000/api/task/3",
+					"raw": "http://localhost:4000/api/task/1",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -356,7 +362,7 @@
 					"path": [
 						"api",
 						"task",
-						"3"
+						"1"
 					]
 				}
 			},
@@ -389,7 +395,7 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:4000/api/tracking/3",
+					"raw": "http://localhost:4000/api/tracking/2",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -398,7 +404,7 @@
 					"path": [
 						"api",
 						"tracking",
-						"3"
+						"2"
 					]
 				}
 			},
@@ -411,7 +417,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"name\": \"Test neu\"\r\n}",
+					"raw": "{\r\n    \"name\": \"Test neu\",\r\n    \"description\": \"test neu\",\r\n    \"labels\": []\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -419,7 +425,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:4000/api/task/2",
+					"raw": "http://localhost:4000/api/task/1",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -428,7 +434,7 @@
 					"path": [
 						"api",
 						"task",
-						"2"
+						"1"
 					]
 				}
 			},
@@ -479,15 +485,16 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:4000/tracking/2",
+					"raw": "http://localhost:4000/api/tracking/1",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "4000",
 					"path": [
+						"api",
 						"tracking",
-						"2"
+						"1"
 					]
 				}
 			},
