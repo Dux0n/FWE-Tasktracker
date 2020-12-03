@@ -153,7 +153,7 @@ export const addLabel = async (req, res) => {
     for (let index = 0; index < Object.keys(labels).length; index += 1) {
       const element = labels[index];
 
-      await addLabelToTaksIfExists(labelRepository, element, task, res);
+     if( !(await addLabelToTaksIfExists(labelRepository, element, task, res)) ){return;}
     }
     task = await taskRepository.save(task);
 
@@ -189,7 +189,7 @@ export const deleteLabel = async (req, res) => {
     for (let index = 0; index < Object.keys(labels).length; index += 1) {
       const element = labels[index];
 
-      await SearchForLabelToDelete(labelRepository, element, task, res);
+      if(!(  await SearchForLabelToDelete(labelRepository, element, task, res))){return;}
     }
     task = await taskRepository.save(task);
 
@@ -254,11 +254,12 @@ async function addLabelToTaksIfExists(
   try {
     const label = await labelRepository.findOneOrFail(element);
     task.labels.push(label);
-    
+    return true;
   } catch (error) {
     res.status(404).send({
       status: "not_found",
     });
+    return false;
   }
 }
 
@@ -274,10 +275,12 @@ async function SearchForLabelToDelete(
   try {
     const label = await labelRepository.findOneOrFail(element);
     deleteLabelIfFound(task, label);
+    return true;
   } catch (error) {
     res.status(404).send({
       status: "not_found",
     });
+    return false;
   }
 }
 //Refactor of SearchForLabelToDelete

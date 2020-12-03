@@ -1,4 +1,4 @@
-/*import "jest";
+import "jest";
 import request from "supertest";
 import { Tracking } from "../src/entity/Tracking";
 import { Helper } from "./helper";

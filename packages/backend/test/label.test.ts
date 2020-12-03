@@ -1,4 +1,4 @@
-/*import "jest";
+import "jest";
 import request from "supertest";
 import { Label } from "../src/entity/Label";
 import { Helper } from "./helper";

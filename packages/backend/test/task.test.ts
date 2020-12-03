@@ -70,6 +70,58 @@ describe("task", () => {
       });
   });
 
+  it("should filter task by name", async (done) => {
+    await helper.resetDatabase();
+    await helper.loadFixtures();
+    request(helper.app)
+      .get("/api/task?taskfilter=Task1")
+      .set("Content-Type", "application/json")
+      .set("Accept", "application/json")
+      .expect(200)
+      .end((err, res) => {
+        if (err) throw err;
+        expect(res.body.data.length).toBe(1);
+        expect(res.body.data[0].name).toBe("Task1");
+        done();
+      });
+  });
+
+  it("should filter task by description", async (done) => {
+    await helper.resetDatabase();
+    await helper.loadFixtures();
+    const task = new Task();
+    task.name = "Testwert";
+    task.description = "Das ist ein Test";
+    const savedtask = await helper.getRepo(Task).save(task);
+    request(helper.app)
+      .get("/api/task?descriptionfilter=Das ist ein Test")
+      .set("Content-Type", "application/json")
+      .set("Accept", "application/json")
+      .expect(200)
+      .end((err, res) => {
+        if (err) throw err;
+        expect(res.body.data.length).toBe(1);
+        expect(res.body.data[0].name).toBe("Testwert");
+        done();
+      });
+  });
+
+  it("should filter task by description", async (done) => {
+    await helper.resetDatabase();
+    await helper.loadFixtures();
+    request(helper.app)
+      .get("/api/task?labelfilter=Label1")
+      .set("Content-Type", "application/json")
+      .set("Accept", "application/json")
+      .expect(200)
+      .end((err, res) => {
+        if (err) throw err;
+        expect(res.body.data.length).toBe(2);
+        expect(res.body.data[0].name).toBe("Task3");
+        done();
+      });
+  });
+
   it("should be able to get task by id", async (done) => {
     await helper.resetDatabase();
     await helper.loadFixtures();
@@ -218,7 +270,7 @@ describe("task", () => {
       });
   });
 
-  /*it("should not be able to add a label by taskid", async (done) => {
+  it("should not be able to add a label by taskid", async (done) => {
     await helper.resetDatabase();
     await helper.loadFixtures();
     request(helper.app)
@@ -232,7 +284,7 @@ describe("task", () => {
         expect(res.body.status).toBe("not_found");
         done();
       });
-  }); */
+  }); 
 
   
 
@@ -284,6 +336,22 @@ describe("task", () => {
       .end((err, res) => {
         if (err) throw err;
         expect(res.body.status).toBe("Invalid Syntax");
+        done();
+      });
+  });
+
+  it("should not be able to delete a label by taskid", async (done) => {
+    await helper.resetDatabase();
+    await helper.loadFixtures();
+    request(helper.app)
+      .delete(`/api/task/1/label`)
+      .send({ labels: [100] })
+      .set("Content-Type", "application/json")
+      .set("Accept", "application/json")
+      .expect(404)
+      .end((err, res) => {
+        if (err) throw err;
+        expect(res.body.status).toBe("not_found");
         done();
       });
   });
