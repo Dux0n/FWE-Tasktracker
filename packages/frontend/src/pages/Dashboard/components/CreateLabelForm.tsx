@@ -12,9 +12,9 @@ export const CreateLabelForm: React.FC<{ afterSubmit: () => void }> = ({ afterSu
 	const onSubmitForm = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		await fetch('/api/label', {
-			method: 'POST',
-			headers: { 'Content-Type': 'application/json' },
 			body: JSON.stringify({ name: values.name }),
+			headers: { 'Content-Type': 'application/json' },
+			method: 'POST',
 		});
 		afterSubmit();
 	};

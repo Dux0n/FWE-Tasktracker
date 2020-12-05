@@ -1,4 +1,3 @@
-
 import styled from 'styled-components';
 
 export enum MessageType {

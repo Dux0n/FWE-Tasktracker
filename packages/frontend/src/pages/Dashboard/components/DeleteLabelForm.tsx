@@ -12,9 +12,9 @@ export const DeleteLabelForm: React.FC<{ afterSubmit: () => void }> = ({ afterSu
 	const onSubmitForm = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		await fetch(`/api/label/${values.labelid}`, {
-			method: 'DELETE',
-			headers: { 'Content-Type': 'application/json' },
 			body: JSON.stringify({ labelid: values.labelid }),
+			headers: { 'Content-Type': 'application/json' },
+			method: 'DELETE',
 		});
 		afterSubmit();
 	};

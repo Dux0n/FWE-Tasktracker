@@ -8,9 +8,9 @@ export const FilterForm: React.FC<{ afterSubmit: () => void; filter: any; setFil
 	setFilter,
 }) => {
 	const [values, setValues] = useState({
-		taskname: '',
-		taskdescription: '',
 		labelname: '',
+		taskdescription: '',
+		taskname: '',
 	});
 	const fieldDidChange = (e: ChangeEvent<HTMLInputElement>) => {
 		setValues({ ...values, [e.target.name]: e.target.value });

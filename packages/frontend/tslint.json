@@ -17,8 +17,10 @@
         "no-implicit-dependencies": false,
         "array-type": false,
         "import-name": false,
-        "no-floating-promises": true,
+        "no-floating-promises": false,
         "no-unused-declaration": true,
+        "no-submodule-imports": false,
+        "no-empty": false,
         "object-literal-sort-keys": [true, "ignore-case", "locale-compare"],
         "jsx-no-lambda": false
       }

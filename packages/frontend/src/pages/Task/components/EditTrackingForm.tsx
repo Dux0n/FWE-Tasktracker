@@ -17,9 +17,9 @@ export const EditTrackingForm: React.FC<{
 		e.preventDefault();
 		console.log(values);
 		await fetch(`/api/tracking/${values.trackingid}`, {
-			method: 'PATCH',
-			headers: { 'Content-Type': 'application/json' },
 			body: JSON.stringify(values),
+			headers: { 'Content-Type': 'application/json' },
+			method: 'PATCH',
 		});
 		afterSubmit();
 	};

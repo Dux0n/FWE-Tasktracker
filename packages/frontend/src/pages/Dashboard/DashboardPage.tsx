@@ -70,12 +70,12 @@ export const DashboardPage = () => {
 	const [showTracker, setShowTracker] = useState(false);
 	const [actualTaskID, setActualTaskID] = useState<number>(0);
 	const [filter, setFilter] = useState({
-		taskname: '',
-		taskdescription: '',
 		labelname: '',
+		taskdescription: '',
+		taskname: '',
 	});
 
-	const fetchTask = async function () {
+	const fetchTask = async () => {
 		const taskRequest = await fetch(
 			`/api/task?taskfilter=${filter.taskname}&descriptionfilter=${filter.taskdescription}&labelfilter=${filter.labelname}`,
 			{
@@ -89,7 +89,7 @@ export const DashboardPage = () => {
 		}
 	};
 
-	const fetchLabels = async function () {
+	const fetchLabels = async () => {
 		const labelRequest = await fetch(`/api/label`, {
 			headers: { 'content-type': 'application/json' },
 		});
@@ -120,7 +120,7 @@ export const DashboardPage = () => {
 
 	const seconds = `0${time % 60}`.slice(-2);
 	const minutes = `${Math.floor(time / 60)}`;
-	const getMinutes = `0${parseInt(minutes) % 60}`.slice(-2);
+	const getMinutes = `0${parseInt(minutes, 10) % 60}`.slice(-2);
 	const hours = `0${Math.floor(time / 3600)}`.slice(-2);
 
 	useEffect(() => {

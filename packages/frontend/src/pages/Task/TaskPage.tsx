@@ -31,7 +31,7 @@ export const TaskPage = () => {
 	const [deleteLabelFromTask, setDeleteLabelFromTask] = useState<Task | null>(null);
 	const [showLabels, setShowLabels] = useState(false);
 	const [deleteLabelFromTaskVisible, setDeleteLabelFromTaskVisible] = useState(false);
-	const fetchTask = async function () {
+	const fetchTask = async () => {
 		const taskRequest = await fetch(`/api/task/${id}`, {
 			headers: { 'content-type': 'application/json' },
 		});
@@ -42,7 +42,7 @@ export const TaskPage = () => {
 		}
 	};
 
-	const fetchLabels = async function () {
+	const fetchLabels = async () => {
 		const labelRequest = await fetch(`/api/label`, {
 			headers: { 'content-type': 'application/json' },
 		});
@@ -60,7 +60,7 @@ export const TaskPage = () => {
 		});
 		const seconds = `0${(total / 1000) % 60}`.slice(-2);
 		const minutes = `${Math.floor(total / 1000 / 60)}`;
-		const getMinutes = `0${parseInt(minutes) % 60}`.slice(-2);
+		const getMinutes = `0${parseInt(minutes, 10) % 60}`.slice(-2);
 		const hours = `0${Math.floor(total / 1000 / 3600)}`.slice(-2);
 
 		return `${hours}:${getMinutes}:${seconds}`;

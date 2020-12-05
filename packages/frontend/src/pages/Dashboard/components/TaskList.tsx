@@ -146,10 +146,10 @@ export const TaskItem: React.FC<TaskItemProps> = ({
 }) => {
 	const { name, description, labels, createdAt, updatedAt, trackings } = task;
 
-	const deleteTask = async function (task: Task) {
-		await fetch(`/api/task/${task.taskid}`, {
-			method: 'DELETE',
+	const deleteTask = async (taskobj: Task) => {
+		await fetch(`/api/task/${taskobj.taskid}`, {
 			headers: { 'Content-Type': 'application/json' },
+			method: 'DELETE',
 		});
 		fetchTask();
 	};
@@ -184,7 +184,7 @@ export const TaskItem: React.FC<TaskItemProps> = ({
 
 		const seconds = `0${(total / 1000) % 60}`.slice(-2);
 		const minutes = `${Math.floor(total / 1000 / 60)}`;
-		const getMinutes = `0${parseInt(minutes) % 60}`.slice(-2);
+		const getMinutes = `0${parseInt(minutes, 10) % 60}`.slice(-2);
 		const hours = `0${Math.floor(total / 1000 / 3600)}`.slice(-2);
 
 		return `Total Time: ${hours}:${getMinutes}:${seconds}`;

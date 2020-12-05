@@ -17,13 +17,14 @@ export const EditTaskForm: React.FC<{
 		e.preventDefault();
 		console.log(values);
 		await fetch(`/api/task/${values.taskid}`, {
-			method: 'PATCH',
-			headers: { 'Content-Type': 'application/json' },
 			body: JSON.stringify({
 				name: values.name,
+				// tslint:disable-next-line: object-literal-sort-keys
 				description: values.description,
 				labels: values.labels.toString().split(','),
 			}),
+			headers: { 'Content-Type': 'application/json' },
+			method: 'PATCH',
 		});
 
 		afterSubmit();

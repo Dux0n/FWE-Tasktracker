@@ -15,9 +15,9 @@ export const AddTrackingForm: React.FC<{ afterSubmit: () => void; task: Task }> 
 		e.preventDefault();
 		console.log(values);
 		await fetch('/api/tracking', {
-			method: 'POST',
-			headers: { 'Content-Type': 'application/json' },
 			body: JSON.stringify(values),
+			headers: { 'Content-Type': 'application/json' },
+			method: 'POST',
 		});
 		afterSubmit();
 	};

@@ -15,18 +15,19 @@ export const TimeTrackingForm: React.FC<{
 	const fieldDidChange = (e: ChangeEvent<HTMLInputElement>) => {
 		setValues({ ...values, [e.target.name]: e.target.value });
 	};
-	timeEnd = new Date(timeEnd.getTime() + 1000 * time);
+	const newTimeEnd = new Date(timeEnd.getTime() + 1000 * time);
 	const onSubmitForm = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		await fetch('/api/tracking', {
-			method: 'POST',
-			headers: { 'Content-Type': 'application/json' },
 			body: JSON.stringify({
 				description: values.description,
 				taskId: trackerTaskID,
 				timestart: timeStart,
-				timeend: timeEnd,
+				// tslint:disable-next-line: object-literal-sort-keys
+				timeend: newTimeEnd,
 			}),
+			headers: { 'Content-Type': 'application/json' },
+			method: 'POST',
 		});
 		afterSubmit();
 	};

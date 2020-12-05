@@ -85,10 +85,10 @@ export const TrackingItem: React.FC<TrackingItemProps> = ({ tracking, fetchTask 
 	const { trackingid, description, createdAt, updatedAt, timestart, timeend } = tracking;
 	const [editTrackingVisible, setEditTrackingVisible] = useState(false);
 	const [editTracking, setEditTracking] = useState<Tracking | null>(null);
-	const deleteTracking = async function (trackingid: number) {
-		await fetch(`/api/tracking/${trackingid!}`, {
-			method: 'DELETE',
+	const deleteTracking = async (varTrackingid: number) => {
+		await fetch(`/api/tracking/${varTrackingid!}`, {
 			headers: { 'Content-Type': 'application/json' },
+			method: 'DELETE',
 		});
 		fetchTask();
 	};
@@ -97,7 +97,7 @@ export const TrackingItem: React.FC<TrackingItemProps> = ({ tracking, fetchTask 
 
 	const seconds = `0${(total / 1000) % 60}`.slice(-2);
 	const minutes = `${Math.floor(total / 1000 / 60)}`;
-	const getMinutes = `0${parseInt(minutes) % 60}`.slice(-2);
+	const getMinutes = `0${parseInt(minutes, 10) % 60}`.slice(-2);
 	const hours = `0${Math.floor(total / 1000 / 3600)}`.slice(-2);
 
 	return (
