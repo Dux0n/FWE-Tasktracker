@@ -1,20 +1,20 @@
-import { Router } from "express";
+import { Router } from 'express';
 import {
-  createTracking,
-  deleteTrackingById,
-  getAllTrackings,
-  getTrackingById,
-  UpdateTrackingById,
-} from "../controller/tracking.controller";
+	createTracking,
+	deleteTrackingById,
+	getAllTrackings,
+	getTrackingById,
+	UpdateTrackingById,
+} from '../controller/tracking.controller';
 
 export const trackingRouter = Router({ mergeParams: true });
 
-trackingRouter.get("/", getAllTrackings);
+trackingRouter.get('/', getAllTrackings);
 
-trackingRouter.get("/:trackingId", getTrackingById);
+trackingRouter.get('/:trackingId', getTrackingById);
 
-trackingRouter.post("/", createTracking);
+trackingRouter.post('/', createTracking);
 
-trackingRouter.patch("/:trackingId", UpdateTrackingById);
+trackingRouter.patch('/:trackingId', UpdateTrackingById);
 
-trackingRouter.delete("/:trackingId", deleteTrackingById);
+trackingRouter.delete('/:trackingId', deleteTrackingById);

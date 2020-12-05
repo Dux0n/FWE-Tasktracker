@@ -1,285 +1,272 @@
-import { getRepository } from "typeorm";
-import { Label } from "../entity/Label";
-import { Task } from "../entity/Task";
+import { getRepository } from 'typeorm';
+import { Label } from '../entity/Label';
+import { Task } from '../entity/Task';
 
 export const getAllTasks = async (req, res) => {
-  const { taskfilter, labelfilter, descriptionfilter } = req.query;
+	const { taskfilter, labelfilter, descriptionfilter } = req.query;
 
-  const lfilter = String(labelfilter).toString().split(",") as string[];
-  const tfilter = String(taskfilter).toString().split(",") as string[];
-  const dfilter = String(descriptionfilter).toString().split(",") as string[];
+	const lfilter = String(labelfilter).toString().split(',') as string[];
+	const tfilter = String(taskfilter).toString().split(',') as string[];
+	const dfilter = String(descriptionfilter).toString().split(',') as string[];
 
-  const taskRepository = await getRepository(Task);
-  const tasks = await taskRepository.find({
-    relations: ["labels", "trackings"],
-  });
-  let results = [...tasks];
-  let endresults: Task[] = [];
+	const taskRepository = await getRepository(Task);
+	const tasks = await taskRepository.find({
+		relations: ['labels', 'trackings'],
+	});
+	let results = [...tasks];
+	let endresults: Task[] = [];
 
-  if (taskfilter) {
-    endresults = results.filter((r) => tfilter.includes(r.name));
-    console.log(1, results);
-  }
-  if (labelfilter) {
-    endresults = endresults.concat(
-      results.filter((r) => r.labels.some((l) => lfilter.includes(l.name)))
-    );
-    console.log(2, results);
-  }
-  if (descriptionfilter) {
-    endresults = endresults.concat(
-      results.filter((r) => dfilter.includes(r.description))
-    );
-    console.log(3, results);
-  }
-  if (endresults.length !== 0) {
-    results = endresults;
-  }
+	if (taskfilter) {
+		endresults = results.filter((r) => tfilter.includes(r.name));
+		console.log(1, results);
+	}
+	if (labelfilter) {
+		endresults = endresults.concat(results.filter((r) => r.labels.some((l) => lfilter.includes(l.name))));
+		console.log(2, results);
+	}
+	if (descriptionfilter) {
+		endresults = endresults.concat(results.filter((r) => dfilter.includes(r.description)));
+		console.log(3, results);
+	}
+	if (endresults.length !== 0) {
+		results = endresults;
+	}
 
-  res.send({ data: results });
+	res.send({ data: results });
 };
 
 export const getTaskById = async (req, res) => {
-  const taskId = req.params.taskId;
-  const taskRepository = await getRepository(Task);
+	const taskId = req.params.taskId;
+	const taskRepository = await getRepository(Task);
 
-  try {
-    const task = await taskRepository.findOneOrFail({
-      relations: ["labels", "trackings"],
-      where: { taskid: taskId },
-    });
-    res.send({
-      data: task,
-    });
-    return;
-  } catch (error) {
-    res.status(404).send({
-      status: "not_found",
-    });
-  }
+	try {
+		const task = await taskRepository.findOneOrFail({
+			relations: ['labels', 'trackings'],
+			where: { taskid: taskId },
+		});
+		res.send({
+			data: task,
+		});
+		return;
+	} catch (error) {
+		res.status(404).send({
+			status: 'not_found',
+		});
+	}
 };
 
 export const deleteTaskById = async (req, res) => {
-  const taskId = req.params.taskId;
-  const taskRepository = await getRepository(Task);
+	const taskId = req.params.taskId;
+	const taskRepository = await getRepository(Task);
 
-  try {
-    const task = await taskRepository.findOneOrFail({
-      relations: ["trackings"],
-      where: { taskid: taskId },
-    });
-    await taskRepository.remove(task);
-    res.send({});
-  } catch (error) {
-    res.status(404).send({
-      status: "not_found",
-    });
-  }
+	try {
+		const task = await taskRepository.findOneOrFail({
+			relations: ['trackings'],
+			where: { taskid: taskId },
+		});
+		await taskRepository.remove(task);
+		res.send({});
+	} catch (error) {
+		res.status(404).send({
+			status: 'not_found',
+		});
+	}
 };
 
 export const updateTaskById = async (req, res) => {
-  const taskId = req.params.taskId;
-  const { name, description, labels } = req.body;
-  const taskRepository = await getRepository(Task);
-  const labelRepository = await getRepository(Label);
+	const taskId = req.params.taskId;
+	const { name, description, labels } = req.body;
+	const taskRepository = await getRepository(Task);
+	const labelRepository = await getRepository(Label);
 
-  try {
-    let task = await taskRepository.findOneOrFail({
-      relations: ["labels"],
-      where: { taskid: taskId },
-    });
-    task.name = name;
-    task.description = description;
+	try {
+		let task = await taskRepository.findOneOrFail({
+			relations: ['labels'],
+			where: { taskid: taskId },
+		});
+		task.name = name;
+		task.description = description;
 
-    if (labels !== null) {
-      for (let index = 0; index < Object.keys(labels).length; index += 1) {
-        const element = labels[index];
+		if (labels !== null) {
+			for (let index = 0; index < Object.keys(labels).length; index += 1) {
+				const element = labels[index];
 
-        await addLabelToTaksIfExists(labelRepository, element, task, res);
-      }
-    }
-    task = await taskRepository.save(task);
+				await addLabelToTaksIfExists(labelRepository, element, task, res);
+			}
+		}
+		task = await taskRepository.save(task);
 
-    res.send({
-      data: task,
-    });
-  } catch (error) {
-    res.status(404).send({
-      status: "not_found",
-    });
-  }
+		res.send({
+			data: task,
+		});
+	} catch (error) {
+		res.status(404).send({
+			status: 'not_found',
+		});
+	}
 };
 
 export const createTask = async (req, res) => {
-  const { name, description, labels } = req.body;
-  if (!name) {
-    res.status(400).send({
-      status: "Invalid Syntax",
-    });
-    return;
-  }
-  const task = new Task();
-  task.name = name;
-  task.description = description;
-  task.labels = [];
-  const labelRepository = await getRepository(Label);
+	const { name, description, labels } = req.body;
+	if (!name) {
+		res.status(400).send({
+			status: 'Invalid Syntax',
+		});
+		return;
+	}
+	const task = new Task();
+	task.name = name;
+	task.description = description;
+	task.labels = [];
+	const labelRepository = await getRepository(Label);
 
-  if (labels !== null) {
-    for (let index = 0; index < Object.keys(labels).length; index += 1) {
-      const element = labels[index];
+	if (labels !== null) {
+		for (let index = 0; index < Object.keys(labels).length; index += 1) {
+			const element = labels[index];
 
-      await addLabelToTaksIfExists(labelRepository, element, task, res);
-    }
-  }
+			await addLabelToTaksIfExists(labelRepository, element, task, res);
+		}
+	}
 
-  const taskRepository = await getRepository(Task);
-  const createdTask = await taskRepository.save(task);
+	const taskRepository = await getRepository(Task);
+	const createdTask = await taskRepository.save(task);
 
-  res.send({
-    data: createdTask,
-  });
+	res.send({
+		data: createdTask,
+	});
 };
 
 export const addLabel = async (req, res) => {
-  const taskId = req.params.taskId;
-  const { labels } = req.body;
-  try {
-    const taskRepository = await getRepository(Task);
-    const labelRepository = await getRepository(Label);
+	const taskId = req.params.taskId;
+	const { labels } = req.body;
+	try {
+		const taskRepository = await getRepository(Task);
+		const labelRepository = await getRepository(Label);
 
-    /**
-     *  relations ist used to get the labels loaded in to the array
-     *  if it's not used then the array is undefined
-     */
-    let task = await taskRepository.findOneOrFail({
-      relations: ["labels"],
-      where: { taskid: taskId },
-    });
-    // iterate through Label IDs that we want to add to a task
-    for (let index = 0; index < Object.keys(labels).length; index += 1) {
-      const element = labels[index];
+		/**
+		 *  relations ist used to get the labels loaded in to the array
+		 *  if it's not used then the array is undefined
+		 */
+		let task = await taskRepository.findOneOrFail({
+			relations: ['labels'],
+			where: { taskid: taskId },
+		});
+		// iterate through Label IDs that we want to add to a task
+		for (let index = 0; index < Object.keys(labels).length; index += 1) {
+			const element = labels[index];
 
-      if (
-        !(await addLabelToTaksIfExists(labelRepository, element, task, res))
-      ) {
-        return;
-      }
-    }
-    task = await taskRepository.save(task);
+			if (!(await addLabelToTaksIfExists(labelRepository, element, task, res))) {
+				return;
+			}
+		}
+		task = await taskRepository.save(task);
 
-    res.send({
-      data: task,
-    });
-  } catch (error) {
-    res.status(404).send({
-      status: "not_found",
-    });
-  }
+		res.send({
+			data: task,
+		});
+	} catch (error) {
+		res.status(404).send({
+			status: 'not_found',
+		});
+	}
 };
 
 export const deleteLabel = async (req, res) => {
-  const taskId = req.params.taskId;
-  const { labels } = req.body;
+	const taskId = req.params.taskId;
+	const { labels } = req.body;
 
-  if (!labels) {
-    res.status(400).send({
-      status: "Invalid Syntax",
-    });
-    return;
-  }
-  try {
-    const taskRepository = await getRepository(Task);
-    const labelRepository = await getRepository(Label);
+	if (!labels) {
+		res.status(400).send({
+			status: 'Invalid Syntax',
+		});
+		return;
+	}
+	try {
+		const taskRepository = await getRepository(Task);
+		const labelRepository = await getRepository(Label);
 
-    let task = await taskRepository.findOneOrFail({
-      relations: ["labels"],
-      where: { taskid: taskId },
-    });
+		let task = await taskRepository.findOneOrFail({
+			relations: ['labels'],
+			where: { taskid: taskId },
+		});
 
-    /**
-     * iterate through Label IDs that we want to delete
-     */
-    for (let index = 0; index < Object.keys(labels).length; index += 1) {
-      const element = labels[index];
+		/**
+		 * iterate through Label IDs that we want to delete
+		 */
+		for (let index = 0; index < Object.keys(labels).length; index += 1) {
+			const element = labels[index];
 
-      if (
-        !(await searchForLabelToDelete(labelRepository, element, task, res))
-      ) {
-        return;
-      }
-    }
-    task = await taskRepository.save(task);
+			if (!(await searchForLabelToDelete(labelRepository, element, task, res))) {
+				return;
+			}
+		}
+		task = await taskRepository.save(task);
 
-    res.send({
-      data: task,
-    });
-  } catch (error) {
-    res.status(404).send({
-      status: "not_found",
-    });
-  }
+		res.send({
+			data: task,
+		});
+	} catch (error) {
+		res.status(404).send({
+			status: 'not_found',
+		});
+	}
 };
 
 export const getAllLabelsOfTask = async (req, res) => {
-  const { taskId } = req.params;
-  const taskRepository = await getRepository(Task);
-  try {
-    const task = await taskRepository.findOneOrFail({
-      relations: ["labels"],
-      where: { taskid: taskId },
-    });
-    const labels = task.labels;
-    res.send({
-      data: labels,
-    });
-    return;
-  } catch (error) {
-    res.status(404).send({
-      status: "not_found",
-    });
-  }
+	const { taskId } = req.params;
+	const taskRepository = await getRepository(Task);
+	try {
+		const task = await taskRepository.findOneOrFail({
+			relations: ['labels'],
+			where: { taskid: taskId },
+		});
+		const labels = task.labels;
+		res.send({
+			data: labels,
+		});
+		return;
+	} catch (error) {
+		res.status(404).send({
+			status: 'not_found',
+		});
+	}
 };
 
 export const getAllTrackingsOfTask = async (req, res) => {
-  const { taskId } = req.params;
-  const taskRepository = await getRepository(Task);
-  try {
-    const task = await taskRepository.findOneOrFail({
-      relations: ["trackings"],
-      where: { taskid: taskId },
-    });
-    const trackings = task.trackings;
-    res.send({
-      data: trackings,
-    });
-    return;
-  } catch (error) {
-    res.status(404).send({
-      status: "not_found",
-    });
-  }
+	const { taskId } = req.params;
+	const taskRepository = await getRepository(Task);
+	try {
+		const task = await taskRepository.findOneOrFail({
+			relations: ['trackings'],
+			where: { taskid: taskId },
+		});
+		const trackings = task.trackings;
+		res.send({
+			data: trackings,
+		});
+		return;
+	} catch (error) {
+		res.status(404).send({
+			status: 'not_found',
+		});
+	}
 };
 
 /**
  * Try to find the label with wanted id
  * If found then add it else throw an error
  */
-async function addLabelToTaksIfExists(
-  labelRepository,
-  element: any,
-  task: Task,
-  res: any
-) {
-  try {
-    const label = await labelRepository.findOneOrFail(element);
-    task.labels.push(label);
-    return true;
-  } catch (error) {
-    res.status(404).send({
-      status: "not_found",
-    });
-    return false;
-  }
+async function addLabelToTaksIfExists(labelRepository, element: any, task: Task, res: any) {
+	try {
+		const label = await labelRepository.findOneOrFail(element);
+		task.labels.push(label);
+		return true;
+	} catch (error) {
+		res.status(404).send({
+			status: 'not_found',
+		});
+		return false;
+	}
 }
 
 /**
@@ -288,22 +275,17 @@ async function addLabelToTaksIfExists(
  * if not found, send an error
  */
 
-async function searchForLabelToDelete(
-  labelRepository,
-  element: any,
-  task: Task,
-  res: any
-) {
-  try {
-    const label = await labelRepository.findOneOrFail(element);
-    deleteLabelIfFound(task, label);
-    return true;
-  } catch (error) {
-    res.status(404).send({
-      status: "not_found",
-    });
-    return false;
-  }
+async function searchForLabelToDelete(labelRepository, element: any, task: Task, res: any) {
+	try {
+		const label = await labelRepository.findOneOrFail(element);
+		deleteLabelIfFound(task, label);
+		return true;
+	} catch (error) {
+		res.status(404).send({
+			status: 'not_found',
+		});
+		return false;
+	}
 }
 
 /**
@@ -313,9 +295,9 @@ async function searchForLabelToDelete(
  * if label exists then delete it
  */
 function deleteLabelIfFound(task: Task, label: any) {
-  for (let index2 = 0; index2 < task.labels.length; index2 += 1) {
-    if (task.labels[index2].labelid === label.labelid) {
-      task.labels.splice(index2, 1);
-    }
-  }
+	for (let index2 = 0; index2 < task.labels.length; index2 += 1) {
+		if (task.labels[index2].labelid === label.labelid) {
+			task.labels.splice(index2, 1);
+		}
+	}
 }

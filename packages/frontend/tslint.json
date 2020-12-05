@@ -19,6 +19,7 @@
         "import-name": false,
         "no-floating-promises": true,
         "no-unused-declaration": true,
-        "object-literal-sort-keys": [true, "ignore-case", "locale-compare"]
+        "object-literal-sort-keys": [true, "ignore-case", "locale-compare"],
+        "jsx-no-lambda": false
       }
 }

@@ -9,6 +9,7 @@
     "test:ci": "jest --verbose --coverage --ci --forceExit --detectOpenHandles --runInBand",
     "start": "nodemon --legacy-watch",
     "lint": "tslint --project .",
+    "lint:fix": "tslint --project . --fix",
     "typeorm": "ts-node ./node_modules/typeorm/cli.js",
     "fixtures": "npx fixtures ./src/fixture --config ormconfig.js --sync --require=ts-node/register",
     "discord": "ts-node discord-bot/discordbot.ts"

@@ -1,26 +1,26 @@
-import {Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn} from 'typeorm';
+import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 import { Task } from './Task';
 
 @Entity()
-export class Tracking{
-    @PrimaryGeneratedColumn()
-    trackingid: number;
+export class Tracking {
+	@PrimaryGeneratedColumn()
+	trackingid: number;
 
-    @Column({nullable:false})
-    description: string;
+	@Column({ nullable: false })
+	description: string;
 
-    @Column({type:"timestamp", default: () => 'CURRENT_TIMESTAMP'})
-    timestart: string;
+	@Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+	timestart: string;
 
-    @Column({type:"timestamp", default: () => 'CURRENT_TIMESTAMP'})
-    timeend: string;
-    
-    @CreateDateColumn()
-    createdAt: string;
+	@Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+	timeend: string;
 
-    @UpdateDateColumn()
-    updatedAt: string;
+	@CreateDateColumn()
+	createdAt: string;
 
-    @ManyToOne(()=> Task, task => task.trackings, {onDelete: "CASCADE"})
-    task: Task
+	@UpdateDateColumn()
+	updatedAt: string;
+
+	@ManyToOne(() => Task, (task) => task.trackings, { onDelete: 'CASCADE' })
+	task: Task;
 }
