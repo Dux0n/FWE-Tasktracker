@@ -29,7 +29,7 @@ export const StartBot = async () => {
         const response = await fetch(responseObject[command]);
         const tasks = await response.json();
 
-        for (let index = 0; index < tasks.data.length; index++) {
+        for (let index = 0; index < tasks.data.length; index+1) {
           const obj = tasks.data[index] as Task;
           console.log(obj.name);
 

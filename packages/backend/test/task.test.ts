@@ -94,7 +94,7 @@ describe("task", () => {
     task.description = "Das ist ein Test";
     const savedtask = await helper.getRepo(Task).save(task);
     request(helper.app)
-      .get("/api/task?descriptionfilter=Das ist ein Test")
+      .get(`/api/task?descriptionfilter=${savedtask.description}`)
       .set("Content-Type", "application/json")
       .set("Accept", "application/json")
       .expect(200)

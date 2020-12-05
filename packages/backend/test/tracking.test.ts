@@ -143,8 +143,6 @@ describe("tracking", () => {
   it("should not be able to update a tracking", async (done) => {
     await helper.resetDatabase();
     await helper.loadFixtures();
-    let tracking = new Tracking();
-    tracking = await helper.getRepo(Tracking).findOneOrFail({ trackingid: 2 });
     request(helper.app)
       .patch(`/api/tracking/100`)
       .send({

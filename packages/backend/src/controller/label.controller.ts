@@ -1,4 +1,4 @@
-import { Connection, getRepository } from "typeorm";
+import {  getRepository } from "typeorm";
 import { Label } from "../entity/Label";
 
 export const getAllLabels = async (req, res) => {
@@ -83,8 +83,8 @@ export const getAllTasksOfLabel = async (req, res) => {
   const labelRepository = await getRepository(Label);
   try {
     const label = await labelRepository.findOneOrFail({
-      where: { labelid: labelId },
       relations: ["tasks"],
+      where: { labelid: labelId },
     });
     const tasks = label.tasks;
     res.send({

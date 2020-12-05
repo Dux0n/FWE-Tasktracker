@@ -1,4 +1,4 @@
-import { Router, Request, Response } from "express";
+import { Request, Response, Router } from "express";
 import { labelRouter } from "./label.router";
 import { taskRouter } from "./task.router";
 import { trackingRouter } from "./tracking.router";

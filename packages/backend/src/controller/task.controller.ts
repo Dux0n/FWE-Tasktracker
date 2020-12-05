@@ -3,35 +3,39 @@ import { Label } from "../entity/Label";
 import { Task } from "../entity/Task";
 
 export const getAllTasks = async (req, res) => {
-  
-   const { taskfilter, labelfilter, descriptionfilter } = req.query;
-  
-  const lfilter = String(labelfilter).toString().split(",")  as string[];
+  const { taskfilter, labelfilter, descriptionfilter } = req.query;
+
+  const lfilter = String(labelfilter).toString().split(",") as string[];
   const tfilter = String(taskfilter).toString().split(",") as string[];
   const dfilter = String(descriptionfilter).toString().split(",") as string[];
-  
+
   const taskRepository = await getRepository(Task);
   const tasks = await taskRepository.find({
     relations: ["labels", "trackings"],
   });
   let results = [...tasks];
-  let endresults : Task[] = [];
-  
+  let endresults: Task[] = [];
 
-  if(taskfilter){
-    endresults = results.filter(r => tfilter.includes(r.name));
+  if (taskfilter) {
+    endresults = results.filter((r) => tfilter.includes(r.name));
     console.log(1, results);
   }
-  if(labelfilter){
-    endresults = endresults.concat(results.filter(r => r.labels.some(l =>  lfilter.includes(l.name))));
+  if (labelfilter) {
+    endresults = endresults.concat(
+      results.filter((r) => r.labels.some((l) => lfilter.includes(l.name)))
+    );
     console.log(2, results);
   }
-  if(descriptionfilter){
-    endresults = endresults.concat(results.filter(r => dfilter.includes(r.description)));
+  if (descriptionfilter) {
+    endresults = endresults.concat(
+      results.filter((r) => dfilter.includes(r.description))
+    );
     console.log(3, results);
   }
-  if(endresults.length !== 0){results = endresults;}
-  
+  if (endresults.length !== 0) {
+    results = endresults;
+  }
+
   res.send({ data: results });
 };
 
@@ -41,8 +45,8 @@ export const getTaskById = async (req, res) => {
 
   try {
     const task = await taskRepository.findOneOrFail({
+      relations: ["labels", "trackings"],
       where: { taskid: taskId },
-      relations: ["labels","trackings"],
     });
     res.send({
       data: task,
@@ -61,8 +65,8 @@ export const deleteTaskById = async (req, res) => {
 
   try {
     const task = await taskRepository.findOneOrFail({
-      where: { taskid: taskId },
       relations: ["trackings"],
+      where: { taskid: taskId },
     });
     await taskRepository.remove(task);
     res.send({});
@@ -81,19 +85,19 @@ export const updateTaskById = async (req, res) => {
 
   try {
     let task = await taskRepository.findOneOrFail({
-      where: { taskid: taskId },
       relations: ["labels"],
+      where: { taskid: taskId },
     });
     task.name = name;
     task.description = description;
-    
-    if(labels !== null){
-    for (let index = 0; index < Object.keys(labels).length; index += 1) {
-      const element = labels[index];
 
-      await addLabelToTaksIfExists(labelRepository, element, task, res);
+    if (labels !== null) {
+      for (let index = 0; index < Object.keys(labels).length; index += 1) {
+        const element = labels[index];
+
+        await addLabelToTaksIfExists(labelRepository, element, task, res);
+      }
     }
-  }
     task = await taskRepository.save(task);
 
     res.send({
@@ -120,7 +124,7 @@ export const createTask = async (req, res) => {
   task.labels = [];
   const labelRepository = await getRepository(Label);
 
-  if(labels !== null){
+  if (labels !== null) {
     for (let index = 0; index < Object.keys(labels).length; index += 1) {
       const element = labels[index];
 
@@ -143,17 +147,23 @@ export const addLabel = async (req, res) => {
     const taskRepository = await getRepository(Task);
     const labelRepository = await getRepository(Label);
 
-    //relations ist used to get the labels loaded in to the array
-    //if it's not used then the array is undefined
+    /**
+     *  relations ist used to get the labels loaded in to the array
+     *  if it's not used then the array is undefined
+     */
     let task = await taskRepository.findOneOrFail({
-      where: { taskid: taskId },
       relations: ["labels"],
+      where: { taskid: taskId },
     });
     // iterate through Label IDs that we want to add to a task
     for (let index = 0; index < Object.keys(labels).length; index += 1) {
       const element = labels[index];
 
-     if( !(await addLabelToTaksIfExists(labelRepository, element, task, res)) ){return;}
+      if (
+        !(await addLabelToTaksIfExists(labelRepository, element, task, res))
+      ) {
+        return;
+      }
     }
     task = await taskRepository.save(task);
 
@@ -170,7 +180,7 @@ export const addLabel = async (req, res) => {
 export const deleteLabel = async (req, res) => {
   const taskId = req.params.taskId;
   const { labels } = req.body;
-  
+
   if (!labels) {
     res.status(400).send({
       status: "Invalid Syntax",
@@ -182,14 +192,21 @@ export const deleteLabel = async (req, res) => {
     const labelRepository = await getRepository(Label);
 
     let task = await taskRepository.findOneOrFail({
-      where: { taskid: taskId },
       relations: ["labels"],
+      where: { taskid: taskId },
     });
-    //iterate through Label IDs that we want to delete
+
+    /**
+     * iterate through Label IDs that we want to delete
+     */
     for (let index = 0; index < Object.keys(labels).length; index += 1) {
       const element = labels[index];
 
-      if(!(  await SearchForLabelToDelete(labelRepository, element, task, res))){return;}
+      if (
+        !(await searchForLabelToDelete(labelRepository, element, task, res))
+      ) {
+        return;
+      }
     }
     task = await taskRepository.save(task);
 
@@ -208,8 +225,8 @@ export const getAllLabelsOfTask = async (req, res) => {
   const taskRepository = await getRepository(Task);
   try {
     const task = await taskRepository.findOneOrFail({
-      where: { taskid: taskId },
       relations: ["labels"],
+      where: { taskid: taskId },
     });
     const labels = task.labels;
     res.send({
@@ -228,8 +245,8 @@ export const getAllTrackingsOfTask = async (req, res) => {
   const taskRepository = await getRepository(Task);
   try {
     const task = await taskRepository.findOneOrFail({
-      where: { taskid: taskId },
       relations: ["trackings"],
+      where: { taskid: taskId },
     });
     const trackings = task.trackings;
     res.send({
@@ -243,8 +260,10 @@ export const getAllTrackingsOfTask = async (req, res) => {
   }
 };
 
-//Try to find the label with wanted id
-// If found then add it else throw an error
+/**
+ * Try to find the label with wanted id
+ * If found then add it else throw an error
+ */
 async function addLabelToTaksIfExists(
   labelRepository,
   element: any,
@@ -263,10 +282,13 @@ async function addLabelToTaksIfExists(
   }
 }
 
-// Rafactor of deleteLabel
-// Try to find the label that we want to delete
-// if not found, send an error
-async function SearchForLabelToDelete(
+/**
+ * Refactor of deleteLabel
+ * Try to find the label that we want to delete
+ * if not found, send an error
+ */
+
+async function searchForLabelToDelete(
   labelRepository,
   element: any,
   task: Task,
@@ -283,10 +305,13 @@ async function SearchForLabelToDelete(
     return false;
   }
 }
-//Refactor of SearchForLabelToDelete
-// if the Label was found we iterate through labels of a task
-// to see if it has the Label that we want to delete
-// if label exists then delete it
+
+/**
+ * Refactor of SearchForLabelToDelete
+ * if the Label was found we iterate through labels of a task
+ * to see if it has the Label that we want to delete
+ * if label exists then delete it
+ */
 function deleteLabelIfFound(task: Task, label: any) {
   for (let index2 = 0; index2 < task.labels.length; index2 += 1) {
     if (task.labels[index2].labelid === label.labelid) {

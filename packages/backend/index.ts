@@ -1,5 +1,5 @@
-import express, { Request, Response } from "express";
 import * as bodyParser from "body-parser";
+import express from "express";
 import { StartBot } from "./src/discord-bot/discordbot";
 import { globalRouter } from "./src/router/global.router";
 import { createDBcon } from "./src/util/createDBcon";
