@@ -240,7 +240,7 @@ export const TaskItem: React.FC<TaskItemProps> = ({
 						{actualTaskID === task.taskid ? state : 'Start Timer'}
 					</NormalButton>
 					<StyledTopButton>
-						<DeleteButton
+						<DeleteButton data-testid="delete-task-button"
 							onClick={() => {
 								deleteTask(task);
 							}}

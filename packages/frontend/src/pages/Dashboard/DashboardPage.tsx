@@ -255,7 +255,7 @@ export const DashboardPage = () => {
 					/>
 				</Modal>
 			)}
-			<TaskList>
+			<TaskList data-testid="task-list-id">
 				{tasks.map((task) => (
 					<TaskItem
 						onClick={() => {

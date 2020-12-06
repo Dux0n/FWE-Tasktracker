@@ -84,11 +84,13 @@ export const updateTaskById = async (req, res) => {
 		task.name = name;
 		task.description = description;
 
-		if (labels.length !== 0) {
+		if (labels[0] !== '') {
 			for (let index = 0; index < Object.keys(labels).length; index += 1) {
 				const element = labels[index];
 
-				await addLabelToTaksIfExists(labelRepository, element, task, res);
+				if (!(await addLabelToTaksIfExists(labelRepository, element, task, res))) {
+					return;
+				}
 			}
 		}
 		task = await taskRepository.save(task);
@@ -117,11 +119,13 @@ export const createTask = async (req, res) => {
 	task.labels = [];
 	const labelRepository = await getRepository(Label);
 
-	if (labels.length !== 0) {
+	if (labels[0] !== '') {
 		for (let index = 0; index < Object.keys(labels).length; index += 1) {
 			const element = labels[index];
 
-			await addLabelToTaksIfExists(labelRepository, element, task, res);
+			if (!(await addLabelToTaksIfExists(labelRepository, element, task, res))) {
+				return;
+			}
 		}
 	}
 
