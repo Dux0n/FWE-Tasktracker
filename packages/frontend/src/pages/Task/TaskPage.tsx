@@ -187,7 +187,7 @@ export const TaskPage = () => {
 				</Modal>
 			)}
 			<TrackingList>
-				{task?.trackings.map((tracking) => (
+				{task?.trackings.reverse().map((tracking) => (
 					<TrackingItem key={tracking.trackingid} tracking={tracking} fetchTask={fetchTask} />
 				))}
 			</TrackingList>

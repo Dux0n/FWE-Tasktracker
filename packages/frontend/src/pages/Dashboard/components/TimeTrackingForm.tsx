@@ -1,6 +1,6 @@
 import React, { ChangeEvent, useState } from 'react';
 import { Button } from '../../../components/Button';
-import { InputTracking } from '../../../components/InputTracking';
+import { Input } from '../../../components/Input/Input';
 
 export const TimeTrackingForm: React.FC<{
 	afterSubmit: () => void;
@@ -35,14 +35,7 @@ export const TimeTrackingForm: React.FC<{
 	return (
 		<>
 			<form onSubmit={onSubmitForm}>
-				<InputTracking
-					name="description"
-					type="text"
-					label="What did you do?"
-					onChange={fieldDidChange}
-					required={true}
-				/>
-
+				<Input name="description" type="text" label="What did you do?" onChange={fieldDidChange} required={true} />
 				<Button type="submit">Save Tracking</Button>
 			</form>
 		</>

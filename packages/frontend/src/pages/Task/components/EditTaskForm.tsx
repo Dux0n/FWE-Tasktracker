@@ -1,6 +1,6 @@
 import React, { ChangeEvent, useState } from 'react';
 import { Button } from '../../../components/Button';
-import { Input } from '../../../components/Input';
+import { Input } from '../../../components/Input/Input';
 import { Task } from '../../Dashboard/components/TaskList';
 
 export const EditTaskForm: React.FC<{

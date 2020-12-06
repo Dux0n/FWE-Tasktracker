@@ -18,15 +18,12 @@ export const getAllTasks = async (req, res) => {
 
 	if (taskfilter) {
 		endresults = results.filter((r) => tfilter.includes(r.name));
-		console.log(1, results);
 	}
 	if (labelfilter) {
 		endresults = endresults.concat(results.filter((r) => r.labels.some((l) => lfilter.includes(l.name))));
-		console.log(2, results);
 	}
 	if (descriptionfilter) {
 		endresults = endresults.concat(results.filter((r) => dfilter.includes(r.description)));
-		console.log(3, results);
 	}
 	if (endresults.length !== 0) {
 		results = endresults;
@@ -87,7 +84,7 @@ export const updateTaskById = async (req, res) => {
 		task.name = name;
 		task.description = description;
 
-		if (labels !== null) {
+		if (labels.length !== 0) {
 			for (let index = 0; index < Object.keys(labels).length; index += 1) {
 				const element = labels[index];
 
@@ -120,7 +117,7 @@ export const createTask = async (req, res) => {
 	task.labels = [];
 	const labelRepository = await getRepository(Label);
 
-	if (labels !== null) {
+	if (labels.length !== 0) {
 		for (let index = 0; index < Object.keys(labels).length; index += 1) {
 			const element = labels[index];
 

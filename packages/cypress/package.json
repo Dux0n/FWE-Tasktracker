@@ -1,0 +1,15 @@
+{
+  "name": "@finance-tracker/cypress",
+  "version": "1.0.0",
+  "scripts": {
+    "cypress": "npx cypress open"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@testing-library/cypress": "^6.0.0",
+    "cypress": "^4.7.0",
+    "test-data-bot": "^0.8.0"
+  }
+}

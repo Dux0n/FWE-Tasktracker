@@ -4,7 +4,7 @@
   "description": "",
   "scripts": {
     "start": "PORT=80 react-scripts start",
-    "test": "react-scripts test",
+    "test": "react-scripts test --env=jest-environment-jsdom-sixteen",
     "build": "react-scripts build",
     "lint": "tslint --project .",
     "lint:fix": "tslint --project . --fix"
@@ -23,17 +23,23 @@
     "styled-components": "^5.2.1"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^5.11.6",
+    "@testing-library/react": "^11.2.2",
+    "@types/jest": "^26.0.16",
     "@types/react": "^16.9.34",
     "@types/react-dom": "^16.9.6",
     "@types/styled-components": "^5.1.0",
-    "typescript": "^3.9.7",
+    "jest-environment-jsdom-sixteen": "^1.0.3",
+    "jest-fetch-mock": "^3.0.3",
     "prettier": "2.1.2",
+    "ts-jest": "^26.4.4",
     "tslint": "^5.20.1",
-    "tslint-react": "5.0.0",
     "tslint-config-airbnb": "5.11.2",
     "tslint-config-prettier": "^1.18.0",
     "tslint-etc": "1.13.7",
-    "tslint-plugin-prettier": "2.3.0"
+    "tslint-plugin-prettier": "2.3.0",
+    "tslint-react": "5.0.0",
+    "typescript": "^3.9.7"
   },
   "proxy": "http://backend:4000",
   "browserslist": {

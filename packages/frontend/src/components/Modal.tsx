@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 import styled from 'styled-components';
 
@@ -8,7 +8,7 @@ const ModalHolder = styled.div`
 	left: 0px;
 	height: 100vh;
 	width: 100%;
-	backgournd-color: rgba(0, 0, 0, 0.4);
+	background-color: rgba(0, 0, 0, 0.4);
 `;
 
 export const ModalMask = styled.div`
@@ -47,9 +47,17 @@ const ModalCloseButton = styled.button`
 	color: #000;
 	cursor: pointer;
 `;
+interface ModalProps {
+	children: React.ReactNode;
+	title: string;
+	onCancel: () => void;
+}
 
-export const Modal: React.FC<{ title: string; onCancel: () => void }> = ({ children, title, onCancel }) => {
-	const modalRoot = document.getElementById('modal-root');
+const modalRoot = document.createElement('div');
+modalRoot.setAttribute('id', 'modal-root');
+document.body.appendChild(modalRoot);
+
+export const Modal = ({ children, title, onCancel }: ModalProps) => {
 	return ReactDOM.createPortal(
 		<ModalHolder>
 			<ModalMaskHolder>

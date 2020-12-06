@@ -1,6 +1,6 @@
 import React, { ChangeEvent, useState } from 'react';
 import { Button } from '../../../components/Button';
-import { Input } from '../../../components/Input';
+import { Input } from '../../../components/Input/Input';
 
 export const AddTaskForm: React.FC<{ afterSubmit: () => void }> = ({ afterSubmit }) => {
 	const [values, setValues] = useState({
@@ -24,11 +24,11 @@ export const AddTaskForm: React.FC<{ afterSubmit: () => void }> = ({ afterSubmit
 
 	return (
 		<>
-			<form onSubmit={onSubmitForm}>
+			<form onSubmit={onSubmitForm} data-testid="add-task-form">
 				<Input name="name" type="text" label="Name" onChange={fieldDidChange} required={true} />
 				<Input name="description" type="text" label="Description" onChange={fieldDidChange} required={true} />
 				<Input name="labels" type="text" label="Input Label Id" onChange={fieldDidChange} />
-				<Button type="submit">Add Task</Button>
+				<Button type="submit">Add new Task</Button>
 			</form>
 		</>
 	);

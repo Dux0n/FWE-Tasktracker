@@ -80,11 +80,13 @@ export const DashboardPage = () => {
 			`/api/task?taskfilter=${filter.taskname}&descriptionfilter=${filter.taskdescription}&labelfilter=${filter.labelname}`,
 			{
 				headers: { 'content-type': 'application/json' },
+				method: 'GET',
 			},
 		);
 		console.log(taskRequest);
 		if (taskRequest.status === 200) {
 			const taskJSON = await taskRequest.json();
+			console.log('te', taskJSON);
 			setTask(taskJSON.data);
 		}
 	};
@@ -143,6 +145,7 @@ export const DashboardPage = () => {
 				</div>
 				<StyledTopButton>
 					<AddButton
+						data-testid="add-task-button"
 						onClick={() => {
 							setAddTaskVisible(true);
 						}}

@@ -1,0 +1,40 @@
+version: "3"
+services:
+  fwe-time-tracker-api:
+    image: $IMAGE_TAG_SERVER
+    build: ./api
+    environment:
+      - API_PORT=8080
+      - API_HOST=http://fwe-time-tracker-api
+      - PORT=7070
+      - DBPORT=3306
+      - DBUSER=test
+      - DBPASSWORD=test
+      - DBDATABASE=fwemysqldb
+      - DBHOST=mysqldb
+
+    depends_on:
+      - mysqldb
+
+  db:
+    image: mysql:latest
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+      - --skip-character-set-client-handshake
+    environment:
+      -  MYSQL_USER=test
+      -  MYSQL_ROOT_PASSWORD=secret
+      -  MYSQL_DATABASE=fwemysqldb
+      -  MYSQL_PASSWORD=test
+
+  nginx:
+    image: $IMAGE_TAG_NGINX
+    depends_on:
+      - fwe-time-tracker-api
+
+  cypress:
+    command: /bin/bash -c "npm install && npm run cypress"
+    image: $IMAGE_TAG_CYPRESS
+    environment:
+      - CYPRESS_baseUrl=http://nginx:8080

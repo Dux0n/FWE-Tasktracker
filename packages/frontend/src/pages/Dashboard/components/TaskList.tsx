@@ -178,9 +178,11 @@ export const TaskItem: React.FC<TaskItemProps> = ({
 
 	const totalTime = () => {
 		let total: number = 0;
-		trackings.forEach((element) => {
-			total += Date.parse(element.timeend.toString()) - Date.parse(element.timestart.toString());
-		});
+		if (trackings !== null) {
+			trackings.forEach((element) => {
+				total += Date.parse(element.timeend.toString()) - Date.parse(element.timestart.toString());
+			});
+		}
 
 		const seconds = `0${(total / 1000) % 60}`.slice(-2);
 		const minutes = `${Math.floor(total / 1000 / 60)}`;
@@ -200,7 +202,7 @@ export const TaskItem: React.FC<TaskItemProps> = ({
 
 	return (
 		<TaskList>
-			<TaskItemStyle>
+			<TaskItemStyle data-testid="task-item">
 				<TaskHighlight />
 				<TaskFlex
 					onClick={() => {
