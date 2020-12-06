@@ -75,7 +75,7 @@ export const TaskPage = () => {
 		<Layout>
 			<StyledTop>
 				<StyledTopButton>
-					<EditButton
+					<EditButton data-testid="edit-task-button"
 						onClick={() => {
 							setEditTaskVisible(true);
 							setEditTask(task!);
@@ -124,14 +124,14 @@ export const TaskPage = () => {
 						<TaskDescription>Task description: {task?.description}</TaskDescription>
 						<TaskDate>Total time: {totalTime()}</TaskDate>
 					</div>
-					<LabelList>
+					<LabelList data-testid="label-list-id">
 						{task?.labels &&
 							task?.labels.map((label: Label) => {
 								return <li key={label.labelid}>{label.name}</li>;
 							})}
 					</LabelList>
 
-					<NormalButton
+					<NormalButton data-testid="delete-label-button"
 						onClick={() => {
 							setDeleteLabelFromTaskVisible(true);
 							setDeleteLabelFromTask(task!);
@@ -163,7 +163,7 @@ export const TaskPage = () => {
 					<StyledP>Tracking</StyledP>
 				</div>
 				<StyledTopButton>
-					<AddButton
+					<AddButton data-testid="add-tracking-button"
 						onClick={() => {
 							setAddTrackingVisible(true);
 						}}
@@ -186,7 +186,7 @@ export const TaskPage = () => {
 					/>
 				</Modal>
 			)}
-			<TrackingList>
+			<TrackingList data-testid="tracking-list-id">
 				{task?.trackings.reverse().map((tracking) => (
 					<TrackingItem key={tracking.trackingid} tracking={tracking} fetchTask={fetchTask} />
 				))}

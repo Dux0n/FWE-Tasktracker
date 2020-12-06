@@ -93,8 +93,6 @@ export const TrackingItem: React.FC<TrackingItemProps> = ({ tracking, fetchTask 
 		fetchTask();
 	};
 
-	
-
 	const total = Date.parse(timeend.toString()) - Date.parse(timestart.toString());
 
 	const seconds = `0${(total / 1000) % 60}`.slice(-2);
@@ -138,7 +136,7 @@ export const TrackingItem: React.FC<TrackingItemProps> = ({ tracking, fetchTask 
 								/>
 							</Modal>
 						)}
-						<DeleteButton
+						<DeleteButton data-testid="delete-tracking-button"
 							onClick={() => {
 								deleteTracking(trackingid);
 							}}

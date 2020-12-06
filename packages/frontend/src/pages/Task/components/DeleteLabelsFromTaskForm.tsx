@@ -49,7 +49,7 @@ export const DeleteLabelFromTaskForm: React.FC<{
 		<>
 			<form onSubmit={onSubmitForm}>
 				<Input name="labels" type="text" label="Labels" onChange={fieldDidChange} required={true} />
-				<Button type="submit">Delete Label</Button>
+				<Button type="submit">Delete the labels</Button>
 			</form>
 		</>
 	);

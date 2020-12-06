@@ -36,7 +36,7 @@ export const AddTrackingForm: React.FC<{ afterSubmit: () => void; task: Task }> 
 					disabled={true}
 				/>
 
-				<Button type="submit">Add Tracking</Button>
+				<Button type="submit">Add a tracking</Button>
 			</form>
 		</>
 	);

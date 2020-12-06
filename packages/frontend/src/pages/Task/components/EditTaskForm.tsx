@@ -65,7 +65,7 @@ export const EditTaskForm: React.FC<{
 
 				<Input name="labels" type="text" label="Label" onChange={fieldDidChange} />
 
-				<Button type="submit">Edit Task</Button>
+				<Button type="submit">Edit the task</Button>
 			</form>
 		</>
 	);
