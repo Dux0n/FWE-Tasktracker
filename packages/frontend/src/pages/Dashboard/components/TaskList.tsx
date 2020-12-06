@@ -202,9 +202,9 @@ export const TaskItem: React.FC<TaskItemProps> = ({
 
 	return (
 		<TaskList>
-			<TaskItemStyle data-testid="task-item">
+			<TaskItemStyle data-testid={'task-item' + name}>
 				<TaskHighlight />
-				<TaskFlex
+				<TaskFlex data-testid="task-flex-id"
 					onClick={() => {
 						onClick(task);
 					}}
@@ -240,7 +240,8 @@ export const TaskItem: React.FC<TaskItemProps> = ({
 						{actualTaskID === task.taskid ? state : 'Start Timer'}
 					</NormalButton>
 					<StyledTopButton>
-						<DeleteButton data-testid="delete-task-button"
+						<DeleteButton
+							data-testid={'delete-task-button' + name}
 							onClick={() => {
 								deleteTask(task);
 							}}

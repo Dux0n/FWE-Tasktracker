@@ -86,7 +86,7 @@ export const DashboardPage = () => {
 		console.log(taskRequest);
 		if (taskRequest.status === 200) {
 			const taskJSON = await taskRequest.json();
-			console.log('te', taskJSON);
+			//console.log('te', taskJSON);
 			setTask(taskJSON.data);
 		}
 	};
@@ -150,28 +150,28 @@ export const DashboardPage = () => {
 							setAddTaskVisible(true);
 						}}
 					/>
-					<NormalButton
+					<NormalButton data-testid="create-label-button"
 						onClick={() => {
 							setCreateLabelVisible(true);
 						}}
 					>
 						Create Label
 					</NormalButton>
-					<NormalButton
+					<NormalButton data-testid="filter-task-button"
 						onClick={() => {
 							setFilterTaskVisible(true);
 						}}
 					>
 						Filter Task
 					</NormalButton>
-					<NormalButton
+					<NormalButton data-testid="show-labels-button"
 						onClick={() => {
 							!showLabels ? setShowLabels(true) : setShowLabels(false);
 						}}
 					>
 						Show Labels
 					</NormalButton>
-					<NormalButton
+					<NormalButton data-testid="delete-label-button"
 						onClick={() => {
 							setDeleteLabelVisible(true);
 						}}
@@ -182,7 +182,7 @@ export const DashboardPage = () => {
 			</StyledTop>
 			<div>
 				{showLabels ? (
-					<LabelList>
+					<LabelList data-testid="label-list-id">
 						{labels &&
 							labels.map((label: Label) => {
 								return (
@@ -220,6 +220,7 @@ export const DashboardPage = () => {
 						afterSubmit={() => {
 							setCreateLabelVisible(false);
 							fetchTask();
+							fetchLabels();
 						}}
 					/>
 				</Modal>
@@ -235,6 +236,7 @@ export const DashboardPage = () => {
 						afterSubmit={() => {
 							setDeleteLabelVisible(false);
 							fetchTask();
+							fetchLabels();
 						}}
 					/>
 				</Modal>

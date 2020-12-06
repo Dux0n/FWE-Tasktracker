@@ -29,7 +29,7 @@ export const FilterForm: React.FC<{ afterSubmit: () => void; filter: any; setFil
 				<Input name="taskname" type="text" label="Name" onChange={fieldDidChange} />
 				<Input name="taskdescription" type="text" label="Description" onChange={fieldDidChange} />
 				<Input name="labelname" type="text" label="Label" onChange={fieldDidChange} />
-				<Button type="submit">Filter Task</Button>
+				<Button type="submit">Use current filter</Button>
 			</form>
 		</>
 	);

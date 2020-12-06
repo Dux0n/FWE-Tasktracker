@@ -23,7 +23,7 @@ export const CreateLabelForm: React.FC<{ afterSubmit: () => void }> = ({ afterSu
 		<>
 			<form onSubmit={onSubmitForm}>
 				<Input name="name" type="text" label="Name" onChange={fieldDidChange} required={true} />
-				<Button type="submit">Create Label</Button>
+				<Button type="submit">Create a label</Button>
 			</form>
 		</>
 	);

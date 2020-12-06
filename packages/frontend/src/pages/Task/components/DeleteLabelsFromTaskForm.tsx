@@ -3,7 +3,7 @@ import { Button } from '../../../components/Button';
 import { Input } from '../../../components/Input/Input';
 import { Task } from '../../Dashboard/components/TaskList';
 
-export const DeleteLabelForm: React.FC<{
+export const DeleteLabelFromTaskForm: React.FC<{
 	afterSubmit: () => void;
 	task: Task;
 }> = ({ afterSubmit, task }) => {
@@ -16,14 +16,32 @@ export const DeleteLabelForm: React.FC<{
 	};
 	const onSubmitForm = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		console.log(values.taskid);
-		console.log(JSON.stringify({ labels: values.labels.toString().split(',') }));
-		await fetch(`/api/task/${values.taskid}/deletelabel`, {
-			body: JSON.stringify({ labels: values.labels.toString().split(',') }),
-			headers: { 'Content-Type': 'application/json' },
-			method: 'PATCH',
-		});
 
+		const labelRequest = await fetch('/api/label', {
+			headers: { 'content-type': 'application/json' },
+			method: 'GET',
+		});
+		console.log(labelRequest);
+		if (labelRequest.status === 200) {
+			const labelJSON = await labelRequest.json();
+			const labelnames = values.labels.toString().split(',');
+			let labelstosend: string[] = [];
+			for (let index = 0; index < Object.keys(labelJSON.data).length; index += 1) {
+				for (let index2 = 0; index2 < labelnames.length; index2 += 1) {
+					if (labelnames[index2] === labelJSON.data[index].name) {
+						labelstosend.push(labelJSON.data[index].labelid);
+					}
+				}
+			}
+			await fetch(`/api/task/${values.taskid}/label`, {
+				body: JSON.stringify({ labels: labelstosend }),
+				headers: { 'Content-Type': 'application/json' },
+				method: 'DELETE',
+			});
+
+			afterSubmit();
+			return;
+		}
 		afterSubmit();
 	};
 

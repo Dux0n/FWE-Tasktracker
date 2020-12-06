@@ -16,7 +16,7 @@ import {
 	TaskTitle,
 } from '../Dashboard/components/TaskList';
 import { StyledP, StyledTop, StyledTopButton } from '../Dashboard/DashboardPage';
-import { DeleteLabelForm } from '../Task/components/DeleteLabelsFromTaskForm';
+import { DeleteLabelFromTaskForm } from '../Task/components/DeleteLabelsFromTaskForm';
 import { AddTrackingForm } from './components/AddTrackingForm';
 import { EditTaskForm } from './components/EditTaskForm';
 import { TrackingItem, TrackingList } from './components/TrackingList';
@@ -118,7 +118,7 @@ export const TaskPage = () => {
 				</Modal>
 			)}
 			<TaskItemStyle>
-				<TaskFlex>
+				<TaskFlex data-testid={'taskflex-id'}>
 					<div>
 						<TaskTitle>Task name: {task?.name}</TaskTitle>
 						<TaskDescription>Task description: {task?.description}</TaskDescription>
@@ -147,7 +147,7 @@ export const TaskPage = () => {
 								setDeleteLabelFromTaskVisible(false);
 							}}
 						>
-							<DeleteLabelForm
+							<DeleteLabelFromTaskForm
 								afterSubmit={() => {
 									setDeleteLabelFromTaskVisible(false);
 									fetchTask();

@@ -16,17 +16,37 @@ export const EditTaskForm: React.FC<{
 	const onSubmitForm = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		console.log(values);
-		await fetch(`/api/task/${values.taskid}`, {
-			body: JSON.stringify({
-				name: values.name,
-				// tslint:disable-next-line: object-literal-sort-keys
-				description: values.description,
-				labels: values.labels.toString().split(','),
-			}),
-			headers: { 'Content-Type': 'application/json' },
-			method: 'PATCH',
-		});
 
+		const labelRequest = await fetch('/api/label', {
+			headers: { 'content-type': 'application/json' },
+			method: 'GET',
+		});
+		console.log(labelRequest);
+		if (labelRequest.status === 200) {
+			const labelJSON = await labelRequest.json();
+			const labelnames = values.labels.toString().split(',');
+			let labelstosend: string[] = [];
+			for (let index = 0; index < Object.keys(labelJSON.data).length; index += 1) {
+				for (let index2 = 0; index2 < labelnames.length; index2 += 1) {
+					if (labelnames[index2] === labelJSON.data[index].name) {
+						labelstosend.push(labelJSON.data[index].labelid);
+					}
+				}
+			}
+			console.log(labelstosend);
+			await fetch(`/api/task/${values.taskid}/label`, {
+				body: JSON.stringify({
+					name: values.name,
+					// tslint:disable-next-line: object-literal-sort-keys
+					description: values.description,
+					labels: labelstosend,
+				}),
+				headers: { 'Content-Type': 'application/json' },
+				method: 'POST',
+			});
+			afterSubmit();
+			return;
+		}
 		afterSubmit();
 	};
 
