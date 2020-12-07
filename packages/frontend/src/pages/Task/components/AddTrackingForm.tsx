@@ -27,15 +27,6 @@ export const AddTrackingForm: React.FC<{ afterSubmit: () => void; task: Task }> 
 			<form onSubmit={onSubmitForm}>
 				<Input name="description" type="text" label="Description" onChange={fieldDidChange} required={true} />
 
-				<Input
-					name="taskid"
-					type="text"
-					label="Task id"
-					value={values.taskId}
-					onChange={fieldDidChange}
-					disabled={true}
-				/>
-
 				<Button type="submit">Add a tracking</Button>
 			</form>
 		</>

@@ -8,7 +8,7 @@ describe("TaskPage", () => {
   const tracking = trackingBuilder({})();
   it("redirect to taskpage", () => {
     cy.visit("/");
-
+    cy.screenshot();
     cy.findByTestId(/add-task-button/i).click();
     cy.findByLabelText(/name/i).type(task.name);
     cy.findByLabelText(/description/i).type(task.description);
@@ -18,22 +18,27 @@ describe("TaskPage", () => {
 
     cy.findByTestId("task-flex-id").click();
     cy.url().should("contain", "/taskpage/");
+    cy.screenshot();
   });
 
   it("can create a new tracking", () => {
+    cy.screenshot();
     cy.findByTestId(/add-tracking-button/i).click();
     cy.findByLabelText(/description/i).type(tracking.description);
     cy.findByText("Add a tracking").click();
     cy.findByTestId("tracking-list-id").find("ul").should("have.length", 1);
+    cy.screenshot();
   });
 
   it("can delete a tracking", () => {
+    cy.screenshot();
     cy.findByTestId(/delete-tracking-button/i).click();
     cy.findByTestId("tracking-list-id").find("ul").should("have.length", 0);
+    cy.screenshot();
   });
 
   it("can add a label to a task", () => {
-
+    cy.screenshot();
     cy.visit("/");
     cy.findByTestId(/create-label-button/i).click();
     cy.findByLabelText(/name/i).type(label.name);
@@ -45,14 +50,15 @@ describe("TaskPage", () => {
     cy.findByLabelText(/label/i).type(label.name);
     cy.findByText("Edit the task").click();
     cy.findByTestId("label-list-id").find("li").should("have.length", 1);
+    cy.screenshot();
   });
 
   it("can delete a label from task", () => {
-
+    cy.screenshot();
     cy.findByTestId(/delete-label-button/i).click();
     cy.findByLabelText(/labels/i).type(label.name);
     cy.findByText("Delete the labels").click();
     cy.findByTestId("label-list-id").find("li").should("have.length", 1);
-
+    cy.screenshot();
   });
 });

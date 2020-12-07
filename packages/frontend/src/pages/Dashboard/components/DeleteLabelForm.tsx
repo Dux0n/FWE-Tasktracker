@@ -11,17 +11,16 @@ export const DeleteLabelForm: React.FC<{ afterSubmit: () => void }> = ({ afterSu
 	};
 	const onSubmitForm = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		const taskRequest = await fetch('/api/label', {
+		const labelRequest = await fetch('/api/label', {
 			headers: { 'content-type': 'application/json' },
 			method: 'GET',
 		});
-		console.log(taskRequest);
-		if (taskRequest.status === 200) {
-			const taskJSON = await taskRequest.json();
+		console.log(labelRequest);
+		if (labelRequest.status === 200) {
+			const taskJSON = await labelRequest.json();
 
 			for (let index = 0; index < Object.keys(taskJSON.data).length; index += 1) {
 				if (taskJSON.data[index].name === values.labelname) {
-					console.log(taskJSON.data[index].labelid);
 					await fetch(`/api/label/${taskJSON.data[index].labelid}`, {
 						headers: { 'Content-Type': 'application/json' },
 						method: 'DELETE',

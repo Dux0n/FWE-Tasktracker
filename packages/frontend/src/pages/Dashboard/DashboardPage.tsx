@@ -86,7 +86,7 @@ export const DashboardPage = () => {
 		console.log(taskRequest);
 		if (taskRequest.status === 200) {
 			const taskJSON = await taskRequest.json();
-			//console.log('te', taskJSON);
+			// console.log('te', taskJSON);
 			setTask(taskJSON.data);
 		}
 	};
@@ -150,33 +150,37 @@ export const DashboardPage = () => {
 							setAddTaskVisible(true);
 						}}
 					/>
-					<NormalButton data-testid="create-label-button"
+					<NormalButton
+						data-testid="create-label-button"
 						onClick={() => {
 							setCreateLabelVisible(true);
 						}}
 					>
 						Create Label
 					</NormalButton>
-					<NormalButton data-testid="filter-task-button"
+					<NormalButton
+						data-testid="filter-task-button"
 						onClick={() => {
 							setFilterTaskVisible(true);
 						}}
 					>
 						Filter Task
 					</NormalButton>
-					<NormalButton data-testid="show-labels-button"
+					<NormalButton
+						data-testid="show-labels-button"
 						onClick={() => {
 							!showLabels ? setShowLabels(true) : setShowLabels(false);
 						}}
 					>
 						Show Labels
 					</NormalButton>
-					<NormalButton data-testid="delete-label-button"
+					<NormalButton
+						data-testid="delete-label-button"
 						onClick={() => {
 							setDeleteLabelVisible(true);
 						}}
 					>
-						Delete Labels
+						Delete Label
 					</NormalButton>
 				</StyledTopButton>
 			</StyledTop>
@@ -185,11 +189,7 @@ export const DashboardPage = () => {
 					<LabelList data-testid="label-list-id">
 						{labels &&
 							labels.map((label: Label) => {
-								return (
-									<li key={label.labelid}>
-										{label.labelid}: {label.name}
-									</li>
-								);
+								return <li key={label.labelid}>{label.name}</li>;
 							})}
 					</LabelList>
 				) : null}

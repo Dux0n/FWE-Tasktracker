@@ -13,12 +13,31 @@ export const AddTaskForm: React.FC<{ afterSubmit: () => void }> = ({ afterSubmit
 	};
 	const onSubmitForm = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		console.log(values.labels.split(','));
-		await fetch('/api/task', {
-			body: JSON.stringify({ name: values.name, description: values.description, labels: values.labels.split(',') }),
-			headers: { 'Content-Type': 'application/json' },
-			method: 'POST',
+		const labelRequest = await fetch('/api/label', {
+			headers: { 'content-type': 'application/json' },
+			method: 'GET',
 		});
+		console.log(labelRequest);
+		if (labelRequest.status === 200) {
+			const labelJSON = await labelRequest.json();
+			const labelnames = values.labels.toString().split(',');
+			const labelstosend: string[] = [];
+			for (let index = 0; index < Object.keys(labelJSON.data).length; index += 1) {
+				for (let index2 = 0; index2 < labelnames.length; index2 += 1) {
+					if (labelnames[index2] === labelJSON.data[index].name) {
+						labelstosend.push(labelJSON.data[index].labelid);
+					}
+				}
+			}
+			console.log(values.labels.split(','));
+			await fetch('/api/task', {
+				body: JSON.stringify({ name: values.name, description: values.description, labels: labelstosend }),
+				headers: { 'Content-Type': 'application/json' },
+				method: 'POST',
+			});
+			afterSubmit();
+			return;
+		}
 		afterSubmit();
 	};
 
@@ -27,7 +46,7 @@ export const AddTaskForm: React.FC<{ afterSubmit: () => void }> = ({ afterSubmit
 			<form onSubmit={onSubmitForm} data-testid="add-task-form">
 				<Input name="name" type="text" label="Name" onChange={fieldDidChange} required={true} />
 				<Input name="description" type="text" label="Description" onChange={fieldDidChange} required={true} />
-				<Input name="labels" type="text" label="Input Label Id" onChange={fieldDidChange} />
+				<Input name="labels" type="text" label="Input label" onChange={fieldDidChange} />
 				<Button type="submit">Add new Task</Button>
 			</form>
 		</>

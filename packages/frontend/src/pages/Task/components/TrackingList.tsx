@@ -122,7 +122,7 @@ export const TrackingItem: React.FC<TrackingItemProps> = ({ tracking, fetchTask 
 						/>
 						{editTrackingVisible && (
 							<Modal
-								title="Edit Task"
+								title="Edit Tracking"
 								onCancel={() => {
 									setEditTrackingVisible(false);
 								}}
