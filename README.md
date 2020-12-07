@@ -29,9 +29,9 @@ ___
 
 ### Read More
 
- [Backend] (packages/backend/README.md)
+ [Backend](packages/backend/README.md)
 
- [Frontend] (packages/frontend/README.md)
+ [Frontend](packages/frontend/README.md)
 ___
 
 
