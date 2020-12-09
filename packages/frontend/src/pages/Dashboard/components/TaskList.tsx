@@ -214,7 +214,7 @@ export const TaskItem: React.FC<TaskItemProps> = ({
 						<TaskDescription>Task description: {description}</TaskDescription>
 						<TaskDate>Created at: {createdAt && createdAt.toLocaleString()}</TaskDate>
 						<TaskDate>Updated at: {updatedAt && updatedAt.toLocaleString()}</TaskDate>
-						<TaskDate>Total time: {totalTime()}</TaskDate>
+						<TaskDate>{totalTime()}</TaskDate>
 					</div>
 					<LabelList>
 						{labels &&
