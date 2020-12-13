@@ -102,5 +102,7 @@ After the installation
 
 * npm run cypress
 
+**For some reason tests do not work properly and fail**
+
 #### <br> E2E Tests
 ![e2eTests.png](./images/e2eTests.png/ "e2eTests")
