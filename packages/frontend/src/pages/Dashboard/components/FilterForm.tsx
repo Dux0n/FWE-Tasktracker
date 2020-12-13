@@ -13,7 +13,7 @@ export const FilterForm: React.FC<{ afterSubmit: () => void; filter: any; setFil
 		taskname: '',
 	});
 	const fieldDidChange = (e: ChangeEvent<HTMLInputElement>) => {
-		e.target.value = e.target.value.replace(/[^a-zA-Z0-9 ]/g, "");
+		e.target.value = e.target.value.replace(/[^a-zA-Z0-9 ,]/g, "");
 		setValues({ ...values, [e.target.name]: e.target.value });
 	};
 

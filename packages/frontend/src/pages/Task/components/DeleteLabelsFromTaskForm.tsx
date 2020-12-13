@@ -12,7 +12,7 @@ export const DeleteLabelFromTaskForm: React.FC<{
 	const [values, setValues] = useState(task);
 
 	const fieldDidChange = (e: ChangeEvent<HTMLInputElement>) => {
-		e.target.value = e.target.value.replace(/[^a-zA-Z0-9 ]/g, "");
+		e.target.value = e.target.value.replace(/[^a-zA-Z0-9 ,]/g, "");
 		setValues({ ...values, [e.target.name]: e.target.value });
 	};
 	const onSubmitForm = async (e: React.FormEvent<HTMLFormElement>) => {

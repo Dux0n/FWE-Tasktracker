@@ -14,7 +14,7 @@ export const TimeTrackingForm: React.FC<{
 		description: '',
 	});
 	const fieldDidChange = (e: ChangeEvent<HTMLInputElement>) => {
-		e.target.value = e.target.value.replace(/[^a-zA-Z0-9 ]/g, "");
+		e.target.value = e.target.value.replace(/[^a-zA-Z0-9 ,]/g, "");
 		setValues({ ...values, [e.target.name]: e.target.value });
 	};
 	const newTimeEnd = new Date(timeEnd.getTime() + 1000 * time);
