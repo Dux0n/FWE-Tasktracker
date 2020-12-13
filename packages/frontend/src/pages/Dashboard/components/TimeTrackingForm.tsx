@@ -8,11 +8,13 @@ export const TimeTrackingForm: React.FC<{
 	timeEnd: Date;
 	trackerTaskID: any;
 	time: any;
-}> = ({ afterSubmit, timeStart, timeEnd, trackerTaskID, time }) => {
+	setTrackerTaskID: any;
+}> = ({ afterSubmit, timeStart, timeEnd, trackerTaskID, time, setTrackerTaskID }) => {
 	const [values, setValues] = useState({
 		description: '',
 	});
 	const fieldDidChange = (e: ChangeEvent<HTMLInputElement>) => {
+		e.target.value = e.target.value.replace(/[^a-zA-Z0-9 ]/g, "");
 		setValues({ ...values, [e.target.name]: e.target.value });
 	};
 	const newTimeEnd = new Date(timeEnd.getTime() + 1000 * time);
@@ -29,6 +31,7 @@ export const TimeTrackingForm: React.FC<{
 			headers: { 'Content-Type': 'application/json' },
 			method: 'POST',
 		});
+		setTrackerTaskID(0);
 		afterSubmit();
 	};
 

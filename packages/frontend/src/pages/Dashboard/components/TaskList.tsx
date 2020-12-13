@@ -106,6 +106,7 @@ export interface TaskItemProps {
 	showTracker: any;
 	setShowTracker: any;
 	setTrackerTaskID: any;
+	trackerTaskID: any;
 	setTrackerTaskName: any;
 	timeTrackerState: any;
 	setTimeTrackerState: any;
@@ -118,8 +119,6 @@ export interface TaskItemProps {
 	setOnPauseResumeState: any;
 	state: any;
 	setState: any;
-	actualTaskID: any;
-	setActualTaskID: any;
 }
 
 export const TaskItem: React.FC<TaskItemProps> = ({
@@ -130,6 +129,7 @@ export const TaskItem: React.FC<TaskItemProps> = ({
 	setShowTracker,
 	setTrackerTaskName,
 	setTrackerTaskID,
+	trackerTaskID,
 	timeTrackerState,
 	setTimeTrackerState,
 	time,
@@ -141,8 +141,6 @@ export const TaskItem: React.FC<TaskItemProps> = ({
 	setOnPauseResumeState,
 	state,
 	setState,
-	actualTaskID,
-	setActualTaskID,
 }) => {
 	const { name, description, labels, createdAt, updatedAt, trackings } = task;
 
@@ -155,6 +153,8 @@ export const TaskItem: React.FC<TaskItemProps> = ({
 	};
 
 	let buttonText: string = 'Start Timer';
+
+	// this function is used to control the timer
 	const onStartHandle = () => {
 		buttonText = state === 'Start Timer' ? 'Stop Timer' : 'Start Timer';
 		setState(buttonText);
@@ -226,18 +226,17 @@ export const TaskItem: React.FC<TaskItemProps> = ({
 				<StyledTop>
 					<NormalButton
 						onClick={() => {
-							if (actualTaskID === 0) {
+							if (trackerTaskID === 0) {
 								onStartHandle();
-								setActualTaskID(task.taskid);
 								setTimeStart(new Date());
 								setTimeEnd(new Date());
-							} else if (actualTaskID === task.taskid) {
+							} else if (trackerTaskID === task.taskid) {
 								onStartHandle();
-								setActualTaskID(0);
+								setTrackerTaskID(0);
 							}
 						}}
 					>
-						{actualTaskID === task.taskid ? state : 'Start Timer'}
+						{trackerTaskID === task.taskid ? state : 'Start Timer'}
 					</NormalButton>
 					<StyledTopButton>
 						<DeleteButton

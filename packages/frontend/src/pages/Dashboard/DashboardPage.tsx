@@ -58,17 +58,18 @@ export const DashboardPage = () => {
 	const [createLabelVisible, setCreateLabelVisible] = useState(false);
 	const [deleteLabelVisible, setDeleteLabelVisible] = useState(false);
 	const [showLabels, setShowLabels] = useState(false);
-	const [trackerTaskName, setTrackerTaskName] = useState();
-	const [trackerTaskID, setTrackerTaskID] = useState();
-	const [time, setTime] = useState<number>(0);
 	const [filterTaskVisible, setFilterTaskVisible] = useState(false);
 	const [timeStart, setTimeStart] = useState<Date>(new Date());
 	const [timeEnd, setTimeEnd] = useState<Date>(new Date());
+	// All the states which are used for Timer
+	const [time, setTime] = useState<number>(0);
 	const [onPauseResumeState, setOnPauseResumeState] = useState<string>('Pause');
+	const [trackerTaskName, setTrackerTaskName] = useState();
+	const [trackerTaskID, setTrackerTaskID] = useState(0);
 	const [state, setState] = useState<string>('Start Timer');
 	const [timeTrackerState, setTimeTrackerState] = useState(false);
 	const [showTracker, setShowTracker] = useState(false);
-	const [actualTaskID, setActualTaskID] = useState<number>(0);
+	//
 	const [filter, setFilter] = useState({
 		labelname: '',
 		taskdescription: '',
@@ -103,6 +104,8 @@ export const DashboardPage = () => {
 	};
 
 	let buttonText: string = 'Pause';
+
+	// This function is used to change button text and to change the state of timer
 	const onPauseResume = () => {
 		if (onPauseResumeState === 'Pause' && timeTrackerState) {
 			buttonText = 'Resume';
@@ -270,6 +273,7 @@ export const DashboardPage = () => {
 						setShowTracker={setShowTracker}
 						setTrackerTaskName={setTrackerTaskName}
 						setTrackerTaskID={setTrackerTaskID}
+						trackerTaskID={trackerTaskID}
 						timeTrackerState={timeTrackerState}
 						setTimeTrackerState={setTimeTrackerState}
 						time={time}
@@ -281,8 +285,6 @@ export const DashboardPage = () => {
 						setOnPauseResumeState={setOnPauseResumeState}
 						state={state}
 						setState={setState}
-						actualTaskID={actualTaskID}
-						setActualTaskID={setActualTaskID}
 					/>
 				))}
 			</TaskList>
@@ -309,6 +311,7 @@ export const DashboardPage = () => {
 							timeStart={timeStart}
 							timeEnd={timeEnd}
 							trackerTaskID={trackerTaskID}
+							setTrackerTaskID={setTrackerTaskID}
 							time={time}
 							afterSubmit={() => {
 								setState('Start Timer');

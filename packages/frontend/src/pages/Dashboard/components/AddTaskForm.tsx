@@ -9,7 +9,8 @@ export const AddTaskForm: React.FC<{ afterSubmit: () => void }> = ({ afterSubmit
 		name: '',
 	});
 	const fieldDidChange = (e: ChangeEvent<HTMLInputElement>) => {
-		setValues({ ...values, [e.target.name]: e.target.value });
+		e.target.value = e.target.value.replace(/[^a-zA-Z0-9 ]/g, "");
+		setValues({ ...values, [e.target.name]: e.target.value});
 	};
 	const onSubmitForm = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
